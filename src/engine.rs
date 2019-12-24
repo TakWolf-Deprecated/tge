@@ -1,0 +1,140 @@
+use crate::error::GameResult;
+use crate::window::{Window, WindowConfig};
+use crate::graphics::{Graphics, GraphicsConfig};
+use crate::timer::{Timer, TimerConfig};
+use crate::keyboard::{Keyboard, KeyboardConfig};
+use crate::mouse::{Mouse, MouseConfig};
+use crate::gamepad::{Gamepad, GamepadConfig};
+use crate::audio::{Audio, AudioConfig};
+
+pub struct Engine {
+    window: Window,
+    graphics: Graphics,
+    timer: Timer,
+    keyboard: Keyboard,
+    mouse: Mouse,
+    gamepad: Gamepad,
+    audio: Audio,
+}
+
+impl Engine {
+
+    pub fn window(&mut self) -> &mut Window {
+        &mut self.window
+    }
+
+    pub fn graphics(&mut self) -> &mut Graphics {
+        &mut self.graphics
+    }
+
+    pub fn timer(&mut self) -> &mut Timer {
+        &mut self.timer
+    }
+
+    pub fn keyboard(&mut self) -> &mut Keyboard {
+        &mut self.keyboard
+    }
+
+    pub fn mouse(&mut self) -> &mut Mouse {
+        &mut self.mouse
+    }
+
+    pub fn gamepad(&mut self) -> &mut Gamepad {
+        &mut self.gamepad
+    }
+
+    pub fn audio(&mut self) -> &mut Audio {
+        &mut self.audio
+    }
+
+}
+
+#[derive(Debug, Clone)]
+pub struct EngineBuilder {
+    window_config: Option<WindowConfig>,
+    graphics_config: Option<GraphicsConfig>,
+    timer_config: Option<TimerConfig>,
+    keyboard_config: Option<KeyboardConfig>,
+    mouse_config: Option<MouseConfig>,
+    gamepad_config: Option<GamepadConfig>,
+    audio_config: Option<AudioConfig>,
+}
+
+impl EngineBuilder {
+
+    pub fn new() -> Self {
+        Self {
+            window_config: None,
+            graphics_config: None,
+            timer_config: None,
+            keyboard_config: None,
+            mouse_config: None,
+            gamepad_config: None,
+            audio_config: None,
+        }
+    }
+
+    pub fn window_config(mut self, window_config: WindowConfig) -> Self {
+        self.window_config = Some(window_config);
+        self
+    }
+
+    pub fn graphics_config(mut self, graphics_config: GraphicsConfig) -> Self {
+        self.graphics_config = Some(graphics_config);
+        self
+    }
+
+    pub fn timer_config(mut self, timer_config: TimerConfig) -> Self {
+        self.timer_config = Some(timer_config);
+        self
+    }
+
+    pub fn keyboard_config(mut self, keyboard_config: KeyboardConfig) -> Self {
+        self.keyboard_config = Some(keyboard_config);
+        self
+    }
+
+    pub fn mouse_config(mut self, mouse_config: MouseConfig) -> Self {
+        self.mouse_config = Some(mouse_config);
+        self
+    }
+
+    pub fn gamepad_config(mut self, gamepad_config: GamepadConfig) -> Self {
+        self.gamepad_config = Some(gamepad_config);
+        self
+    }
+
+    pub fn audio_config(mut self, audio_config: AudioConfig) -> Self {
+        self.audio_config = Some(audio_config);
+        self
+    }
+
+    pub fn build(self) -> GameResult<Engine> {
+        let window_config = self.window_config.unwrap_or_else(|| WindowConfig::new());
+        let graphics_config = self.graphics_config.unwrap_or_else(|| GraphicsConfig::new());
+        let timer_config = self.timer_config.unwrap_or_else(|| TimerConfig::new());
+        let keyboard_config = self.keyboard_config.unwrap_or_else(|| KeyboardConfig::new());
+        let mouse_config = self.mouse_config.unwrap_or_else(|| MouseConfig::new());
+        let gamepad_config = self.gamepad_config.unwrap_or_else(|| GamepadConfig::new());
+        let audio_config = self.audio_config.unwrap_or_else(|| AudioConfig::new());
+
+        let window = Window::new()?;
+        let graphics = Graphics::new()?;
+        let timer = Timer::new()?;
+        let keyboard = Keyboard::new()?;
+        let mouse = Mouse::new()?;
+        let gamepad = Gamepad::new()?;
+        let audio = Audio::new()?;
+
+        Ok(Engine {
+            window,
+            graphics,
+            timer,
+            keyboard,
+            mouse,
+            gamepad,
+            audio,
+        })
+    }
+
+}
