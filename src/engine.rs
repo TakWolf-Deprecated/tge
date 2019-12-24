@@ -1,4 +1,4 @@
-use crate::error::GameResult;
+use crate::error::{GameResult, GameError};
 use crate::window::{Window, WindowConfig};
 use crate::graphics::{Graphics, GraphicsConfig};
 use crate::timer::{Timer, TimerConfig};
@@ -10,6 +10,13 @@ use crate::game::Game;
 use winit::event_loop::EventLoop;
 use winit::platform::desktop::EventLoopExtDesktop;
 
+#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
+enum State {
+    Ready,
+    Running,
+    Finished,
+}
+
 pub struct Engine {
     window: Window,
     graphics: Graphics,
@@ -18,7 +25,8 @@ pub struct Engine {
     mouse: Mouse,
     gamepad: Gamepad,
     audio: Audio,
-    event_loop: EventLoop<()>,
+    event_loop: Option<EventLoop<()>>,
+    state: State,
 }
 
 impl Engine {
@@ -52,11 +60,19 @@ impl Engine {
     }
 
     pub fn run(&mut self, game: &mut dyn Game) -> GameResult {
-        // TODO
-        self.event_loop.run_return(|event, window_target, control_flow| {
+        match self.state {
+            State::Ready => self.state = State::Running,
+            State::Running => return Err(GameError::StateError(String::from("engine has been running"))),
+            State::Finished => return Err(GameError::StateError(String::from("engine has been finished"))),
+        }
+        let mut event_loop = self.event_loop.take().expect("no event_loop instance");
+        event_loop.run_return(|event, window_target, control_flow| {
+
+            // TODO
 
         });
-        // TODO
+        self.event_loop = Some(event_loop);
+        self.state = State::Finished;
         Ok(())
     }
 
@@ -67,6 +83,10 @@ impl Engine {
     {
         let mut game = init(self)?;
         self.run(&mut game)
+    }
+
+    pub fn quit(&mut self) {
+        self.state = State::Finished;
     }
 
 }
@@ -158,7 +178,8 @@ impl EngineBuilder {
             mouse,
             gamepad,
             audio,
-            event_loop,
+            event_loop: Some(event_loop),
+            state: State::Ready,
         })
     }
 
