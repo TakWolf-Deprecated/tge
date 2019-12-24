@@ -6,6 +6,9 @@ use crate::keyboard::{Keyboard, KeyboardConfig};
 use crate::mouse::{Mouse, MouseConfig};
 use crate::gamepad::{Gamepad, GamepadConfig};
 use crate::audio::{Audio, AudioConfig};
+use crate::game::Game;
+use winit::event_loop::EventLoop;
+use winit::platform::desktop::EventLoopExtDesktop;
 
 pub struct Engine {
     window: Window,
@@ -15,6 +18,7 @@ pub struct Engine {
     mouse: Mouse,
     gamepad: Gamepad,
     audio: Audio,
+    event_loop: EventLoop<()>,
 }
 
 impl Engine {
@@ -45,6 +49,24 @@ impl Engine {
 
     pub fn audio(&mut self) -> &mut Audio {
         &mut self.audio
+    }
+
+    pub fn run(&mut self, game: &mut dyn Game) -> GameResult {
+        // TODO
+        self.event_loop.run_return(|event, window_target, control_flow| {
+
+        });
+        // TODO
+        Ok(())
+    }
+
+    pub fn run_with<G, F>(&mut self, init: F) -> GameResult
+        where
+            G: Game,
+            F: FnOnce(&mut Self) -> GameResult<G>,
+    {
+        let mut game = init(self)?;
+        self.run(&mut game)
     }
 
 }
@@ -118,6 +140,8 @@ impl EngineBuilder {
         let gamepad_config = self.gamepad_config.unwrap_or_else(|| GamepadConfig::new());
         let audio_config = self.audio_config.unwrap_or_else(|| AudioConfig::new());
 
+        let event_loop = EventLoop::new();
+
         let window = Window::new()?;
         let graphics = Graphics::new()?;
         let timer = Timer::new()?;
@@ -134,6 +158,7 @@ impl EngineBuilder {
             mouse,
             gamepad,
             audio,
+            event_loop,
         })
     }
 
