@@ -1,7 +1,7 @@
-use crate::math::{Number, Position, Size};
+use super::{Number, Position, Size};
 
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Region<N: Number> {
+pub struct Region<N: Number = f32> {
     pub x: N,
     pub y: N,
     pub width: N,

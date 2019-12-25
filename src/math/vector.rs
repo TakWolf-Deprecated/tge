@@ -1,8 +1,8 @@
-use crate::math::number::Number;
+use super::Number;
 use std::ops::{Add, Sub, AddAssign, SubAssign};
 
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Vector2<N: Number> {
+pub struct Vector2<N: Number = f32> {
     pub x: N,
     pub y: N,
 }

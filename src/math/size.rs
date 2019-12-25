@@ -1,9 +1,8 @@
-use crate::math::number::Number;
-use crate::math::vector::Vector2;
+use super::{Number, Vector2};
 use std::ops::{Mul, Div, MulAssign, DivAssign};
 
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Size<N: Number> {
+pub struct Size<N: Number = f32> {
     pub width: N,
     pub height: N,
 }
