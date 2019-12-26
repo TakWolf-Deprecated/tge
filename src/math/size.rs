@@ -120,3 +120,32 @@ impl<N: Number> Into<(N, N)> for Size<N> {
     }
 
 }
+
+#[cfg(test)]
+mod tests {
+
+    use super::Size;
+    use crate::math::Vector2;
+
+    #[test]
+    fn operator() {
+        let mut size = Size::<f32>::new(10.0, 20.0);
+        size = size * Vector2::<f32>::new(2.0, 2.0);
+        assert_eq!(size, Size::<f32>::new(20.0, 40.0));
+        size = size / Vector2::<f32>::new(10.0, 5.0);
+        assert_eq!(size, Size::<f32>::new(2.0, 8.0));
+        size *= Vector2::<f32>::new(4.0, 2.0);
+        assert_eq!(size, Size::<f32>::new(8.0, 16.0));
+        size /= Vector2::<f32>::new(8.0, 4.0);
+        assert_eq!(size, Size::<f32>::new(1.0, 4.0));
+        size = size * 6.0f32;
+        assert_eq!(size, Size::<f32>::new(6.0, 24.0));
+        size = size / 3.0f32;
+        assert_eq!(size, Size::<f32>::new(2.0, 8.0));
+        size *= 5.0f32;
+        assert_eq!(size, Size::<f32>::new(10.0, 40.0));
+        size /= 10.0f32;
+        assert_eq!(size, Size::<f32>::new(1.0, 4.0));
+    }
+
+}
