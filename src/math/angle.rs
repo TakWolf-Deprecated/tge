@@ -175,3 +175,87 @@ impl<F: Float> PartialOrd for Angle<F> {
     }
 
 }
+
+#[cfg(test)]
+mod tests {
+
+    use super::Angle;
+
+    #[test]
+    fn create() {
+        assert_eq!(Angle::<f32>::radians(std::f32::consts::PI * 2.0), Angle::<f32>::n_pi(2.0));
+        assert_eq!(Angle::<f32>::n_pi(1.0), Angle::<f32>::degrees(180.0));
+        assert_eq!(Angle::<f32>::n_pi(2.0).value(), std::f32::consts::PI * 2.0);
+        assert_eq!(Angle::<f32>::degrees(90.0).value(), 90.0f32);
+        assert_eq!(Angle::<f32>::zero(), Angle::<f32>::radians(0.0));
+        assert_eq!(Angle::<f32>::zero(), Angle::<f32>::degrees(0.0));
+        assert_eq!(Angle::<f32>::zero().value(), 0.0f32);
+    }
+
+    #[test]
+    fn convert() {
+        assert_eq!(Angle::<f32>::n_pi(1.0).to_degrees().value(), 180.0f32);
+        assert_eq!(Angle::<f32>::degrees(90.0).to_radians().value(), std::f32::consts::PI * 0.5);
+        assert_eq!(Angle::<f32>::n_pi(2.0).to_degrees().value(), Angle::<f32>::n_pi(2.0).degrees_value());
+        assert_eq!(Angle::<f32>::degrees(180.0).to_radians().value(), Angle::<f32>::degrees(180.0).radians_value());
+    }
+
+    #[test]
+    fn operator() {
+        assert_eq!(Angle::<f32>::n_pi(1.0) + Angle::<f32>::n_pi(1.0), Angle::<f32>::n_pi(2.0));
+        assert_eq!(Angle::<f32>::degrees(90.0) + Angle::<f32>::degrees(90.0), Angle::<f32>::degrees(180.0));
+        assert_eq!(Angle::<f32>::n_pi(1.0) + Angle::<f32>::degrees(180.0), Angle::<f32>::n_pi(2.0));
+        assert_eq!(Angle::<f32>::degrees(90.0) + Angle::<f32>::n_pi(0.5), Angle::<f32>::degrees(180.0));
+        assert_eq!(Angle::<f32>::n_pi(2.0) - Angle::<f32>::n_pi(1.0), Angle::<f32>::n_pi(1.0));
+        assert_eq!(Angle::<f32>::degrees(180.0) - Angle::<f32>::degrees(90.0), Angle::<f32>::degrees(90.0));
+        assert_eq!(Angle::<f32>::n_pi(2.0) - Angle::<f32>::degrees(180.0), Angle::<f32>::n_pi(1.0));
+        assert_eq!(Angle::<f32>::degrees(180.0) - Angle::<f32>::n_pi(0.5), Angle::<f32>::degrees(90.0));
+        assert_eq!(Angle::<f32>::n_pi(1.0) * 2.0, Angle::<f32>::n_pi(2.0));
+        assert_eq!(Angle::<f32>::degrees(90.0) * 2.0, Angle::<f32>::degrees(180.0));
+        assert_eq!(Angle::<f32>::n_pi(2.0) / 2.0, Angle::<f32>::n_pi(1.0));
+        assert_eq!(Angle::<f32>::degrees(90.0) / 2.0, Angle::<f32>::degrees(45.0));
+
+        let mut angle = Angle::<f32>::n_pi(2.0);
+        angle += Angle::<f32>::n_pi(2.0);
+        assert_eq!(angle, Angle::<f32>::n_pi(4.0));
+        angle += Angle::<f32>::degrees(180.0);
+        assert_eq!(angle, Angle::<f32>::n_pi(5.0));
+        angle -= Angle::<f32>::n_pi(1.0);
+        assert_eq!(angle, Angle::<f32>::n_pi(4.0));
+        angle -= Angle::<f32>::degrees(180.0);
+        assert_eq!(angle, Angle::<f32>::n_pi(3.0));
+
+        let mut angle = Angle::<f32>::degrees(180.0);
+        angle += Angle::<f32>::degrees(180.0);
+        assert_eq!(angle, Angle::<f32>::degrees(360.0));
+        angle += Angle::<f32>::n_pi(2.0);
+        assert_eq!(angle, Angle::<f32>::degrees(720.0));
+        angle -= Angle::<f32>::degrees(360.0);
+        assert_eq!(angle, Angle::<f32>::degrees(360.0));
+        angle -= Angle::<f32>::n_pi(1.0);
+        assert_eq!(angle, Angle::<f32>::degrees(180.0));
+
+        let mut angle = Angle::<f32>::n_pi(1.0);
+        angle *= 4.0;
+        assert_eq!(angle, Angle::<f32>::n_pi(4.0));
+        angle /= 2.0;
+        assert_eq!(angle, Angle::<f32>::n_pi(2.0));
+
+        let mut angle = Angle::<f32>::degrees(180.0);
+        angle *= 4.0;
+        assert_eq!(angle, Angle::<f32>::degrees(720.0));
+        angle /= 2.0;
+        assert_eq!(angle, Angle::<f32>::degrees(360.0));
+    }
+
+    #[test]
+    fn compare() {
+        assert!(Angle::<f32>::n_pi(1.5) > Angle::<f32>::n_pi(0.5));
+        assert!(Angle::<f32>::n_pi(1.0) < Angle::<f32>::n_pi(2.0));
+        assert!(Angle::<f32>::degrees(90.0) > Angle::<f32>::degrees(45.0));
+        assert!(Angle::<f32>::degrees(30.0) < Angle::<f32>::degrees(60.0));
+        assert!(Angle::<f32>::n_pi(2.0) > Angle::<f32>::degrees(300.0));
+        assert!(Angle::<f32>::n_pi(0.5) < Angle::<f32>::degrees(135.0));
+    }
+
+}
