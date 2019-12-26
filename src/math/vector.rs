@@ -86,3 +86,23 @@ impl<N: Number> Into<(N, N)> for Vector2<N> {
     }
 
 }
+
+#[cfg(test)]
+mod tests {
+
+    use super::Vector2;
+
+    #[test]
+    fn operator() {
+        let mut vec = Vector2::<f32>::new(100.0, 50.0);
+        vec = vec + Vector2::<f32>::new(40.0, 20.0);
+        assert_eq!(vec, Vector2::<f32>::new(140.0, 70.0));
+        vec = vec - Vector2::<f32>::new(40.0, 70.0);
+        assert_eq!(vec, Vector2::<f32>::new(100.0, 0.0));
+        vec += Vector2::<f32>::new(20.0, 50.0);
+        assert_eq!(vec, Vector2::new(120.0, 50.0));
+        vec -= Vector2::<f32>::new(80.0, 10.0);
+        assert_eq!(vec, Vector2::new(40.0, 40.0));
+    }
+
+}
