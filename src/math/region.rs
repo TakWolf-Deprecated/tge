@@ -118,3 +118,27 @@ impl<N: Number> Into<(N, N, N, N)> for Region<N> {
     }
 
 }
+
+#[cfg(test)]
+mod tests {
+
+    use super::Region;
+    use crate::math::{Position, Size};
+
+    #[test]
+    fn create() {
+        let region = Region::<f32>::new(10.0, 20.0, 100.0, 150.0);
+        assert_eq!(region, Region::<f32>::edge(10.0, 110.0, 20.0, 170.0));
+        assert_eq!(region.left(), 10.0f32);
+        assert_eq!(region.right(), 110.0f32);
+        assert_eq!(region.top(), 20.0f32);
+        assert_eq!(region.bottom(), 170.0f32);
+        assert_eq!(region.top_left(), Position::<f32>::new(10.0, 20.0));
+        assert_eq!(region.top_right(), Position::<f32>::new(110.0, 20.0));
+        assert_eq!(region.bottom_left(), Position::<f32>::new(10.0, 170.0));
+        assert_eq!(region.bottom_right(), Position::<f32>::new(110.0, 170.0));
+        assert_eq!(region.top_left(), region.position());
+        assert_eq!(region.size(), Size::<f32>::new(100.0, 150.0));
+    }
+
+}
