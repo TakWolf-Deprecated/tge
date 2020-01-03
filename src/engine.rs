@@ -62,8 +62,7 @@ impl Engine {
     pub fn run(&mut self, game: &mut dyn Game) -> GameResult {
         match self.state {
             State::Ready => self.state = State::Running,
-            State::Running => return Err(GameError::StateError(String::from("engine has been running"))),
-            State::Finished => return Err(GameError::StateError(String::from("engine has been finished"))),
+            _ => return Err(GameError::StateError(format!("engine can not be run on state {:?}", self.state))),
         }
         let mut event_loop = self.event_loop.take().expect("no event_loop instance");
         event_loop.run_return(|event, window_target, control_flow| {
