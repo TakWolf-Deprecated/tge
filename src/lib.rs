@@ -1,5 +1,5 @@
-pub mod math;
 pub mod error;
+pub mod math;
 pub mod event;
 pub mod engine;
 pub mod window;
