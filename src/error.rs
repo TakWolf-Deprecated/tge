@@ -1,3 +1,5 @@
+use std::error::Error;
+use std::fmt;
 
 #[derive(Debug)]
 pub enum GameError {
@@ -5,5 +7,19 @@ pub enum GameError {
     StateError(String),
     RuntimeError(String),
 }
+
+impl fmt::Display for GameError {
+
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            GameError::InitError(message) => write!(fmt, "game init error: {}", message),
+            GameError::StateError(message) => write!(fmt, "game state error: {}", message),
+            GameError::RuntimeError(message) => write!(fmt, "game runtime error: {}", message),
+        }
+    }
+
+}
+
+impl Error for GameError {}
 
 pub type GameResult<T = ()> = Result<T, GameError>;
