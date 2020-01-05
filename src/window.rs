@@ -18,38 +18,37 @@ pub struct Window {
     transparent: bool,
     decorations: bool,
     always_on_top: bool,
+    visible: bool,
 }
 
 impl Window {
 
     pub(crate) fn new(window_config: WindowConfig, event_loop: &EventLoop<()>) -> GameResult<Self> {
-        let window_builder = WindowBuilder::new()
+        let mut window_builder = WindowBuilder::new()
             .with_title(&window_config.title)
             .with_resizable(window_config.resizable)
             .with_maximized(window_config.maximized)
             .with_transparent(window_config.transparent)
             .with_decorations(window_config.decorations)
-            .with_always_on_top(window_config.always_on_top);
-        let window_builder = match window_config.window_icon {
-            Some(path) => window_builder.with_window_icon(Some(icon::load_icon(&path)?)),
-            None => window_builder.with_window_icon(None),
-        };
-        let window_builder = match window_config.inner_size {
-            Some(size) => window_builder.with_inner_size(size.into()),
-            None => window_builder,
-        };
-        let window_builder = match window_config.min_inner_size {
-            Some(size) => window_builder.with_min_inner_size(size.into()),
-            None => window_builder,
-        };
-        let window_builder = match window_config.max_inner_size {
-            Some(size) => window_builder.with_max_inner_size(size.into()),
-            None => window_builder,
-        };
-        let window_builder = match window_config.fullscreen {
-            Some(fullscreen_mode) => window_builder.with_fullscreen(Some(fullscreen_mode.to_winit_enum(event_loop.primary_monitor())?)),
-            None => window_builder.with_fullscreen(None),
-        };
+            .with_always_on_top(window_config.always_on_top)
+            .with_visible(window_config.visible);
+        if let Some(path) = window_config.window_icon {
+            let icon = icon::load_icon(&path)?;
+            window_builder = window_builder.with_window_icon(Some(icon));
+        }
+        if let Some(size) = window_config.inner_size {
+            window_builder = window_builder.with_inner_size(size.into())
+        }
+        if let Some(size) = window_config.min_inner_size {
+            window_builder = window_builder.with_min_inner_size(size.into());
+        }
+        if let Some(size) = window_config.max_inner_size {
+            window_builder = window_builder.with_max_inner_size(size.into());
+        }
+        if let Some(fullscreen_mode) = window_config.fullscreen {
+            let fullscreen = fullscreen_mode.to_winit_enum(event_loop.primary_monitor())?;
+            window_builder = window_builder.with_fullscreen(Some(fullscreen));
+        }
         let windowed_context = ContextBuilder::new()
             .with_vsync(window_config.vsync)
             .build_windowed(window_builder, event_loop)
@@ -66,6 +65,7 @@ impl Window {
             transparent: window_config.transparent,
             decorations: window_config.decorations,
             always_on_top: window_config.always_on_top,
+            visible: window_config.visible,
         })
     }
 
@@ -192,6 +192,15 @@ impl Window {
         self.window().set_always_on_top(self.always_on_top);
     }
 
+    pub fn is_visible(&self) -> bool {
+        self.visible
+    }
+
+    pub fn set_visible(&mut self, visible: bool) {
+        self.visible = visible;
+        self.window().set_visible(self.visible);
+    }
+
 }
 
 #[derive(Debug, Clone)]
@@ -207,6 +216,7 @@ pub struct WindowConfig {
     transparent: bool,
     decorations: bool,
     always_on_top: bool,
+    visible: bool,
     vsync: bool,
 }
 
@@ -225,6 +235,7 @@ impl WindowConfig {
             transparent: false,
             decorations: true,
             always_on_top: false,
+            visible: true,
             vsync: false,
         }
     }
@@ -281,6 +292,11 @@ impl WindowConfig {
 
     pub fn always_on_top(mut self, always_on_top: bool) -> Self {
         self.always_on_top = always_on_top;
+        self
+    }
+
+    pub fn visible(mut self, visible: bool) -> Self {
+        self.visible = visible;
         self
     }
 
