@@ -1,4 +1,4 @@
-use crate::error::GameResult;
+use crate::error::{GameError, GameResult};
 use glutin::{ContextWrapper, PossiblyCurrent};
 use std::rc::Rc;
 
@@ -12,6 +12,16 @@ impl Graphics {
         Ok(Self {
             context_wrapper
         })
+    }
+
+    pub(crate) fn flush(&mut self) {
+        // TODO
+    }
+
+    pub(crate) fn present(&mut self) -> GameResult {
+        self.flush();
+        self.context_wrapper.swap_buffers()
+            .map_err(|error| GameError::RuntimeError(format!("{}", error)))
     }
 
 }

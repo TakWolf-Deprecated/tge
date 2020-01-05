@@ -115,6 +115,13 @@ impl Engine {
                                 return;
                             }
                         }
+                        match self.graphics.present() {
+                            Ok(()) => (),
+                            Err(error) => {
+                                self.state = State::Broken(Some(error));
+                                return;
+                            }
+                        }
                     }
                 }
                 _ => (),
