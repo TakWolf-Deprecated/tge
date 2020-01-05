@@ -11,7 +11,7 @@ repository = "https://github.com/TakWolf/tge"
 publish = false
 
 [dependencies]
-winit = "0.20.0-alpha5"
+winit = "0.20.0-alpha6"
 glutin = "0.22.0-alpha5"
 gl = "0.14.0"
 image = "0.22.3"

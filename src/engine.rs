@@ -82,8 +82,6 @@ impl Engine {
                 }
             }
 
-            let mut frame_logic = false;
-
             match event {
                 winit::event::Event::LoopDestroyed => {
                     match &self.state {
@@ -96,30 +94,30 @@ impl Engine {
                 winit::event::Event::WindowEvent { window_id, event } => {
                     if self.window.window().id() == window_id {
                         match event {
-                            winit::event::WindowEvent::RedrawRequested => frame_logic = true,
+                            // TODO
                             _ => (),
                         }
                     }
                 }
-                winit::event::Event::EventsCleared => frame_logic = true,
+                winit::event::Event::RedrawEventsCleared => {
+                    if self.timer.tick_and_check() {
+                        match game.update(self) {
+                            Ok(()) => (),
+                            Err(error) => {
+                                self.state = State::Broken(Some(error));
+                                return;
+                            }
+                        }
+                        match game.render(self) {
+                            Ok(()) => (),
+                            Err(error) => {
+                                self.state = State::Broken(Some(error));
+                                return;
+                            }
+                        }
+                    }
+                }
                 _ => (),
-            }
-
-            if frame_logic && self.timer.tick_and_check() {
-                match game.update(self) {
-                    Ok(()) => (),
-                    Err(error) => {
-                        self.state = State::Broken(Some(error));
-                        return;
-                    }
-                }
-                match game.render(self) {
-                    Ok(()) => (),
-                    Err(error) => {
-                        self.state = State::Broken(Some(error));
-                        return;
-                    }
-                }
             }
         });
         self.event_loop = Some(event_loop);
