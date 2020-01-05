@@ -3,6 +3,7 @@ use std::fmt;
 
 #[derive(Debug)]
 pub enum GameError {
+    IoError(String),
     InitError(String),
     StateError(String),
     RuntimeError(String),
@@ -13,10 +14,11 @@ impl fmt::Display for GameError {
 
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            GameError::InitError(message) => write!(fmt, "game init error: {}", message),
-            GameError::StateError(message) => write!(fmt, "game state error: {}", message),
-            GameError::RuntimeError(message) => write!(fmt, "game runtime error: {}", message),
-            GameError::Unsupported(message) => write!(fmt, "unsupported operation: {}", message),
+            GameError::IoError(message) => write!(fmt, "GameError::IoError: {}", message),
+            GameError::InitError(message) => write!(fmt, "GameError::InitError: {}", message),
+            GameError::StateError(message) => write!(fmt, "GameError::StateError: {}", message),
+            GameError::RuntimeError(message) => write!(fmt, "GameError::RuntimeError: {}", message),
+            GameError::Unsupported(message) => write!(fmt, "GameError::Unsupported: {}", message),
         }
     }
 
