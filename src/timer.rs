@@ -39,7 +39,7 @@ impl Timer {
     }
 
     pub fn set_fps(&mut self, fps: f32) {
-        check_fps(fps);
+        validate_fps(fps);
         self.fps = fps;
     }
 
@@ -70,13 +70,13 @@ impl TimerConfig {
     }
 
     pub fn fps(mut self, fps: f32) -> Self {
-        check_fps(fps);
+        validate_fps(fps);
         self.fps = fps;
         self
     }
 
 }
 
-fn check_fps(fps: f32) {
+fn validate_fps(fps: f32) {
     assert!(fps > 0.0, "fps must > 0.0");
 }
