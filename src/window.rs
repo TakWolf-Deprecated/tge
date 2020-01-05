@@ -136,6 +136,10 @@ impl Window {
         self.window().set_ime_position(position.into().into())
     }
 
+    pub fn hidpi_factor(&self) -> f64 {
+        self.window().hidpi_factor()
+    }
+
     pub fn fullscreen(&self) -> Option<FullscreenMode> {
         self.window().fullscreen().map(|fullscreen| FullscreenMode::from_winit_enum(fullscreen))
     }
