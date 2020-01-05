@@ -8,7 +8,7 @@ pub struct Region<N: Number = f32> {
     pub height: N,
 }
 
-pub type Viewport<N> = Region<N>;
+pub type Viewport<N = f32> = Region<N>;
 
 impl<N: Number> Region<N> {
 

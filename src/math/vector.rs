@@ -8,9 +8,9 @@ pub struct Vector2<N: Number = f32> {
     pub y: N,
 }
 
-pub type Position<N> = Vector2<N>;
-pub type Point<N> = Vector2<N>;
-pub type Scale<N> = Vector2<N>;
+pub type Position<N = f32> = Vector2<N>;
+pub type Point<N = f32> = Vector2<N>;
+pub type Scale<N = f32> = Vector2<N>;
 
 impl<N: Number> Vector2<N> {
 
