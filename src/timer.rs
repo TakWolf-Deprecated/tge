@@ -78,5 +78,5 @@ impl TimerConfig {
 }
 
 fn check_fps(fps: f32) {
-    assert!(fps >= 0.0, "fps must >= 0.0");
+    assert!(fps > 0.0, "fps must > 0.0");
 }
