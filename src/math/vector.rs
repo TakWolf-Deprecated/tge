@@ -1,5 +1,6 @@
 use super::Number;
 use std::ops::{Add, Sub, AddAssign, SubAssign};
+use winit::dpi::LogicalPosition;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Vector2<N: Number = f32> {
@@ -83,6 +84,22 @@ impl<N: Number> Into<(N, N)> for Vector2<N> {
 
     fn into(self) -> (N, N) {
         (self.x, self.y)
+    }
+
+}
+
+impl From<LogicalPosition> for Position<i32> {
+
+    fn from(position: LogicalPosition) -> Self {
+        Self::new(position.x.round() as i32, position.y.round() as i32)
+    }
+
+}
+
+impl Into<LogicalPosition> for Position<i32> {
+
+    fn into(self) -> LogicalPosition {
+        LogicalPosition::new(self.x as f64, self.y as f64)
     }
 
 }
