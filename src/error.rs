@@ -7,7 +7,7 @@ pub enum GameError {
     InitError(String),
     StateError(String),
     RuntimeError(String),
-    Unsupported(String),
+    NotSupportedError(String),
 }
 
 impl fmt::Display for GameError {
@@ -18,7 +18,7 @@ impl fmt::Display for GameError {
             GameError::InitError(message) => write!(fmt, "GameError::InitError: {}", message),
             GameError::StateError(message) => write!(fmt, "GameError::StateError: {}", message),
             GameError::RuntimeError(message) => write!(fmt, "GameError::RuntimeError: {}", message),
-            GameError::Unsupported(message) => write!(fmt, "GameError::Unsupported: {}", message),
+            GameError::NotSupportedError(message) => write!(fmt, "GameError::NotSupportedError: {}", message),
         }
     }
 
