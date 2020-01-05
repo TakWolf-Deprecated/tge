@@ -1,4 +1,4 @@
-use crate::error::{GameResult, GameError};
+use crate::error::{GameError, GameResult};
 use crate::window::{Window, WindowConfig};
 use crate::graphics::{Graphics, GraphicsConfig};
 use crate::timer::{Timer, TimerConfig};
@@ -7,14 +7,15 @@ use crate::mouse::{Mouse, MouseConfig};
 use crate::gamepad::{Gamepad, GamepadConfig};
 use crate::audio::{Audio, AudioConfig};
 use crate::game::Game;
-use winit::event_loop::EventLoop;
+use winit::event_loop::{EventLoop, ControlFlow};
 use winit::platform::desktop::EventLoopExtDesktop;
 
-#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
+#[derive(Debug)]
 enum State {
     Ready,
     Running,
     Finished,
+    Broken(Option<GameError>),
 }
 
 pub struct Engine {
@@ -60,19 +61,74 @@ impl Engine {
     }
 
     pub fn run(&mut self, game: &mut dyn Game) -> GameResult {
-        match self.state {
+        match &self.state {
             State::Ready => self.state = State::Running,
             _ => return Err(GameError::StateError(format!("engine can not be run on state {:?}", self.state))),
         }
+
+        self.timer.reset_tick();
+
         let mut event_loop = self.event_loop.take().expect("no event_loop instance");
         event_loop.run_return(|event, window_target, control_flow| {
+            match &self.state {
+                State::Finished | State::Broken(_) => {
+                    *control_flow = ControlFlow::Exit;
+                    return;
+                }
+                State::Running => (),
+                _ => {
+                    self.state = State::Broken(Some(GameError::StateError(format!("engine state {:?} incorrect at the beginning of the event loop one step", self.state))));
+                    return;
+                }
+            }
 
-            // TODO
+            let mut frame_logic = false;
 
+            match event {
+                winit::event::Event::LoopDestroyed => {
+                    match &self.state {
+                        State::Finished | State::Broken(_) => (),
+                        State::Running => self.state = State::Finished,
+                        _ => self.state = State::Broken(Some(GameError::StateError(format!("engine state {:?} incorrect on event loop event {:?}", self.state, event)))),
+                    }
+                    return;
+                }
+                winit::event::Event::WindowEvent { window_id, event } => {
+                    if self.window.window().id() == window_id {
+                        match event {
+                            winit::event::WindowEvent::RedrawRequested => frame_logic = true,
+                            _ => (),
+                        }
+                    }
+                }
+                winit::event::Event::EventsCleared => frame_logic = true,
+                _ => (),
+            }
+
+            if frame_logic && self.timer.tick_and_check() {
+                match game.update(self) {
+                    Ok(()) => (),
+                    Err(error) => {
+                        self.state = State::Broken(Some(error));
+                        return;
+                    }
+                }
+                match game.render(self) {
+                    Ok(()) => (),
+                    Err(error) => {
+                        self.state = State::Broken(Some(error));
+                        return;
+                    }
+                }
+            }
         });
         self.event_loop = Some(event_loop);
-        self.state = State::Finished;
-        Ok(())
+
+        match &mut self.state {
+            State::Finished => Ok(()),
+            State::Broken(error) => Err(error.take().expect("no engine broken error instance")),
+            _ => Err(GameError::StateError(format!("engine state {:?} incorrect at the end of the event loop", self.state))),
+        }
     }
 
     pub fn run_with<G, F>(&mut self, init: F) -> GameResult
@@ -86,6 +142,10 @@ impl Engine {
 
     pub fn quit(&mut self) {
         self.state = State::Finished;
+    }
+
+    pub fn exit(&mut self, error: GameError) {
+        self.state = State::Broken(Some(error));
     }
 
 }
@@ -161,9 +221,9 @@ impl EngineBuilder {
 
         let event_loop = EventLoop::new();
 
-        let window = Window::new()?;
-        let graphics = Graphics::new()?;
-        let timer = Timer::new()?;
+        let window = Window::new(window_config, &event_loop)?;
+        let graphics = Graphics::new(graphics_config, window.context_wrapper())?;
+        let timer = Timer::new(timer_config)?;
         let keyboard = Keyboard::new()?;
         let mouse = Mouse::new()?;
         let gamepad = Gamepad::new()?;

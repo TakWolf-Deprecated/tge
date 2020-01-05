@@ -73,7 +73,7 @@ impl Window {
         self.context_wrapper.clone()
     }
 
-    fn window(&self) -> &winit::window::Window {
+    pub(crate) fn window(&self) -> &winit::window::Window {
         self.context_wrapper.window()
     }
 

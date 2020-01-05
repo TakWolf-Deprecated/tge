@@ -1,11 +1,17 @@
 use crate::error::GameResult;
+use glutin::{ContextWrapper, PossiblyCurrent};
+use std::rc::Rc;
 
-pub struct Graphics {}
+pub struct Graphics {
+    context_wrapper: Rc<ContextWrapper<PossiblyCurrent, winit::window::Window>>,
+}
 
 impl Graphics {
 
-    pub(crate) fn new() -> GameResult<Self> {
-        Ok(Self {})
+    pub(crate) fn new(graphics_config: GraphicsConfig, context_wrapper: Rc<ContextWrapper<PossiblyCurrent, winit::window::Window>>) -> GameResult<Self> {
+        Ok(Self {
+            context_wrapper
+        })
     }
 
 }

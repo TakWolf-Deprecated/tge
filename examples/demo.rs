@@ -1,4 +1,4 @@
-use tge::error::GameResult;
+use tge::error::{GameError, GameResult};
 use tge::engine::{EngineBuilder, Engine};
 use tge::window::WindowConfig;
 use tge::graphics::GraphicsConfig;
@@ -17,7 +17,9 @@ impl App {
 
 impl Game for App {
 
-    fn update(&mut self, _engine: &mut Engine) -> GameResult {
+    fn update(&mut self, engine: &mut Engine) -> GameResult {
+        let title = format!("FPS: {}", engine.timer().real_time_fps().round());
+        engine.window().set_title(title);
         Ok(())
     }
 
@@ -29,9 +31,12 @@ impl Game for App {
 
 fn main() -> GameResult {
     EngineBuilder::new()
-        .window_config(WindowConfig::new())
+        .window_config(WindowConfig::new()
+            .title("My Game")
+            .inner_size((600, 600)))
         .graphics_config(GraphicsConfig::new())
-        .timer_config(TimerConfig::new())
+        .timer_config(TimerConfig::new()
+            .fps(80.0))
         .build()?
         .run_with(App::new)
 }
