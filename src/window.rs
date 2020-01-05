@@ -9,6 +9,7 @@ use winit::event_loop::EventLoop;
 use winit::window::WindowBuilder;
 use glutin::{ContextBuilder, ContextWrapper, PossiblyCurrent};
 use std::rc::Rc;
+use std::path::Path;
 
 pub struct Window {
     context_wrapper: Rc<ContextWrapper<PossiblyCurrent, winit::window::Window>>,
@@ -32,8 +33,8 @@ impl Window {
             .with_decorations(window_config.decorations)
             .with_always_on_top(window_config.always_on_top)
             .with_visible(window_config.visible);
-        if let Some(path) = window_config.window_icon {
-            let icon = icon::load_icon(&path)?;
+        if let Some(path) = window_config.icon {
+            let icon = icon::load_icon(path)?;
             window_builder = window_builder.with_window_icon(Some(icon));
         }
         if let Some(size) = window_config.inner_size {
@@ -86,9 +87,9 @@ impl Window {
         self.window().set_title(&self.title)
     }
 
-    pub fn set_window_icon<P: Into<String>>(&mut self, path: Option<P>) -> GameResult {
+    pub fn set_icon<P: AsRef<Path>>(&mut self, path: Option<P>) -> GameResult {
         let icon = match path {
-            Some(path) => Some(icon::load_icon(&path.into())?),
+            Some(path) => Some(icon::load_icon(path)?),
             None => None,
         };
         self.window().set_window_icon(icon);
@@ -206,7 +207,7 @@ impl Window {
 #[derive(Debug, Clone)]
 pub struct WindowConfig {
     title: String,
-    window_icon: Option<String>,
+    icon: Option<String>,
     inner_size: Option<Size<u32>>,
     min_inner_size: Option<Size<u32>>,
     max_inner_size: Option<Size<u32>>,
@@ -225,7 +226,7 @@ impl WindowConfig {
     pub fn new() -> Self {
         Self {
             title: "tge".to_owned(),
-            window_icon: None,
+            icon: None,
             inner_size: None,
             min_inner_size: None,
             max_inner_size: None,
@@ -245,8 +246,8 @@ impl WindowConfig {
         self
     }
 
-    pub fn window_icon<P: Into<String>>(mut self, path: Option<P>) -> Self {
-        self.window_icon = path.map(|path| path.into());
+    pub fn icon<P: Into<String>>(mut self, path: Option<P>) -> Self {
+        self.icon = path.map(|path| path.into());
         self
     }
 
