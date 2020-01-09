@@ -1,10 +1,12 @@
 mod number;
+mod float;
 mod vector;
 mod size;
 mod region;
 mod angle;
 
-use number::{Number, Float};
+use number::Number;
+use float::Float;
 
 pub use vector::{Vector2, Position, Point, Scale};
 pub use size::Size;

@@ -1,6 +1,5 @@
 use super::{Number, Vector2};
 use std::ops::{Mul, Div, MulAssign, DivAssign};
-use winit::dpi::LogicalSize;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Size<N: Number = f32> {
@@ -118,22 +117,6 @@ impl<N: Number> Into<(N, N)> for Size<N> {
 
     fn into(self) -> (N, N) {
         (self.width, self.height)
-    }
-
-}
-
-impl From<LogicalSize> for Size<u32> {
-
-    fn from(size: LogicalSize) -> Self {
-        Self::new(size.width.round() as u32, size.height.round() as u32)
-    }
-
-}
-
-impl Into<LogicalSize> for Size<u32> {
-
-    fn into(self) -> LogicalSize {
-        LogicalSize::new(self.width as f64, self.height as f64)
     }
 
 }
