@@ -1,4 +1,4 @@
-use tge::error::{GameError, GameResult};
+use tge::error::GameResult;
 use tge::engine::{EngineBuilder, Engine};
 use tge::window::WindowConfig;
 use tge::graphics::GraphicsConfig;
@@ -33,8 +33,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title("My Game")
-            .inner_size((600, 600)))
-        .graphics_config(GraphicsConfig::new())
+            .inner_size((800, 600)))
         .timer_config(TimerConfig::new()
             .fps(80.0))
         .build()?
