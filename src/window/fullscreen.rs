@@ -1,6 +1,6 @@
 use crate::error::{GameError, GameResult};
 use winit::window::Fullscreen;
-use winit::monitor::{MonitorHandle, VideoMode};
+use winit::monitor::{VideoMode, MonitorHandle};
 
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
 pub enum FullscreenMode {
@@ -10,16 +10,17 @@ pub enum FullscreenMode {
 
 impl FullscreenMode {
 
-    pub(crate) fn from_winit_enum(fullscreen: Fullscreen) -> Self {
+    pub(crate) fn from_raw(fullscreen: Fullscreen) -> Self {
         match fullscreen {
             Fullscreen::Exclusive(_) => FullscreenMode::Exclusive,
             Fullscreen::Borderless(_) => FullscreenMode::Borderless,
         }
     }
 
-    pub(crate) fn to_winit_enum(&self, monitor: MonitorHandle) -> GameResult<Fullscreen> {
+    pub(crate) fn into_raw(self, monitor: MonitorHandle) -> GameResult<Fullscreen> {
         match self {
-            FullscreenMode::Exclusive => get_preferred_video_mode(monitor).map(|video_mode| Fullscreen::Exclusive(video_mode)),
+            FullscreenMode::Exclusive => get_preferred_video_mode(monitor)
+                .map(|video_mode| Fullscreen::Exclusive(video_mode)),
             FullscreenMode::Borderless => Ok(Fullscreen::Borderless(monitor)),
         }
     }

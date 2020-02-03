@@ -1,6 +1,8 @@
+mod dpi;
 mod icon;
 mod fullscreen;
 
+pub use icon::Icon;
 pub use fullscreen::FullscreenMode;
 
 use crate::error::{GameError, GameResult};
@@ -9,7 +11,6 @@ use winit::event_loop::EventLoop;
 use winit::window::WindowBuilder;
 use glutin::{ContextBuilder, ContextWrapper, PossiblyCurrent};
 use std::rc::Rc;
-use std::path::Path;
 
 pub struct Window {
     context_wrapper: Rc<ContextWrapper<PossiblyCurrent, winit::window::Window>>,
@@ -27,37 +28,44 @@ impl Window {
     pub(crate) fn new(window_config: WindowConfig, event_loop: &EventLoop<()>) -> GameResult<Self> {
         let mut window_builder = WindowBuilder::new()
             .with_title(&window_config.title)
+            .with_window_icon(match window_config.icon {
+                Some(path) => {
+                    let icon = Icon::load(path)?;
+                    Some(icon.into())
+                }
+                None => None,
+            })
+            .with_fullscreen(match window_config.fullscreen {
+                Some(fullscreen_mode) => {
+                    let monitor = event_loop.primary_monitor();
+                    let fullscreen = fullscreen_mode.into_raw(monitor)?;
+                    Some(fullscreen)
+                }
+                None => None,
+            })
             .with_resizable(window_config.resizable)
             .with_maximized(window_config.maximized)
             .with_transparent(window_config.transparent)
             .with_decorations(window_config.decorations)
             .with_always_on_top(window_config.always_on_top)
             .with_visible(window_config.visible);
-        if let Some(path) = window_config.icon {
-            let icon = icon::load_icon(path)?;
-            window_builder = window_builder.with_window_icon(Some(icon));
-        }
         if let Some(size) = window_config.inner_size {
-            window_builder = window_builder.with_inner_size(size.into())
+            window_builder = window_builder.with_inner_size(winit::dpi::Size::Logical(size.into()))
         }
         if let Some(size) = window_config.min_inner_size {
-            window_builder = window_builder.with_min_inner_size(size.into());
+            window_builder = window_builder.with_min_inner_size(winit::dpi::Size::Logical(size.into()));
         }
         if let Some(size) = window_config.max_inner_size {
-            window_builder = window_builder.with_max_inner_size(size.into());
+            window_builder = window_builder.with_max_inner_size(winit::dpi::Size::Logical(size.into()));
         }
-        if let Some(fullscreen_mode) = window_config.fullscreen {
-            let fullscreen = fullscreen_mode.to_winit_enum(event_loop.primary_monitor())?;
-            window_builder = window_builder.with_fullscreen(Some(fullscreen));
-        }
-        let windowed_context = ContextBuilder::new()
-            .with_vsync(window_config.vsync)
-            .build_windowed(window_builder, event_loop)
+        let context_builder = ContextBuilder::new()
+            .with_vsync(window_config.vsync);
+        let windowed_context = context_builder.build_windowed(window_builder, event_loop)
             .map_err(|error| GameError::InitError(format!("{}", error)))?;
         let context_wrapper = unsafe {
-            windowed_context.make_current().map_err(|(_, error)| GameError::InitError(format!("{}", error)))?
+            windowed_context.make_current()
+                .map_err(|(_, error)| GameError::InitError(format!("{}", error)))?
         };
-        gl::load_with(|symbol| context_wrapper.context().get_proc_address(symbol).cast());
         Ok(Self {
             context_wrapper: Rc::new(context_wrapper),
             title: window_config.title,
@@ -70,8 +78,8 @@ impl Window {
         })
     }
 
-    pub(crate) fn context_wrapper(&self) -> Rc<ContextWrapper<PossiblyCurrent, winit::window::Window>> {
-        self.context_wrapper.clone()
+    pub(crate) fn context_wrapper(&self) -> &Rc<ContextWrapper<PossiblyCurrent, winit::window::Window>> {
+        &self.context_wrapper
     }
 
     pub(crate) fn window(&self) -> &winit::window::Window {
@@ -87,61 +95,67 @@ impl Window {
         self.window().set_title(&self.title)
     }
 
-    pub fn set_icon<P: AsRef<Path>>(&mut self, path: Option<P>) -> GameResult {
-        let icon = match path {
-            Some(path) => Some(icon::load_icon(path)?),
-            None => None,
-        };
-        self.window().set_window_icon(icon);
-        Ok(())
+    pub fn set_icon(&mut self, icon: Option<Icon>) {
+        self.window().set_window_icon(icon.map(|icon| icon.into()));
     }
 
     pub fn inner_size(&self) -> Size<u32> {
-        self.window().inner_size().into()
+        let physical_size = self.window().inner_size();
+        let scale_factor = self.window().scale_factor();
+        let logical_size = physical_size.to_logical(scale_factor);
+        logical_size.into()
     }
 
     pub fn set_inner_size<S: Into<Size<u32>>>(&mut self, size: S) {
-        self.window().set_inner_size(size.into().into());
+        self.window().set_inner_size(winit::dpi::Size::Logical(size.into().into()));
     }
 
     pub fn outer_size(&self) -> Size<u32> {
-        self.window().outer_size().into()
+        let physical_size = self.window().outer_size();
+        let scale_factor = self.window().scale_factor();
+        let logical_size = physical_size.to_logical(scale_factor);
+        logical_size.into()
     }
 
     pub fn set_min_inner_size<S: Into<Size<u32>>>(&mut self, size: Option<S>) {
-        self.window().set_min_inner_size(size.map(|size| size.into().into()));
+        self.window().set_min_inner_size(size.map(|size| winit::dpi::Size::Logical(size.into().into())));
     }
 
     pub fn set_max_inner_size<S: Into<Size<u32>>>(&mut self, size: Option<S>) {
-        self.window().set_max_inner_size(size.map(|size| size.into().into()));
+        self.window().set_max_inner_size(size.map(|size| winit::dpi::Size::Logical(size.into().into())));
     }
 
     pub fn inner_position(&self) -> GameResult<Position<i32>> {
-        self.window().inner_position()
-            .map(|position| position.into())
-            .map_err(|error| GameError::NotSupportedError(format!("{}", error)))
+        let physical_position = self.window().inner_position()
+            .map_err(|error| GameError::NotSupportedError(format!("{}", error)))?;
+        let scale_factor = self.window().scale_factor();
+        let logical_position = physical_position.to_logical(scale_factor);
+        Ok(logical_position.into())
     }
 
     pub fn outer_position(&self) -> GameResult<Position<i32>> {
-        self.window().outer_position()
-            .map(|position| position.into())
-            .map_err(|error| GameError::NotSupportedError(format!("{}", error)))
+        let physical_position = self.window().outer_position()
+            .map_err(|error| GameError::NotSupportedError(format!("{}", error)))?;
+        let scale_factor = self.window().scale_factor();
+        let logical_position = physical_position.to_logical(scale_factor);
+        Ok(logical_position.into())
     }
 
     pub fn set_outer_position<P: Into<Position<i32>>>(&mut self, position: P) {
-        self.window().set_outer_position(position.into().into())
+        self.window().set_outer_position(winit::dpi::Position::Logical(position.into().into()))
     }
 
     pub fn set_ime_position<P: Into<Position<i32>>>(&mut self, position: P) {
-        self.window().set_ime_position(position.into().into())
+        self.window().set_ime_position(winit::dpi::Position::Logical(position.into().into()))
     }
 
-    pub fn hidpi_factor(&self) -> f64 {
-        self.window().hidpi_factor()
+    pub fn scale_factor(&self) -> f64 {
+        self.window().scale_factor()
     }
 
     pub fn fullscreen(&self) -> Option<FullscreenMode> {
-        self.window().fullscreen().map(|fullscreen| FullscreenMode::from_winit_enum(fullscreen))
+        self.window().fullscreen()
+            .map(|fullscreen| FullscreenMode::from_raw(fullscreen))
     }
 
     pub fn is_fullscreen(&self) -> bool {
@@ -150,7 +164,10 @@ impl Window {
 
     pub fn set_fullscreen(&mut self, fullscreen: Option<FullscreenMode>) -> GameResult {
         let fullscreen = match fullscreen {
-            Some(fullscreen_mode) => Some(fullscreen_mode.to_winit_enum(self.window().current_monitor())?),
+            Some(fullscreen_mode) => {
+                let monitor = self.window().current_monitor();
+                Some(fullscreen_mode.into_raw(monitor)?)
+            }
             None => None,
         };
         self.window().set_fullscreen(fullscreen);
