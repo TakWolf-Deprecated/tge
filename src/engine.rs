@@ -6,6 +6,7 @@ use crate::keyboard::{Keyboard, KeyboardConfig};
 use crate::mouse::{Mouse, MouseConfig};
 use crate::gamepad::{Gamepad, GamepadConfig};
 use crate::audio::{Audio, AudioConfig};
+use crate::event::Event;
 use crate::game::Game;
 use winit::event_loop::{EventLoop, ControlFlow};
 use winit::platform::desktop::EventLoopExtDesktop;
@@ -79,9 +80,24 @@ impl Engine {
             winit::event::Event::WindowEvent { window_id, event } => {
                 if window_id == self.window.window().id() {
                     match event {
+                        winit::event::WindowEvent::CloseRequested => {
+                            if !game.event(self, Event::WindowClose)? {
+                                *control_flow = ControlFlow::Exit;
+                                self.quit();
+                            }
+                        }
+                        winit::event::WindowEvent::Destroyed => self.quit(),
                         _ => (),
                     }
                 }
+            }
+            winit::event::Event::Suspended => {
+                game.event(self, Event::AppSuspend)?;
+                // TODO suspend engine
+            }
+            winit::event::Event::Resumed => {
+                // TODO resume engine
+                game.event(self, Event::AppResume)?;
             }
             winit::event::Event::MainEventsCleared => {
                 // TODO handle gamepad events
