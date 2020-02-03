@@ -77,6 +77,12 @@ impl Engine {
 
     fn handle_event(&mut self, event: winit::event::Event<()>, control_flow: &mut ControlFlow, game: &mut dyn Game) -> GameResult {
         match event {
+            winit::event::Event::NewEvents(start_cause) => {
+                match start_cause {
+                    winit::event::StartCause::Init => self.timer.reset_tick(),
+                    _ => (),
+                }
+            }
             winit::event::Event::WindowEvent { window_id, event } => {
                 if window_id == self.window.window().id() {
                     match event {
@@ -128,8 +134,6 @@ impl Engine {
             State::Ready => self.state = State::Running,
             _ => return Err(GameError::StateError(format!("engine can not be run on state {:?}", self.state))),
         }
-
-        self.timer.reset_tick();
 
         let mut event_loop = self.event_loop.take()
             .ok_or_else(|| GameError::RuntimeError("no event_loop instance".to_owned()))?;
