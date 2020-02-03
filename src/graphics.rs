@@ -15,6 +15,10 @@ impl Graphics {
         })
     }
 
+    pub(crate) fn prepare(&mut self) -> GameResult {
+        Ok(())
+    }
+
     pub(crate) fn present(&mut self) -> GameResult {
         self.context_wrapper.swap_buffers()
             .map_err(|error| GameError::RuntimeError(format!("{}", error)))
