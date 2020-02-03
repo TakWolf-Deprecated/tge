@@ -4,7 +4,7 @@ pub struct Mouse {}
 
 impl Mouse {
 
-    pub(crate) fn new() -> GameResult<Self> {
+    pub(crate) fn new(mouse_config: MouseConfig) -> GameResult<Self> {
         Ok(Self {})
     }
 

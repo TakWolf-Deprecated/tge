@@ -4,7 +4,7 @@ pub struct Gamepad {}
 
 impl Gamepad {
 
-    pub(crate) fn new() -> GameResult<Self> {
+    pub(crate) fn new(gamepad_config: GamepadConfig) -> GameResult<Self> {
         Ok(Self {})
     }
 

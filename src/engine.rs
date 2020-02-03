@@ -69,7 +69,7 @@ impl Engine {
         self.timer.reset_tick();
 
         let mut event_loop = self.event_loop.take().expect("no event_loop instance");
-        event_loop.run_return(|event, window_target, control_flow| {
+        event_loop.run_return(|event, _, control_flow| {
             match &self.state {
                 State::Finished | State::Broken(_) => {
                     *control_flow = ControlFlow::Exit;
@@ -227,12 +227,12 @@ impl EngineBuilder {
         let event_loop = EventLoop::new();
 
         let window = Window::new(window_config, &event_loop)?;
-        let graphics = Graphics::new(graphics_config, window.context_wrapper())?;
+        let graphics = Graphics::new(graphics_config, window.context_wrapper().clone())?;
         let timer = Timer::new(timer_config)?;
-        let keyboard = Keyboard::new()?;
-        let mouse = Mouse::new()?;
-        let gamepad = Gamepad::new()?;
-        let audio = Audio::new()?;
+        let keyboard = Keyboard::new(keyboard_config)?;
+        let mouse = Mouse::new(mouse_config)?;
+        let gamepad = Gamepad::new(gamepad_config)?;
+        let audio = Audio::new(audio_config)?;
 
         Ok(Engine {
             window,

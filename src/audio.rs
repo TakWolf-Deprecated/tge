@@ -4,7 +4,7 @@ pub struct Audio {}
 
 impl Audio {
 
-    pub(crate) fn new() -> GameResult<Self> {
+    pub(crate) fn new(audio_config: AudioConfig) -> GameResult<Self> {
         Ok(Self {})
     }
 

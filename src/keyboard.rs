@@ -4,7 +4,7 @@ pub struct Keyboard {}
 
 impl Keyboard {
 
-    pub(crate) fn new() -> GameResult<Self> {
+    pub(crate) fn new(keyboard_config: KeyboardConfig) -> GameResult<Self> {
         Ok(Self {})
     }
 
