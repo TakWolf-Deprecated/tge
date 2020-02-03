@@ -9,6 +9,7 @@ use crate::audio::{Audio, AudioConfig};
 use crate::event::Event;
 use crate::game::Game;
 use winit::event_loop::{EventLoop, ControlFlow};
+use winit::event::{StartCause, WindowEvent};
 use winit::platform::desktop::EventLoopExtDesktop;
 
 #[derive(Debug)]
@@ -79,20 +80,20 @@ impl Engine {
         match event {
             winit::event::Event::NewEvents(start_cause) => {
                 match start_cause {
-                    winit::event::StartCause::Init => self.timer.reset_tick(),
+                    StartCause::Init => self.timer.reset_tick(),
                     _ => (),
                 }
             }
             winit::event::Event::WindowEvent { window_id, event } => {
                 if window_id == self.window.window().id() {
                     match event {
-                        winit::event::WindowEvent::CloseRequested => {
+                        WindowEvent::CloseRequested => {
                             if !game.event(self, Event::WindowClose)? {
                                 *control_flow = ControlFlow::Exit;
                                 self.quit();
                             }
                         }
-                        winit::event::WindowEvent::Destroyed => self.quit(),
+                        WindowEvent::Destroyed => self.quit(),
                         // TODO handle window events
                         _ => (),
                     }
