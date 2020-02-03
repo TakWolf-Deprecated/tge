@@ -100,7 +100,12 @@ impl Engine {
                 game.event(self, Event::AppResume)?;
             }
             winit::event::Event::MainEventsCleared => {
-                // TODO handle gamepad events
+                while let Some(gilrs::Event { id, event, .. }) = self.gamepad.gilrs_mut().next_event() {
+                    match event {
+                        // TODO handle gilrs events
+                        _ => (),
+                    }
+                }
                 self.window.window().request_redraw();
             }
             winit::event::Event::RedrawRequested(window_id) => {
