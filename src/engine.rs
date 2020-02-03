@@ -93,6 +93,7 @@ impl Engine {
                             }
                         }
                         winit::event::WindowEvent::Destroyed => self.quit(),
+                        // TODO handle window events
                         _ => (),
                     }
                 }
