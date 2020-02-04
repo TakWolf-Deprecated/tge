@@ -1,3 +1,7 @@
+mod color;
+
+pub use color::Color;
+
 use crate::error::{GameError, GameResult};
 use winit::window::Window;
 use glutin::{ContextWrapper, PossiblyCurrent};
