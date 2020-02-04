@@ -1,7 +1,7 @@
 use tge::error::GameResult;
-use tge::engine::{EngineBuilder, Engine};
+use tge::engine::{Engine, EngineBuilder};
 use tge::window::WindowConfig;
-use tge::graphics::GraphicsConfig;
+use tge::graphics::Color;
 use tge::timer::TimerConfig;
 use tge::game::Game;
 
@@ -23,7 +23,8 @@ impl Game for App {
         Ok(())
     }
 
-    fn render(&mut self, _engine: &mut Engine) -> GameResult {
+    fn render(&mut self, engine: &mut Engine) -> GameResult {
+        engine.graphics().clear(Color::BLUE);
         Ok(())
     }
 

@@ -5,7 +5,7 @@ pub use color::Color;
 use crate::error::{GameError, GameResult};
 use winit::window::Window;
 use glutin::{ContextWrapper, PossiblyCurrent};
-use glow::Context;
+use glow::{Context, HasContext};
 use std::rc::Rc;
 
 pub struct Graphics {
@@ -34,6 +34,13 @@ impl Graphics {
     pub(crate) fn present(&mut self) -> GameResult {
         self.context_wrapper.swap_buffers()
             .map_err(|error| GameError::RuntimeError(format!("{}", error)))
+    }
+
+    pub fn clear(&mut self, color: Color) {
+        unsafe {
+            self.gl.clear_color(color.red, color.green, color.blue, color.alpha);
+            self.gl.clear(glow::COLOR_BUFFER_BIT | glow::DEPTH_BUFFER_BIT);
+        }
     }
 
 }
