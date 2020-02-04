@@ -112,3 +112,22 @@ impl Into<u32> for Color {
     }
 
 }
+
+#[cfg(test)]
+mod tests {
+
+    use super::Color;
+
+    #[test]
+    fn convert() {
+        assert_eq!(Color::new(1.0, 0.0, 0.0, 0.0), Color::from_u8(255, 0, 0, 0));
+        assert_eq!(Color::new(0.0, 1.0, 0.0, 0.0), Color::from_u8(0, 255, 0, 0));
+        assert_eq!(Color::new(0.0, 0.0, 1.0, 0.0), Color::from_u8(0, 0, 255, 0));
+        assert_eq!(Color::new(0.0, 0.0, 0.0, 1.0), Color::from_u8(0, 0, 0, 255));
+
+        let color = Color::new(0.2, 0.4, 0.6, 0.8);
+        assert_eq!(Color::from_u8(color.red_as_u8(), color.green_as_u8(), color.blue_as_u8(), color.alpha_as_u8()), color);
+        assert_eq!(Color::from_u32(color.as_u32()), color);
+    }
+
+}
