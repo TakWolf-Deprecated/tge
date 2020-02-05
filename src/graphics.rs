@@ -4,6 +4,7 @@ pub use color::Color;
 
 use crate::error::{GameError, GameResult};
 use winit::window::Window;
+use winit::dpi::PhysicalSize;
 use glutin::{ContextWrapper, PossiblyCurrent};
 use glow::{Context, HasContext};
 use std::rc::Rc;
@@ -23,8 +24,16 @@ impl Graphics {
         })
     }
 
+    pub(crate) fn window(&self) -> &winit::window::Window {
+        self.context_wrapper.window()
+    }
+
     pub(crate) fn gl(&self) -> &Rc<Context> {
         &self.gl
+    }
+
+    pub(crate) fn resize(&mut self, physical_size: PhysicalSize<u32>) {
+        self.context_wrapper.resize(physical_size);
     }
 
     pub(crate) fn prepare(&mut self) -> GameResult {
@@ -34,6 +43,10 @@ impl Graphics {
     pub(crate) fn present(&mut self) -> GameResult {
         self.context_wrapper.swap_buffers()
             .map_err(|error| GameError::RuntimeError(format!("{}", error)))
+    }
+
+    pub(crate) fn clean(&mut self) {
+
     }
 
     pub fn clear(&mut self, color: Color) {

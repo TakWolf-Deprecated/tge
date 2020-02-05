@@ -126,7 +126,10 @@ impl Engine {
                     }
                 }
             }
-            winit::event::Event::LoopDestroyed => self.quit(),
+            winit::event::Event::LoopDestroyed => {
+                self.quit();
+                // TODO clean engine
+            }
             _ => (),
         }
         Ok(())
