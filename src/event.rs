@@ -6,6 +6,25 @@ pub enum KeyAction {
     Up,
 }
 
+impl KeyAction {
+
+    pub(crate) fn to_state(&self) -> KeyState {
+        match self {
+            KeyAction::Down => KeyState::Down,
+            KeyAction::Up => KeyState::Up,
+        }
+    }
+
+}
+
+#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
+pub(crate) enum KeyState {
+    Down,
+    Hold,
+    Up,
+    Idle,
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum Event {
     AppSuspend,
@@ -15,12 +34,4 @@ pub enum Event {
     WindowMove(Position<i32>),
     WindowFocusChange(bool),
     // TODO
-}
-
-#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
-pub(crate) enum KeyState {
-    Down,
-    Hold,
-    Up,
-    Idle,
 }

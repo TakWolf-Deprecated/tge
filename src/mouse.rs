@@ -6,7 +6,7 @@ pub use button::MouseButton;
 
 use crate::error::{GameError, GameResult};
 use crate::math::Position;
-use crate::event::KeyState;
+use crate::event::{KeyAction, KeyState};
 use winit::window::Window;
 use winit::dpi::LogicalPosition;
 use glutin::{ContextWrapper, PossiblyCurrent};
@@ -42,6 +42,26 @@ impl Mouse {
 
     fn window(&self) -> &Window {
         self.context_wrapper.window()
+    }
+
+    pub(crate) fn handle_move_event(&mut self, position: Position) {
+        self.position = position;
+    }
+
+    pub(crate) fn handle_enter_window_event(&mut self) {
+        self.inside_window = true;
+    }
+
+    pub(crate) fn handle_leave_window_event(&mut self) {
+        self.inside_window = false;
+    }
+
+    pub(crate) fn handle_wheel_delta_event(&mut self, wheel_delta: f32) {
+        self.wheel_delta = wheel_delta;
+    }
+
+    pub(crate) fn handle_button_input_event(&mut self, button: MouseButton, action: KeyAction) {
+        self.button_states.insert(button, action.to_state());
     }
 
     pub(crate) fn reset_states(&mut self) {
