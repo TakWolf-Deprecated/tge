@@ -44,6 +44,7 @@ pub enum Event {
     MouseEnterWindow,
     MouseLeaveWindow,
     MouseWheelScroll(Delta),
+    MouseTouchpadScroll(Delta),
     MouseButtonInput {
         button: MouseButton,
         action: KeyAction,
