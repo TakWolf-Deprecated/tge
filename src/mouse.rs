@@ -17,10 +17,10 @@ pub struct Mouse {
     context_wrapper: Rc<ContextWrapper<PossiblyCurrent, Window>>,
     cursor_icon: CursorIcon,
     cursor_visible: bool,
-    inside_window: bool,
     position: Position,
-    button_states: HashMap<MouseButton, KeyState>,
+    inside_window: bool,
     wheel_delta: f32,
+    button_states: HashMap<MouseButton, KeyState>,
 }
 
 impl Mouse {
@@ -33,10 +33,10 @@ impl Mouse {
             context_wrapper,
             cursor_icon: mouse_config.cursor_icon,
             cursor_visible: mouse_config.cursor_visible,
-            inside_window: false,
             position: Position::zero(),
-            button_states: HashMap::new(),
+            inside_window: false,
             wheel_delta: 0.0,
+            button_states: HashMap::new(),
         })
     }
 
@@ -92,6 +92,14 @@ impl Mouse {
         Ok(())
     }
 
+    pub fn is_inside_window(&self) -> bool {
+        self.inside_window
+    }
+
+    pub fn wheel_delta(&self) -> f32 {
+        self.wheel_delta
+    }
+
     pub fn is_button_down(&self, button: MouseButton) -> bool {
         match self.button_states.get(&button).unwrap_or(&KeyState::Idle) {
             KeyState::Down => true,
@@ -113,10 +121,6 @@ impl Mouse {
         }
     }
 
-    pub fn wheel_delta(&self) -> f32 {
-        self.wheel_delta
-    }
-    
 }
 
 #[derive(Debug, Clone)]
