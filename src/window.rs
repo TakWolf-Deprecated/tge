@@ -88,7 +88,7 @@ impl Window {
         self.context_wrapper.window()
     }
 
-    pub(crate) fn set_focused(&mut self, focused: bool) {
+    pub(crate) fn handle_focus_change_event(&mut self, focused: bool) {
         self.focused = focused;
     }
 

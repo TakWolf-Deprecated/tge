@@ -45,6 +45,7 @@ impl Mouse {
     }
 
     pub(crate) fn reset_states(&mut self) {
+        self.wheel_delta = 0.0;
         self.button_states.retain(|_, state| match state {
             KeyState::Down | KeyState::Hold => {
                 *state = KeyState::Hold;
@@ -52,7 +53,6 @@ impl Mouse {
             },
             KeyState::Up | KeyState::Idle => false,
         });
-        self.wheel_delta = 0.0;
     }
 
     pub fn cursor_icon(&self) -> CursorIcon {
@@ -85,7 +85,8 @@ impl Mouse {
         self.position
     }
 
-    pub fn set_position(&mut self, position: Position) -> GameResult {
+    pub fn set_position<P: Into<Position<f32>>>(&mut self, position: P) -> GameResult {
+        let position = position.into();
         self.window().set_cursor_position(LogicalPosition::new(position.x, position.y))
             .map_err(|error| GameError::NotSupportedError(format!("{}", error)))?;
         self.position = position;

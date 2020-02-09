@@ -105,7 +105,7 @@ impl Engine {
                             game.event(self, Event::WindowMove(logical_position.into()))?;
                         }
                         WindowEvent::Focused(focused) => {
-                            self.window.set_focused(focused);
+                            self.window.handle_focus_change_event(focused);
                             game.event(self, Event::WindowFocusChange(focused))?;
                         }
                         WindowEvent::ReceivedCharacter(char) => {
@@ -162,6 +162,10 @@ impl Engine {
                         self.graphics.present()?;
                     }
                 }
+            }
+            winit::event::Event::RedrawEventsCleared => {
+                // TODO
+                self.mouse.reset_states();
             }
             winit::event::Event::LoopDestroyed => {
                 self.quit();
