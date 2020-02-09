@@ -11,11 +11,11 @@ repository = "https://github.com/TakWolf/tge"
 publish = false
 
 [dependencies]
-winit = "0.20.0"
-glutin = "0.22.1"
+winit = "0.21.0"
+glutin = "0.23.0"
 glow = "0.4.0"
+glam = "0.8.5"
 image = "0.22.4"
-nalgebra-glm = "0.5.0"
 rusttype = "0.8.2"
-gilrs = "0.7.3"
 rodio = "0.10.0"
+gilrs = "0.7.4"
