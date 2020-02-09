@@ -66,7 +66,7 @@ impl Mouse {
         self.touchpad_scroll_delta += delta;
     }
 
-    pub(crate) fn handle_button_input_event(&mut self, button: MouseButton, action: KeyAction) {
+    pub(crate) fn handle_input_event(&mut self, button: MouseButton, action: KeyAction) {
         self.button_states.insert(button, action.into());
     }
 

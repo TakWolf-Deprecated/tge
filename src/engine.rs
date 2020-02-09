@@ -145,10 +145,10 @@ impl Engine {
                             }
                         }
                         WindowEvent::MouseInput { state, button, .. } => {
-                            // TODO
-                        }
-                        WindowEvent::Touch(touch) => {
-                            // TODO
+                            let button = button.into();
+                            let action = state.into();
+                            self.mouse.handle_input_event(button, action);
+                            game.event(self, Event::MouseInput { button, action })?;
                         }
                         WindowEvent::Destroyed => self.quit(),
                         _ => (),
