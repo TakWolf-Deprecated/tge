@@ -11,6 +11,7 @@ pub type Position<N = f32> = Vector2<N>;
 pub type Point<N = f32> = Vector2<N>;
 pub type Scale<N = f32> = Vector2<N>;
 pub type Skew<N = f32> = Vector2<N>;
+pub type Delta<N = f32> = Vector2<N>;
 
 impl<N: Number> Vector2<N> {
 

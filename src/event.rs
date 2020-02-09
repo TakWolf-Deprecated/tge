@@ -1,21 +1,5 @@
-use crate::math::{Position, Size};
-
-#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
-pub enum KeyAction {
-    Down,
-    Up,
-}
-
-impl KeyAction {
-
-    pub(crate) fn to_state(&self) -> KeyState {
-        match self {
-            KeyAction::Down => KeyState::Down,
-            KeyAction::Up => KeyState::Up,
-        }
-    }
-
-}
+use crate::math::{Position, Size, Delta};
+use crate::mouse::MouseButton;
 
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
 pub(crate) enum KeyState {
@@ -23,6 +7,23 @@ pub(crate) enum KeyState {
     Hold,
     Up,
     Idle,
+}
+
+#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
+pub enum KeyAction {
+    Down,
+    Up,
+}
+
+impl Into<KeyState> for KeyAction {
+
+    fn into(self) -> KeyState {
+        match self {
+            KeyAction::Down => KeyState::Down,
+            KeyAction::Up => KeyState::Up,
+        }
+    }
+
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -33,5 +34,18 @@ pub enum Event {
     WindowResize(Size<u32>),
     WindowMove(Position<i32>),
     WindowFocusChange(bool),
+    ReceiveChar(char),
+
     // TODO
+    KeyboardInput,
+    // TODO
+
+    MouseMove(Position),
+    MouseEnterWindow,
+    MouseLeaveWindow,
+    MouseWheelScroll(Delta),
+    MouseButtonInput {
+        button: MouseButton,
+        action: KeyAction,
+    },
 }

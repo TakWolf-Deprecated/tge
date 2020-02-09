@@ -1,4 +1,6 @@
 use crate::error::{GameError, GameResult};
+use crate::math::{Position, Delta};
+use crate::event::Event;
 use crate::window::{Window, WindowConfig};
 use crate::graphics::{Graphics, GraphicsConfig};
 use crate::timer::{Timer, TimerConfig};
@@ -6,10 +8,9 @@ use crate::keyboard::{Keyboard, KeyboardConfig};
 use crate::mouse::{Mouse, MouseConfig};
 use crate::gamepad::{Gamepad, GamepadConfig};
 use crate::audio::{Audio, AudioConfig};
-use crate::event::Event;
 use crate::game::Game;
 use winit::event_loop::{EventLoop, ControlFlow};
-use winit::event::{StartCause, WindowEvent};
+use winit::event::{StartCause, WindowEvent, MouseScrollDelta};
 use winit::platform::desktop::EventLoopExtDesktop;
 
 #[derive(Debug)]
@@ -109,22 +110,37 @@ impl Engine {
                             game.event(self, Event::WindowFocusChange(focused))?;
                         }
                         WindowEvent::ReceivedCharacter(char) => {
-                            // TODO
+                            game.event(self, Event::ReceiveChar(char))?;
                         }
                         WindowEvent::KeyboardInput { input, .. } => {
                             // TODO
                         }
                         WindowEvent::CursorMoved { position, .. } => {
-                            // TODO
+                            let scale_factor = self.window.window().scale_factor();
+                            let logical_position = position.to_logical::<f32>(scale_factor);
+                            let position = Position::new(logical_position.x, logical_position.y);
+                            self.mouse.handle_move_event(position);
+                            game.event(self, Event::MouseMove(position))?;
                         }
                         WindowEvent::CursorEntered { .. } => {
-                            // TODO
+                            self.mouse.handle_enter_window_event();
+                            game.event(self, Event::MouseEnterWindow)?;
                         }
                         WindowEvent::CursorLeft { .. } => {
-                            // TODO
+                            self.mouse.handle_leave_window_event();
+                            game.event(self, Event::MouseLeaveWindow)?;
                         }
                         WindowEvent::MouseWheel { delta, phase, .. } => {
-                            // TODO
+                            match delta {
+                                MouseScrollDelta::LineDelta(delta_x, delta_y) => {
+                                    let delta = Delta::new(delta_x, delta_y);
+                                    self.mouse.handle_wheel_scroll_event(delta);
+                                    game.event(self, Event::MouseWheelScroll(delta))?;
+                                }
+                                MouseScrollDelta::PixelDelta(logical_position) => {
+                                    // TODO
+                                }
+                            }
                         }
                         WindowEvent::MouseInput { state, button, .. } => {
                             // TODO
