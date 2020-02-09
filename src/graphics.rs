@@ -24,7 +24,7 @@ impl Graphics {
         })
     }
 
-    pub(crate) fn window(&self) -> &winit::window::Window {
+    fn window(&self) -> &Window {
         self.context_wrapper.window()
     }
 
@@ -36,17 +36,17 @@ impl Graphics {
         self.context_wrapper.resize(physical_size);
     }
 
-    pub(crate) fn prepare(&mut self) -> GameResult {
-        Ok(())
-    }
-
     pub(crate) fn present(&mut self) -> GameResult {
         self.context_wrapper.swap_buffers()
             .map_err(|error| GameError::RuntimeError(format!("{}", error)))
     }
 
     pub(crate) fn clean(&mut self) {
-
+        unsafe {
+            self.gl.bind_texture(glow::TEXTURE_2D, None);
+            self.gl.bind_vertex_array(None);
+            self.gl.use_program(None);
+        }
     }
 
     pub fn clear(&mut self, color: Color) {

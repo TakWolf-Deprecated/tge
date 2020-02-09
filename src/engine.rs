@@ -120,7 +120,6 @@ impl Engine {
                 if window_id == self.window.window().id() {
                     if self.timer.tick_and_check() {
                         game.update(self)?;
-                        self.graphics.prepare()?;
                         game.render(self)?;
                         self.graphics.present()?;
                     }
@@ -128,7 +127,7 @@ impl Engine {
             }
             winit::event::Event::LoopDestroyed => {
                 self.quit();
-                // TODO clean engine
+                self.graphics.clean();
             }
             _ => (),
         }
