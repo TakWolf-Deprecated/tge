@@ -93,8 +93,46 @@ impl Engine {
                                 self.quit();
                             }
                         }
+                        WindowEvent::Resized(physical_size) => {
+                            self.graphics.resize(physical_size);
+                            let scale_factor = self.window.window().scale_factor();
+                            let logical_size = physical_size.to_logical(scale_factor);
+                            game.event(self, Event::WindowResize(logical_size.into()))?;
+                        }
+                        WindowEvent::Moved(physical_position) => {
+                            let scale_factor = self.window.window().scale_factor();
+                            let logical_position = physical_position.to_logical(scale_factor);
+                            game.event(self, Event::WindowMove(logical_position.into()))?;
+                        }
+                        WindowEvent::Focused(focused) => {
+                            self.window.set_focused(focused);
+                            game.event(self, Event::WindowFocusChange(focused))?;
+                        }
+                        WindowEvent::ReceivedCharacter(char) => {
+                            // TODO
+                        }
+                        WindowEvent::KeyboardInput { input, .. } => {
+                            // TODO
+                        }
+                        WindowEvent::CursorMoved { position, .. } => {
+                            // TODO
+                        }
+                        WindowEvent::CursorEntered { .. } => {
+                            // TODO
+                        }
+                        WindowEvent::CursorLeft { .. } => {
+                            // TODO
+                        }
+                        WindowEvent::MouseWheel { delta, phase, .. } => {
+                            // TODO
+                        }
+                        WindowEvent::MouseInput { state, button, .. } => {
+                            // TODO
+                        }
+                        WindowEvent::Touch(touch) => {
+                            // TODO
+                        }
                         WindowEvent::Destroyed => self.quit(),
-                        // TODO handle window events
                         _ => (),
                     }
                 }
@@ -252,7 +290,7 @@ impl EngineBuilder {
         let graphics = Graphics::new(graphics_config, window.context_wrapper().clone())?;
         let timer = Timer::new(timer_config)?;
         let keyboard = Keyboard::new(keyboard_config)?;
-        let mouse = Mouse::new(mouse_config)?;
+        let mouse = Mouse::new(mouse_config, window.context_wrapper().clone())?;
         let gamepad = Gamepad::new(gamepad_config)?;
         let audio = Audio::new(audio_config)?;
 
