@@ -21,6 +21,7 @@ pub struct Window {
     decorations: bool,
     always_on_top: bool,
     visible: bool,
+    focused: bool,
 }
 
 impl Window {
@@ -75,6 +76,7 @@ impl Window {
             decorations: window_config.decorations,
             always_on_top: window_config.always_on_top,
             visible: window_config.visible,
+            focused: false,
         })
     }
 
@@ -84,6 +86,10 @@ impl Window {
 
     pub(crate) fn window(&self) -> &winit::window::Window {
         self.context_wrapper.window()
+    }
+
+    pub(crate) fn set_focused(&mut self, focused: bool) {
+        self.focused = focused;
     }
 
     pub fn title(&self) -> &str {
@@ -221,6 +227,10 @@ impl Window {
     pub fn set_visible(&mut self, visible: bool) {
         self.visible = visible;
         self.window().set_visible(self.visible);
+    }
+
+    pub fn is_focused(&self) -> bool {
+        self.focused
     }
 
 }
