@@ -1,6 +1,7 @@
 use crate::math::{Position, Size, Delta};
 use crate::keyboard::KeyCode;
 use crate::mouse::MouseButton;
+use crate::touch::TouchPhase;
 use winit::event::ElementState;
 
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
@@ -60,13 +61,15 @@ pub enum Event {
         button: MouseButton,
         action: KeyAction,
     },
-
-    // TODO
-
+    Touch {
+        id: u64,
+        phase: TouchPhase,
+        position: Position,
+    },
     TouchpadScroll(Delta),
     TouchpadPress {
-        pressure_level: f32,
-        click_level: i64,
+        pressure: f32,
+        click_stage: i64,
     },
 
     // TODO

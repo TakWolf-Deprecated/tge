@@ -26,7 +26,7 @@ impl Touchpad {
         self.click_stage = click_stage;
     }
 
-    pub(crate) fn reset_states(&mut self) {
+    pub(crate) fn clear_states(&mut self) {
         self.scroll_delta.set(0.0, 0.0);
     }
 

@@ -163,13 +163,19 @@ impl Engine {
                             game.event(self, Event::MouseInput { button, action })?;
                         }
                         WindowEvent::Touch(touch) => {
-                            // TODO
+                            let id = touch.id;
+                            let phase = touch.phase.into();
+                            let position = {
+                                let scale_factor = self.window.window().scale_factor();
+                                let logical_position = touch.location.to_logical::<f32>(scale_factor);
+                                Position::new(logical_position.x, logical_position.y)
+                            };
+                            self.touch.handle_event(id, phase, position);
+                            game.event(self, Event::Touch { id, phase, position })?;
                         }
                         WindowEvent::TouchpadPressure { pressure, stage, .. } => {
-                            let pressure_level = pressure;
-                            let click_level = stage;
-                            self.touchpad.handle_press_event(pressure_level, click_level);
-                            game.event(self, Event::TouchpadPress { pressure_level, click_level })?;
+                            self.touchpad.handle_press_event(pressure, stage);
+                            game.event(self, Event::TouchpadPress { pressure, click_stage: stage })?;
                         }
                         WindowEvent::Destroyed => self.quit(),
                         _ => (),
@@ -203,11 +209,11 @@ impl Engine {
                 }
             }
             winit::event::Event::RedrawEventsCleared => {
-                self.keyboard.reset_states();
-                self.mouse.reset_states();
-                self.touch.reset_states();
-                self.touchpad.reset_states();
-                self.gamepad.reset_states();
+                self.keyboard.clear_states();
+                self.mouse.clear_states();
+                self.touch.clear_states();
+                self.touchpad.clear_states();
+                self.gamepad.clear_states();
             }
             winit::event::Event::LoopDestroyed => {
                 self.quit();

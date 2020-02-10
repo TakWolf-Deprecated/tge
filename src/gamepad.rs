@@ -20,7 +20,7 @@ impl Gamepad {
         &mut self.gilrs
     }
 
-    pub(crate) fn reset_states(&mut self) {
+    pub(crate) fn clear_states(&mut self) {
         // TODO
     }
 

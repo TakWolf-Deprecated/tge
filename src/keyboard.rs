@@ -12,7 +12,7 @@ impl Keyboard {
         Ok(Self {})
     }
 
-    pub(crate) fn reset_states(&mut self) {
+    pub(crate) fn clear_states(&mut self) {
         // TODO
     }
 
