@@ -66,7 +66,10 @@ pub enum Event {
         phase: TouchPhase,
         position: Position,
     },
-    TouchpadScroll(Delta),
+    TouchpadScroll {
+        delta: Delta,
+        phase: TouchPhase,
+    },
     TouchpadPress {
         pressure: f32,
         click_stage: i64,

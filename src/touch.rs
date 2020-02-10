@@ -12,7 +12,7 @@ pub struct Touch {
 
 impl Touch {
 
-    pub(crate) fn new(touch_config: TouchConfig) -> GameResult<Self> {
+    pub(crate) fn new(_: TouchConfig) -> GameResult<Self> {
         Ok(Self {
             positions: HashMap::new(),
         })

@@ -9,7 +9,7 @@ pub struct Touchpad {
 
 impl Touchpad {
 
-    pub(crate) fn new(touchpad_config: TouchpadConfig) -> GameResult<Self> {
+    pub(crate) fn new(_: TouchpadConfig) -> GameResult<Self> {
         Ok(Self {
             scroll_delta: Delta::zero(),
             pressure: 0.0,

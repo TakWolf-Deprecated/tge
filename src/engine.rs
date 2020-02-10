@@ -152,7 +152,7 @@ impl Engine {
                                 MouseScrollDelta::PixelDelta(logical_position) => {
                                     let delta = Delta::new(logical_position.x as f32, logical_position.y as f32);
                                     self.touchpad.handle_scroll_event(delta);
-                                    game.event(self, Event::TouchpadScroll(delta))?;
+                                    game.event(self, Event::TouchpadScroll { delta, phase: phase.into() })?;
                                 }
                             }
                         }

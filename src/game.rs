@@ -8,7 +8,7 @@ pub trait Game {
 
     fn render(&mut self, engine: &mut Engine) -> GameResult;
 
-    fn event(&mut self, _engine: &mut Engine, _event: Event) -> GameResult<bool> {
+    fn event(&mut self, _: &mut Engine, _: Event) -> GameResult<bool> {
         Ok(false)
     }
 
