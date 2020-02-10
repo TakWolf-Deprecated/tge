@@ -13,7 +13,7 @@ pub type Viewport<N = f32> = Region<N>;
 impl<N: Number> Region<N> {
 
     pub fn new(x: N, y: N, width: N, height: N) -> Self {
-        Self { x, y, width, height}
+        Self { x, y, width, height }
     }
 
     pub fn edge(left: N, right: N, top: N, bottom: N) -> Self {
