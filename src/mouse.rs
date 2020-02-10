@@ -70,7 +70,7 @@ impl Mouse {
             KeyState::Down | KeyState::Hold => {
                 *state = KeyState::Hold;
                 true
-            },
+            }
             KeyState::Up | KeyState::Idle => false,
         });
     }
