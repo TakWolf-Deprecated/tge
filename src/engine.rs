@@ -151,8 +151,8 @@ impl Engine {
                                 }
                                 MouseScrollDelta::PixelDelta(logical_position) => {
                                     let delta = Delta::new(logical_position.x as f32, logical_position.y as f32);
-                                    self.mouse.handle_touchpad_scroll_event(delta);
-                                    game.event(self, Event::MouseTouchpadScroll(delta))?;
+                                    self.touchpad.handle_scroll_event(delta);
+                                    game.event(self, Event::TouchpadScroll(delta))?;
                                 }
                             }
                         }
@@ -162,6 +162,15 @@ impl Engine {
                             self.mouse.handle_input_event(button, action);
                             game.event(self, Event::MouseInput { button, action })?;
                         }
+                        WindowEvent::Touch(touch) => {
+                            // TODO
+                        }
+                        WindowEvent::TouchpadPressure { pressure, stage, .. } => {
+                            let pressure_level = pressure;
+                            let click_level = stage;
+                            self.touchpad.handle_press_event(pressure_level, click_level);
+                            game.event(self, Event::TouchpadPress { pressure_level, click_level })?;
+                        }
                         WindowEvent::Destroyed => self.quit(),
                         _ => (),
                     }
@@ -169,10 +178,10 @@ impl Engine {
             }
             winit::event::Event::Suspended => {
                 game.event(self, Event::AppSuspend)?;
-                // TODO suspend engine
+                self.audio.suspend();
             }
             winit::event::Event::Resumed => {
-                // TODO resume engine
+                self.audio.resume();
                 game.event(self, Event::AppResume)?;
             }
             winit::event::Event::MainEventsCleared => {
@@ -196,6 +205,7 @@ impl Engine {
             winit::event::Event::RedrawEventsCleared => {
                 // TODO
                 self.mouse.reset_states();
+                self.touchpad.reset_states();
             }
             winit::event::Event::LoopDestroyed => {
                 self.quit();
@@ -341,7 +351,7 @@ impl EngineBuilder {
         let timer = Timer::new(timer_config)?;
         let keyboard = Keyboard::new(keyboard_config)?;
         let mouse = Mouse::new(mouse_config, window.context_wrapper().clone())?;
-        let touch_ = Touch::new(touch_config)?;
+        let touch = Touch::new(touch_config)?;
         let touchpad = Touchpad::new(touchpad_config)?;
         let gamepad = Gamepad::new(gamepad_config)?;
         let audio = Audio::new(audio_config)?;

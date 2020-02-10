@@ -56,9 +56,13 @@ pub enum Event {
     MouseEnterWindow,
     MouseLeaveWindow,
     MouseWheelScroll(Delta),
-    MouseTouchpadScroll(Delta),
     MouseInput {
         button: MouseButton,
         action: KeyAction,
+    },
+    TouchpadScroll(Delta),
+    TouchpadPress {
+        pressure_level: f32,
+        click_level: i64,
     },
 }

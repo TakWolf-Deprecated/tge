@@ -20,7 +20,6 @@ pub struct Mouse {
     position: Position,
     inside_window: bool,
     wheel_scroll_delta: Delta,
-    touchpad_scroll_delta: Delta,
     button_states: HashMap<MouseButton, KeyState>,
 }
 
@@ -37,7 +36,6 @@ impl Mouse {
             position: Position::zero(),
             inside_window: false,
             wheel_scroll_delta: Delta::zero(),
-            touchpad_scroll_delta: Delta::zero(),
             button_states: HashMap::new(),
         })
     }
@@ -62,17 +60,12 @@ impl Mouse {
         self.wheel_scroll_delta += delta;
     }
 
-    pub(crate) fn handle_touchpad_scroll_event(&mut self, delta: Delta) {
-        self.touchpad_scroll_delta += delta;
-    }
-
     pub(crate) fn handle_input_event(&mut self, button: MouseButton, action: KeyAction) {
         self.button_states.insert(button, action.into());
     }
 
     pub(crate) fn reset_states(&mut self) {
         self.wheel_scroll_delta.set(0.0, 0.0);
-        self.touchpad_scroll_delta.set(0.0, 0.0);
         self.button_states.retain(|_, state| match state {
             KeyState::Down | KeyState::Hold => {
                 *state = KeyState::Hold;
@@ -126,10 +119,6 @@ impl Mouse {
 
     pub fn wheel_scroll_delta(&self) -> Delta {
         self.wheel_scroll_delta
-    }
-
-    pub fn touchpad_scroll_delta(&self) -> Delta {
-        self.touchpad_scroll_delta
     }
 
     pub fn is_button_down(&self, button: MouseButton) -> bool {

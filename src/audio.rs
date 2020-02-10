@@ -8,6 +8,14 @@ impl Audio {
         Ok(Self {})
     }
 
+    pub(crate) fn suspend(&mut self) {
+        // TODO
+    }
+
+    pub(crate) fn resume(&mut self) {
+        // TODO
+    }
+
 }
 
 #[derive(Debug, Clone)]
