@@ -1,4 +1,5 @@
 use crate::math::{Position, Size, Delta};
+use crate::keyboard::KeyCode;
 use crate::mouse::MouseButton;
 use winit::event::ElementState;
 
@@ -47,11 +48,10 @@ pub enum Event {
     WindowMove(Position<i32>),
     WindowFocusChange(bool),
     ReceiveChar(char),
-
-    // TODO
-    KeyboardInput,
-    // TODO
-
+    KeyboardInput {
+        key: KeyCode,
+        action: KeyAction,
+    },
     MouseMove(Position),
     MouseEnterWindow,
     MouseLeaveWindow,
@@ -60,9 +60,15 @@ pub enum Event {
         button: MouseButton,
         action: KeyAction,
     },
+
+    // TODO
+
     TouchpadScroll(Delta),
     TouchpadPress {
         pressure_level: f32,
         click_level: i64,
     },
+
+    // TODO
+
 }

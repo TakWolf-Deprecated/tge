@@ -1,3 +1,7 @@
+mod code;
+
+pub use code::KeyCode;
+
 use crate::error::GameResult;
 
 pub struct Keyboard {}
