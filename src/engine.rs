@@ -125,7 +125,10 @@ impl Engine {
                             game.event(self, Event::ReceiveChar(char))?;
                         }
                         WindowEvent::KeyboardInput { input, .. } => {
-                            // TODO
+                            let key = (input.virtual_keycode, input.scancode).into();
+                            let action = input.state.into();
+                            self.keyboard.handle_input_event(key, input.scancode, action);
+                            game.event(self, Event::KeyboardInput { key, action })?;
                         }
                         WindowEvent::CursorMoved { position, .. } => {
                             let scale_factor = self.window.window().scale_factor();
