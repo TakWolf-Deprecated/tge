@@ -32,7 +32,7 @@ impl Keyboard {
             KeyState::Up | KeyState::Idle => false,
         });
     }
-    
+
     pub fn is_key_down(&self, key: KeyCode) -> bool {
         match self.key_states.get(&key).unwrap_or(&KeyState::Idle) {
             KeyState::Down => true,
