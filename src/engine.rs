@@ -1,5 +1,5 @@
 use crate::error::{GameError, GameResult};
-use crate::math::{Position, Delta};
+use crate::math::{Position, Delta, Size};
 use crate::event::Event;
 use crate::window::{Window, WindowConfig};
 use crate::graphics::{Graphics, GraphicsConfig};
@@ -109,13 +109,13 @@ impl Engine {
                         WindowEvent::Resized(physical_size) => {
                             self.graphics.resize(physical_size);
                             let scale_factor = self.window.window().scale_factor();
-                            let logical_size = physical_size.to_logical(scale_factor);
-                            game.event(self, Event::WindowResize(logical_size.into()))?;
+                            let logical_size = physical_size.to_logical::<u32>(scale_factor);
+                            game.event(self, Event::WindowResize(Size::new(logical_size.width, logical_size.height)))?;
                         }
                         WindowEvent::Moved(physical_position) => {
                             let scale_factor = self.window.window().scale_factor();
-                            let logical_position = physical_position.to_logical(scale_factor);
-                            game.event(self, Event::WindowMove(logical_position.into()))?;
+                            let logical_position = physical_position.to_logical::<f32>(scale_factor);
+                            game.event(self, Event::WindowMove(Position::new(logical_position.x, logical_position.y)))?;
                         }
                         WindowEvent::Focused(focused) => {
                             self.window.handle_focus_change_event(focused);

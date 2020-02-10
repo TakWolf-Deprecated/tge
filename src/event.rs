@@ -45,7 +45,7 @@ pub enum Event {
     AppResume,
     WindowClose,
     WindowResize(Size<u32>),
-    WindowMove(Position<i32>),
+    WindowMove(Position),
     WindowFocusChange(bool),
     ReceiveChar(char),
     KeyboardInput {

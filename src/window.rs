@@ -1,4 +1,3 @@
-mod dpi;
 mod icon;
 mod fullscreen;
 
@@ -9,6 +8,7 @@ use crate::error::{GameError, GameResult};
 use crate::math::{Position, Size};
 use winit::event_loop::EventLoop;
 use winit::window::WindowBuilder;
+use winit::dpi::{LogicalPosition, LogicalSize};
 use glutin::{ContextBuilder, ContextWrapper, PossiblyCurrent};
 use std::rc::Rc;
 
@@ -51,13 +51,13 @@ impl Window {
             .with_always_on_top(window_config.always_on_top)
             .with_visible(window_config.visible);
         if let Some(size) = window_config.inner_size {
-            window_builder = window_builder.with_inner_size(winit::dpi::Size::Logical(size.into()))
+            window_builder = window_builder.with_inner_size(LogicalSize::new(size.width, size.height))
         }
         if let Some(size) = window_config.min_inner_size {
-            window_builder = window_builder.with_min_inner_size(winit::dpi::Size::Logical(size.into()));
+            window_builder = window_builder.with_min_inner_size(LogicalSize::new(size.width, size.height));
         }
         if let Some(size) = window_config.max_inner_size {
-            window_builder = window_builder.with_max_inner_size(winit::dpi::Size::Logical(size.into()));
+            window_builder = window_builder.with_max_inner_size(LogicalSize::new(size.width, size.height));
         }
         let context_builder = ContextBuilder::new()
             .with_vsync(window_config.vsync);
@@ -98,7 +98,7 @@ impl Window {
 
     pub fn set_title<T: Into<String>>(&mut self, title: T) {
         self.title = title.into();
-        self.window().set_title(&self.title)
+        self.window().set_title(&self.title);
     }
 
     pub fn set_icon(&mut self, icon: Option<Icon>) {
@@ -108,51 +108,60 @@ impl Window {
     pub fn inner_size(&self) -> Size<u32> {
         let physical_size = self.window().inner_size();
         let scale_factor = self.window().scale_factor();
-        let logical_size = physical_size.to_logical(scale_factor);
-        logical_size.into()
+        let logical_size = physical_size.to_logical::<u32>(scale_factor);
+        Size::new(logical_size.width, logical_size.height)
     }
 
     pub fn set_inner_size<S: Into<Size<u32>>>(&mut self, size: S) {
-        self.window().set_inner_size(winit::dpi::Size::Logical(size.into().into()));
+        let size = size.into();
+        self.window().set_inner_size(LogicalSize::new(size.width, size.height));
     }
 
     pub fn outer_size(&self) -> Size<u32> {
         let physical_size = self.window().outer_size();
         let scale_factor = self.window().scale_factor();
-        let logical_size = physical_size.to_logical(scale_factor);
-        logical_size.into()
+        let logical_size = physical_size.to_logical::<u32>(scale_factor);
+        Size::new(logical_size.width, logical_size.height)
     }
 
     pub fn set_min_inner_size<S: Into<Size<u32>>>(&mut self, size: Option<S>) {
-        self.window().set_min_inner_size(size.map(|size| winit::dpi::Size::Logical(size.into().into())));
+        self.window().set_min_inner_size(size.map(|size| {
+            let size = size.into();
+            LogicalSize::new(size.width, size.height)
+        }));
     }
 
     pub fn set_max_inner_size<S: Into<Size<u32>>>(&mut self, size: Option<S>) {
-        self.window().set_max_inner_size(size.map(|size| winit::dpi::Size::Logical(size.into().into())));
+        self.window().set_max_inner_size(size.map(|size| {
+            let size = size.into();
+            LogicalSize::new(size.width, size.height)
+        }));
     }
 
-    pub fn inner_position(&self) -> GameResult<Position<i32>> {
+    pub fn inner_position(&self) -> GameResult<Position> {
         let physical_position = self.window().inner_position()
             .map_err(|error| GameError::NotSupportedError(format!("{}", error)))?;
         let scale_factor = self.window().scale_factor();
-        let logical_position = physical_position.to_logical(scale_factor);
-        Ok(logical_position.into())
+        let logical_position = physical_position.to_logical::<f32>(scale_factor);
+        Ok(Position::new(logical_position.x, logical_position.y))
     }
 
-    pub fn outer_position(&self) -> GameResult<Position<i32>> {
+    pub fn outer_position(&self) -> GameResult<Position> {
         let physical_position = self.window().outer_position()
             .map_err(|error| GameError::NotSupportedError(format!("{}", error)))?;
         let scale_factor = self.window().scale_factor();
-        let logical_position = physical_position.to_logical(scale_factor);
-        Ok(logical_position.into())
+        let logical_position = physical_position.to_logical::<f32>(scale_factor);
+        Ok(Position::new(logical_position.x, logical_position.y))
     }
 
-    pub fn set_outer_position<P: Into<Position<i32>>>(&mut self, position: P) {
-        self.window().set_outer_position(winit::dpi::Position::Logical(position.into().into()))
+    pub fn set_outer_position<P: Into<Position>>(&mut self, position: P) {
+        let position = position.into();
+        self.window().set_outer_position(LogicalPosition::new(position.x, position.y));
     }
 
-    pub fn set_ime_position<P: Into<Position<i32>>>(&mut self, position: P) {
-        self.window().set_ime_position(winit::dpi::Position::Logical(position.into().into()))
+    pub fn set_ime_position<P: Into<Position>>(&mut self, position: P) {
+        let position = position.into();
+        self.window().set_ime_position(LogicalPosition::new(position.x, position.y));
     }
 
     pub fn scale_factor(&self) -> f64 {
