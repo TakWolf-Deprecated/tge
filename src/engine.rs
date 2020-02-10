@@ -6,6 +6,8 @@ use crate::graphics::{Graphics, GraphicsConfig};
 use crate::timer::{Timer, TimerConfig};
 use crate::keyboard::{Keyboard, KeyboardConfig};
 use crate::mouse::{Mouse, MouseConfig};
+use crate::touch::{Touch, TouchConfig};
+use crate::touchpad::{Touchpad, TouchpadConfig};
 use crate::gamepad::{Gamepad, GamepadConfig};
 use crate::audio::{Audio, AudioConfig};
 use crate::game::Game;
@@ -28,6 +30,8 @@ pub struct Engine {
     timer: Timer,
     keyboard: Keyboard,
     mouse: Mouse,
+    touch: Touch,
+    touchpad: Touchpad,
     gamepad: Gamepad,
     audio: Audio,
     state: State,
@@ -53,6 +57,14 @@ impl Engine {
 
     pub fn mouse(&mut self) -> &mut Mouse {
         &mut self.mouse
+    }
+
+    pub fn touch(&mut self) -> &mut Touch {
+        &mut self.touch
+    }
+
+    pub fn touchpad(&mut self) -> &mut Touchpad {
+        &mut self.touchpad
     }
 
     pub fn gamepad(&mut self) -> &mut Gamepad {
@@ -244,6 +256,8 @@ pub struct EngineBuilder {
     timer_config: Option<TimerConfig>,
     keyboard_config: Option<KeyboardConfig>,
     mouse_config: Option<MouseConfig>,
+    touch_config: Option<TouchConfig>,
+    touchpad_config: Option<TouchpadConfig>,
     gamepad_config: Option<GamepadConfig>,
     audio_config: Option<AudioConfig>,
 }
@@ -257,6 +271,8 @@ impl EngineBuilder {
             timer_config: None,
             keyboard_config: None,
             mouse_config: None,
+            touch_config: None,
+            touchpad_config: None,
             gamepad_config: None,
             audio_config: None,
         }
@@ -287,6 +303,16 @@ impl EngineBuilder {
         self
     }
 
+    pub fn touch_config(mut self, touch_config: TouchConfig) -> Self {
+        self.touch_config = Some(touch_config);
+        self
+    }
+
+    pub fn touchpad_config(mut self, touchpad_config: TouchpadConfig) -> Self {
+        self.touchpad_config = Some(touchpad_config);
+        self
+    }
+
     pub fn gamepad_config(mut self, gamepad_config: GamepadConfig) -> Self {
         self.gamepad_config = Some(gamepad_config);
         self
@@ -303,6 +329,8 @@ impl EngineBuilder {
         let timer_config = self.timer_config.unwrap_or_else(|| TimerConfig::new());
         let keyboard_config = self.keyboard_config.unwrap_or_else(|| KeyboardConfig::new());
         let mouse_config = self.mouse_config.unwrap_or_else(|| MouseConfig::new());
+        let touch_config = self.touch_config.unwrap_or_else(|| TouchConfig::new());
+        let touchpad_config = self.touchpad_config.unwrap_or_else(|| TouchpadConfig::new());
         let gamepad_config = self.gamepad_config.unwrap_or_else(|| GamepadConfig::new());
         let audio_config = self.audio_config.unwrap_or_else(|| AudioConfig::new());
 
@@ -313,6 +341,8 @@ impl EngineBuilder {
         let timer = Timer::new(timer_config)?;
         let keyboard = Keyboard::new(keyboard_config)?;
         let mouse = Mouse::new(mouse_config, window.context_wrapper().clone())?;
+        let touch_ = Touch::new(touch_config)?;
+        let touchpad = Touchpad::new(touchpad_config)?;
         let gamepad = Gamepad::new(gamepad_config)?;
         let audio = Audio::new(audio_config)?;
 
@@ -323,6 +353,8 @@ impl EngineBuilder {
             timer,
             keyboard,
             mouse,
+            touch,
+            touchpad,
             gamepad,
             audio,
             state: State::Ready,

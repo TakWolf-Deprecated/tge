@@ -7,6 +7,8 @@ pub mod graphics;
 pub mod timer;
 pub mod keyboard;
 pub mod mouse;
+pub mod touch;
+pub mod touchpad;
 pub mod gamepad;
 pub mod audio;
 pub mod game;
