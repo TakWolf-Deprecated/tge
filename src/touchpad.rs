@@ -3,8 +3,8 @@ use crate::math::Delta;
 
 pub struct Touchpad {
     scroll_delta: Delta,
-    pressure_level: f32,
-    click_level: i64,
+    pressure: f32,
+    click_stage: i64,
 }
 
 impl Touchpad {
@@ -12,8 +12,8 @@ impl Touchpad {
     pub(crate) fn new(touchpad_config: TouchpadConfig) -> GameResult<Self> {
         Ok(Self {
             scroll_delta: Delta::zero(),
-            pressure_level: 0.0,
-            click_level: 0,
+            pressure: 0.0,
+            click_stage: 0,
         })
     }
 
@@ -21,9 +21,9 @@ impl Touchpad {
         self.scroll_delta += delta;
     }
 
-    pub(crate) fn handle_press_event(&mut self, pressure_level: f32, click_level: i64) {
-        self.pressure_level = pressure_level;
-        self.click_level = click_level;
+    pub(crate) fn handle_press_event(&mut self, pressure: f32, click_stage: i64) {
+        self.pressure = pressure;
+        self.click_stage = click_stage;
     }
 
     pub(crate) fn reset_states(&mut self) {
@@ -34,12 +34,12 @@ impl Touchpad {
         self.scroll_delta
     }
 
-    pub fn pressure_level(&self) -> f32 {
-        self.pressure_level
+    pub fn pressure(&self) -> f32 {
+        self.pressure
     }
 
-    pub fn click_level(&self) -> i64 {
-        self.click_level
+    pub fn click_stage(&self) -> i64 {
+        self.click_stage
     }
 
 }
