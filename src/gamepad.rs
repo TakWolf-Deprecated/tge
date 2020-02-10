@@ -20,6 +20,10 @@ impl Gamepad {
         &mut self.gilrs
     }
 
+    pub(crate) fn reset_states(&mut self) {
+        // TODO
+    }
+
 }
 
 #[derive(Debug, Clone)]

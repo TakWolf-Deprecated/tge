@@ -8,6 +8,10 @@ impl Keyboard {
         Ok(Self {})
     }
 
+    pub(crate) fn reset_states(&mut self) {
+        // TODO
+    }
+
 }
 
 #[derive(Debug, Clone)]

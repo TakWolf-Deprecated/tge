@@ -203,9 +203,11 @@ impl Engine {
                 }
             }
             winit::event::Event::RedrawEventsCleared => {
-                // TODO
+                self.keyboard.reset_states();
                 self.mouse.reset_states();
+                self.touch.reset_states();
                 self.touchpad.reset_states();
+                self.gamepad.reset_states();
             }
             winit::event::Event::LoopDestroyed => {
                 self.quit();
