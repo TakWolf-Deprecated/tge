@@ -49,4 +49,37 @@ impl GamepadState {
         self.axis_values.clear();
     }
 
+    pub fn is_connected(&self) -> bool {
+        self.connected
+    }
+
+    pub fn is_button_down(&self, button: GamepadButton) -> bool {
+        match self.button_states.get(&button).unwrap_or(&KeyState::Idle) {
+            KeyState::Down => true,
+            _ => false,
+        }
+    }
+
+    pub fn is_button_hold(&self, button: GamepadButton) -> bool {
+        match self.button_states.get(&button).unwrap_or(&KeyState::Idle) {
+            KeyState::Down | KeyState::Hold => true,
+            _ => false,
+        }
+    }
+
+    pub fn is_button_up(&self, button: GamepadButton) -> bool {
+        match self.button_states.get(&button).unwrap_or(&KeyState::Idle) {
+            KeyState::Up => true,
+            _ => false,
+        }
+    }
+
+    pub fn button_value(&self, button: GamepadButton) -> f32 {
+        *self.button_values.get(&button).unwrap_or(&0.0)
+    }
+
+    pub fn axis_value(&self, axis: GamepadAxis) -> f32 {
+        *self.axis_values.get(&axis).unwrap_or(&0.0)
+    }
+
 }

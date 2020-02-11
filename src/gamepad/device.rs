@@ -1,4 +1,4 @@
-use super::{GamepadState, PowerInfo};
+use super::{GamepadButton, GamepadAxis, GamepadState, PowerInfo};
 use gilrs::Gilrs;
 use std::rc::Rc;
 use std::cell::RefCell;
@@ -40,7 +40,27 @@ impl GamepadDevice {
     }
 
     pub fn is_connected(&self) -> bool {
-        self.gilrs.borrow().gamepad(self.id).is_connected()
+        self.state.borrow().is_connected()
+    }
+
+    pub fn is_button_down(&self, button: GamepadButton) -> bool {
+        self.state.borrow().is_button_down(button)
+    }
+
+    pub fn is_button_hold(&self, button: GamepadButton) -> bool {
+        self.state.borrow().is_button_hold(button)
+    }
+
+    pub fn is_button_up(&self, button: GamepadButton) -> bool {
+        self.is_button_up(button)
+    }
+
+    pub fn button_value(&self, button: GamepadButton) -> f32 {
+        self.button_value(button)
+    }
+
+    pub fn axis_value(&self, axis: GamepadAxis) -> f32 {
+        self.axis_value(axis)
     }
 
 }
