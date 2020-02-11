@@ -163,8 +163,9 @@ impl Engine {
                         WindowEvent::MouseInput { state, button, .. } => {
                             let button = button.into();
                             let action = state.into();
-                            self.mouse.handle_input_event(button, action);
-                            game.event(self, Event::MouseInput { button, action })?;
+                            if self.mouse.handle_input_event(button, action) {
+                                game.event(self, Event::MouseInput { button, action })?;
+                            }
                         }
                         WindowEvent::Touch(touch) => {
                             let id = touch.id;
