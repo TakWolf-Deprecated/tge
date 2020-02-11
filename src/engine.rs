@@ -198,7 +198,27 @@ impl Engine {
             winit::event::Event::MainEventsCleared => {
                 while let Some(gilrs::Event { id, event, .. }) = self.gamepad.gilrs_mut().next_event() {
                     match event {
-                        // TODO handle gilrs events
+                        gilrs::EventType::Connected => {
+                            // TODO
+                        }
+                        gilrs::EventType::Disconnected => {
+                            // TODO
+                        }
+                        gilrs::EventType::ButtonPressed(button, code) => {
+                            // TODO
+                        }
+                        gilrs::EventType::ButtonRepeated(button, code) => {
+                            // TODO
+                        }
+                        gilrs::EventType::ButtonReleased(button, code) => {
+                            // TODO
+                        }
+                        gilrs::EventType::ButtonChanged(button, value, code) => {
+                            // TODO
+                        }
+                        gilrs::EventType::AxisChanged(axis, value, code) => {
+                            // TODO
+                        }
                         _ => (),
                     }
                 }
