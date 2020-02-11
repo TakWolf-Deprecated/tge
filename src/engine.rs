@@ -208,15 +208,13 @@ impl Engine {
                         game.update(self)?;
                         game.render(self)?;
                         self.graphics.present()?;
+                        self.keyboard.clear_states();
+                        self.mouse.clear_states();
+                        self.touch.clear_states();
+                        self.touchpad.clear_states();
+                        self.gamepad.clear_states();
                     }
                 }
-            }
-            winit::event::Event::RedrawEventsCleared => {
-                self.keyboard.clear_states();
-                self.mouse.clear_states();
-                self.touch.clear_states();
-                self.touchpad.clear_states();
-                self.gamepad.clear_states();
             }
             winit::event::Event::LoopDestroyed => {
                 self.quit();
