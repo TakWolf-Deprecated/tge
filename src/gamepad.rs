@@ -1,3 +1,7 @@
+mod button;
+
+pub use button::GamepadButton;
+
 use crate::error::{GameError, GameResult};
 use gilrs::{Gilrs, GilrsBuilder};
 
