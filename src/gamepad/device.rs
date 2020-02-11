@@ -1,4 +1,4 @@
-use crate::gamepad::PowerInfo;
+use super::PowerInfo;
 use gilrs::{Gilrs, Gamepad};
 use std::rc::Rc;
 use std::cell::RefCell;
