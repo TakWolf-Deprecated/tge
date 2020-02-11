@@ -1,10 +1,12 @@
 mod button;
 mod axis;
 mod device;
+mod power;
 
 pub use button::GamepadButton;
 pub use axis::GamepadAxis;
 pub use device::{GamepadId, GamepadDevice};
+pub use power::PowerInfo;
 
 use crate::error::{GameError, GameResult};
 use gilrs::{Gilrs, GilrsBuilder};

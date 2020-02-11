@@ -1,3 +1,4 @@
+use crate::gamepad::PowerInfo;
 use gilrs::{Gilrs, Gamepad};
 use std::rc::Rc;
 use std::cell::RefCell;
@@ -34,6 +35,10 @@ impl GamepadDevice {
 
     pub fn is_force_feedback_supported(&self) -> bool {
         self.gamepad().is_ff_supported()
+    }
+
+    pub fn power_info(&self) -> PowerInfo {
+        self.gamepad().power_info().into()
     }
 
     pub fn is_connected(&self) -> bool {
