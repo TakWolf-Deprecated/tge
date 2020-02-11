@@ -105,6 +105,40 @@ impl Gamepad {
         devices
     }
 
+    pub fn is_connected(&self, id: GamepadId) -> bool {
+        self.connected_states.contains_key(&id)
+    }
+
+    pub fn is_button_down(&self, id: GamepadId, button: GamepadButton) -> bool {
+        self.connected_states.get(&id)
+            .map(|state| state.borrow().is_button_down(button))
+            .unwrap_or(false)
+    }
+
+    pub fn is_button_hold(&self, id: GamepadId, button: GamepadButton) -> bool {
+        self.connected_states.get(&id)
+            .map(|state| state.borrow().is_button_hold(button))
+            .unwrap_or(false)
+    }
+
+    pub fn is_button_up(&self, id: GamepadId, button: GamepadButton) -> bool {
+        self.connected_states.get(&id)
+            .map(|state| state.borrow().is_button_up(button))
+            .unwrap_or(false)
+    }
+
+    pub fn button_value(&self, id: GamepadId, button: GamepadButton) -> f32 {
+        self.connected_states.get(&id)
+            .map(|state| state.borrow().button_value(button))
+            .unwrap_or(0.0)
+    }
+
+    pub fn axis_value(&self, id: GamepadId, axis: GamepadAxis) -> f32 {
+        self.connected_states.get(&id)
+            .map(|state| state.borrow().axis_value(axis))
+            .unwrap_or(0.0)
+    }
+
 }
 
 #[derive(Debug, Clone)]
