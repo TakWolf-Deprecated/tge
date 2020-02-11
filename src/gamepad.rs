@@ -1,7 +1,10 @@
 mod button;
 mod axis;
+mod state;
 mod device;
 mod power;
+
+use state::GamepadState;
 
 pub use button::GamepadButton;
 pub use axis::GamepadAxis;
@@ -9,13 +12,16 @@ pub use device::{GamepadId, GamepadDevice};
 pub use power::PowerInfo;
 
 use crate::error::{GameError, GameResult};
-use crate::event::KeyAction;
+use crate::event::{KeyState, KeyAction};
 use gilrs::{Gilrs, GilrsBuilder, Event};
 use std::rc::Rc;
 use std::cell::RefCell;
+use std::collections::HashMap;
 
 pub struct Gamepad {
     gilrs: Rc<RefCell<Gilrs>>,
+    connected_states: HashMap<GamepadId, Rc<RefCell<GamepadState>>>,
+    disconnected_states: HashMap<GamepadId, Rc<RefCell<GamepadState>>>,
 }
 
 impl Gamepad {
@@ -27,6 +33,8 @@ impl Gamepad {
             .map_err(|error| GameError::InitError(format!("{}", error)))?;
         Ok(Self {
             gilrs: Rc::new(RefCell::new(gilrs)),
+            connected_states: HashMap::new(),
+            disconnected_states: HashMap::new(),
         })
     }
 
@@ -39,27 +47,39 @@ impl Gamepad {
     }
 
     pub(crate) fn handle_connect_event(&mut self, id: GamepadId) {
-        // TODO
+        let state = self.disconnected_states.remove(&id).unwrap_or_else(|| Rc::new(RefCell::new(GamepadState::new())));
+        state.borrow_mut().clear_states();
+        self.connected_states.insert(id, state);
     }
 
     pub(crate) fn handle_disconnect_event(&mut self, id: GamepadId) {
-        // TODO
+        let state = self.connected_states.remove(&id).unwrap_or_else(|| Rc::new(RefCell::new(GamepadState::new())));
+        state.borrow_mut().clear_states();
+        self.disconnected_states.insert(id, state);
     }
 
     pub(crate) fn handle_button_input_event(&mut self, id: GamepadId, button: GamepadButton, action: KeyAction) {
-        // TODO
+        if let Some(state) = self.connected_states.get(&id) {
+            state.borrow_mut().handle_button_input_event(button, action);
+        }
     }
 
     pub(crate) fn handle_button_change_event(&mut self, id: GamepadId, button: GamepadButton, value: f32) {
-        // TODO
+        if let Some(state) = self.connected_states.get(&id) {
+            state.borrow_mut().handle_button_change_event(button, value);
+        }
     }
 
     pub(crate) fn handle_axis_change_event(&mut self, id: GamepadId, axis: GamepadAxis, value: f32) {
-        // TODO
+        if let Some(state) = self.connected_states.get(&id) {
+            state.borrow_mut().handle_axis_change_event(axis, value);
+        }
     }
 
     pub(crate) fn clear_states(&mut self) {
-        // TODO
+        for (_, state) in &self.connected_states {
+            state.borrow_mut().clear_states();
+        }
     }
 
 }
