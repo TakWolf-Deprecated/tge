@@ -1,22 +1,22 @@
-use super::PowerInfo;
-use gilrs::{Gilrs, Gamepad};
+use super::{GamepadState, PowerInfo};
+use gilrs::Gilrs;
 use std::rc::Rc;
 use std::cell::RefCell;
 
 pub type GamepadId = gilrs::GamepadId;
 
-#[derive(Debug, Clone)]
 pub struct GamepadDevice {
     gilrs: Rc<RefCell<Gilrs>>,
     id: GamepadId,
     name: String,
+    state: Rc<RefCell<GamepadState>>,
 }
 
 impl GamepadDevice {
 
-    pub(crate) fn new(gilrs: Rc<RefCell<Gilrs>>, id: GamepadId) -> Self {
+    pub(crate) fn new(gilrs: Rc<RefCell<Gilrs>>, id: GamepadId, state: Rc<RefCell<GamepadState>>) -> Self {
         let name = gilrs.borrow().gamepad(id).name().to_owned();
-        Self { gilrs, id, name }
+        Self { gilrs, id, name, state }
     }
 
     pub fn id(&self) -> GamepadId {

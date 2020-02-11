@@ -12,7 +12,7 @@ pub use device::{GamepadId, GamepadDevice};
 pub use power::PowerInfo;
 
 use crate::error::{GameError, GameResult};
-use crate::event::{KeyState, KeyAction};
+use crate::event::KeyAction;
 use gilrs::{Gilrs, GilrsBuilder, Event};
 use std::rc::Rc;
 use std::cell::RefCell;
@@ -48,13 +48,13 @@ impl Gamepad {
 
     pub(crate) fn handle_connect_event(&mut self, id: GamepadId) {
         let state = self.disconnected_states.remove(&id).unwrap_or_else(|| Rc::new(RefCell::new(GamepadState::new())));
-        state.borrow_mut().clear_states();
+        state.borrow_mut().reset(true);
         self.connected_states.insert(id, state);
     }
 
     pub(crate) fn handle_disconnect_event(&mut self, id: GamepadId) {
         let state = self.connected_states.remove(&id).unwrap_or_else(|| Rc::new(RefCell::new(GamepadState::new())));
-        state.borrow_mut().clear_states();
+        state.borrow_mut().reset(false);
         self.disconnected_states.insert(id, state);
     }
 
@@ -80,6 +80,29 @@ impl Gamepad {
         for (_, state) in &self.connected_states {
             state.borrow_mut().clear_states();
         }
+    }
+
+    pub fn device(&self, id: GamepadId) -> GamepadDevice {
+        let mut state = self.connected_states.get(&id);
+        if state.is_none() {
+            state = self.disconnected_states.get(&id);
+        }
+        let state = state.expect("can not find gamepad state");
+        GamepadDevice::new(self.gilrs.clone(), id, state.clone())
+    }
+
+    pub fn connected_device(&self, id: GamepadId) -> Option<GamepadDevice> {
+        self.connected_states.get(&id).map(|state| {
+            GamepadDevice::new(self.gilrs.clone(), id, state.clone())
+        })
+    }
+
+    pub fn connected_devices(&self) -> Vec<GamepadDevice> {
+        let mut devices = Vec::new();
+        for (id, state) in &self.connected_states {
+            devices.push(GamepadDevice::new(self.gilrs.clone(), *id, state.clone()))
+        }
+        devices
     }
 
 }

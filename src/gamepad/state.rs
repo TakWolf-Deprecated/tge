@@ -3,6 +3,7 @@ use crate::event::{KeyState, KeyAction};
 use std::collections::HashMap;
 
 pub(crate) struct GamepadState {
+    connected: bool,
     button_states: HashMap<GamepadButton, KeyState>,
     button_values: HashMap<GamepadButton, f32>,
     axis_values: HashMap<GamepadAxis, f32>,
@@ -12,6 +13,7 @@ impl GamepadState {
 
     pub fn new() -> Self {
         Self {
+            connected: false,
             button_states: HashMap::new(),
             button_values: HashMap::new(),
             axis_values: HashMap::new(),
@@ -40,7 +42,8 @@ impl GamepadState {
         });
     }
 
-    pub fn reset(&mut self) {
+    pub fn reset(&mut self, connected: bool) {
+        self.connected = connected;
         self.button_states.clear();
         self.button_values.clear();
         self.axis_values.clear();
