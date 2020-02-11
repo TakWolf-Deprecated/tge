@@ -196,7 +196,7 @@ impl Engine {
                 game.event(self, Event::AppResume)?;
             }
             winit::event::Event::MainEventsCleared => {
-                while let Some(gilrs::Event { id, event, .. }) = self.gamepad.gilrs_mut().next_event() {
+                while let Some(gilrs::Event { id, event, .. }) = self.gamepad.gilrs().borrow_mut().next_event() {
                     match event {
                         gilrs::EventType::Connected => {
                             // TODO
