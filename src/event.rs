@@ -2,6 +2,7 @@ use crate::math::{Position, Size, Delta};
 use crate::keyboard::KeyCode;
 use crate::mouse::MouseButton;
 use crate::touch::TouchPhase;
+use crate::gamepad::{GamepadButton, GamepadAxis, GamepadId};
 use winit::event::ElementState;
 
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
@@ -74,7 +75,21 @@ pub enum Event {
         pressure: f32,
         click_stage: i64,
     },
-
-    // TODO
-
+    GamepadConnect(GamepadId),
+    GamepadDisconnect(GamepadId),
+    GamepadButtonInput {
+        id: GamepadId,
+        button: GamepadButton,
+        action: KeyAction,
+    },
+    GamepadButtonChange {
+        id: GamepadId,
+        button: GamepadButton,
+        value: f32,
+    },
+    GamepadAxisChange {
+        id: GamepadId,
+        axis: GamepadAxis,
+        value: f32,
+    },
 }
