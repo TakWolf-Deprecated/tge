@@ -1,6 +1,8 @@
 mod button;
+mod axis;
 
 pub use button::GamepadButton;
+pub use axis::GamepadAxis;
 
 use crate::error::{GameError, GameResult};
 use gilrs::{Gilrs, GilrsBuilder};
