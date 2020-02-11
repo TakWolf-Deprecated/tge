@@ -18,9 +18,19 @@ impl Keyboard {
         })
     }
 
-    pub(crate) fn handle_input_event(&mut self, key: KeyCode, scan_code: u32, action: KeyAction) {
-        self.key_states.insert(key, action.into());
-        self.key_states.insert(KeyCode::Other(scan_code), action.into());
+    pub(crate) fn handle_input_event(&mut self, key: KeyCode, action: KeyAction) -> bool {
+        let new_state = action.into();
+        if let Some(state) = self.key_states.get_mut(&key) {
+            if state == &new_state || (state == &KeyState::Hold && new_state == KeyState::Down) {
+                false
+            } else {
+                *state = new_state;
+                true
+            }
+        } else {
+            self.key_states.insert(key, new_state);
+            true
+        }
     }
 
     pub(crate) fn clear_states(&mut self) {
