@@ -52,15 +52,15 @@ impl GamepadDevice {
     }
 
     pub fn is_button_up(&self, button: GamepadButton) -> bool {
-        self.is_button_up(button)
+        self.state.borrow().is_button_up(button)
     }
 
     pub fn button_value(&self, button: GamepadButton) -> f32 {
-        self.button_value(button)
+        self.state.borrow().button_value(button)
     }
 
     pub fn axis_value(&self, axis: GamepadAxis) -> f32 {
-        self.axis_value(axis)
+        self.state.borrow().axis_value(axis)
     }
 
 }
