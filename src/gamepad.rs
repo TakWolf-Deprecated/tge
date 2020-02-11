@@ -9,7 +9,8 @@ pub use device::{GamepadId, GamepadDevice};
 pub use power::PowerInfo;
 
 use crate::error::{GameError, GameResult};
-use gilrs::{Gilrs, GilrsBuilder};
+use crate::event::KeyAction;
+use gilrs::{Gilrs, GilrsBuilder, Event};
 use std::rc::Rc;
 use std::cell::RefCell;
 
@@ -29,8 +30,32 @@ impl Gamepad {
         })
     }
 
-    pub(crate) fn gilrs(&self) -> &Rc<RefCell<Gilrs>> {
-        &self.gilrs
+    pub(crate) fn pump_events(&self) -> Vec<Event> {
+        let mut events = Vec::new();
+        while let Some(event) = self.gilrs.borrow_mut().next_event() {
+            events.push(event);
+        }
+        events
+    }
+
+    pub(crate) fn handle_connect_event(&mut self, id: GamepadId) {
+        // TODO
+    }
+
+    pub(crate) fn handle_disconnect_event(&mut self, id: GamepadId) {
+        // TODO
+    }
+
+    pub(crate) fn handle_button_input_event(&mut self, id: GamepadId, button: GamepadButton, action: KeyAction) {
+        // TODO
+    }
+
+    pub(crate) fn handle_button_change_event(&mut self, id: GamepadId, button: GamepadButton, value: f32) {
+        // TODO
+    }
+
+    pub(crate) fn handle_axis_change_event(&mut self, id: GamepadId, axis: GamepadAxis, value: f32) {
+        // TODO
     }
 
     pub(crate) fn clear_states(&mut self) {

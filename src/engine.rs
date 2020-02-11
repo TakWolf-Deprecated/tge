@@ -1,6 +1,6 @@
 use crate::error::{GameError, GameResult};
 use crate::math::{Position, Delta, Size};
-use crate::event::Event;
+use crate::event::{Event, KeyAction};
 use crate::window::{Window, WindowConfig};
 use crate::graphics::{Graphics, GraphicsConfig};
 use crate::timer::{Timer, TimerConfig};
@@ -196,28 +196,40 @@ impl Engine {
                 game.event(self, Event::AppResume)?;
             }
             winit::event::Event::MainEventsCleared => {
-                while let Some(gilrs::Event { id, event, .. }) = self.gamepad.gilrs().borrow_mut().next_event() {
+                let events = self.gamepad.pump_events();
+                for event in events {
+                    let id = event.id;
+                    let event = event.event;
                     match event {
                         gilrs::EventType::Connected => {
-                            // TODO
+                            self.gamepad.handle_connect_event(id);
+                            game.event(self, Event::GamepadConnect(id))?;
                         }
                         gilrs::EventType::Disconnected => {
-                            // TODO
+                            self.gamepad.handle_disconnect_event(id);
+                            game.event(self, Event::GamepadDisconnect(id))?;
                         }
-                        gilrs::EventType::ButtonPressed(button, code) => {
-                            // TODO
+                        gilrs::EventType::ButtonPressed(button, _) => {
+                            let button = button.into();
+                            let action = KeyAction::Down;
+                            self.gamepad.handle_button_input_event(id, button, action);
+                            game.event(self, Event::GamepadButtonInput { id, button, action })?;
                         }
-                        gilrs::EventType::ButtonRepeated(button, code) => {
-                            // TODO
+                        gilrs::EventType::ButtonReleased(button, _) => {
+                            let button = button.into();
+                            let action = KeyAction::Up;
+                            self.gamepad.handle_button_input_event(id, button, action);
+                            game.event(self, Event::GamepadButtonInput { id, button, action })?;
                         }
-                        gilrs::EventType::ButtonReleased(button, code) => {
-                            // TODO
+                        gilrs::EventType::ButtonChanged(button, value, _) => {
+                            let button = button.into();
+                            self.gamepad.handle_button_change_event(id, button, value);
+                            game.event(self, Event::GamepadButtonChange { id, button, value })?;
                         }
-                        gilrs::EventType::ButtonChanged(button, value, code) => {
-                            // TODO
-                        }
-                        gilrs::EventType::AxisChanged(axis, value, code) => {
-                            // TODO
+                        gilrs::EventType::AxisChanged(axis, value, _) => {
+                            let axis = axis.into();
+                            self.gamepad.handle_axis_change_event(id, axis, value);
+                            game.event(self, Event::GamepadAxisChange { id, axis, value })?;
                         }
                         _ => (),
                     }
