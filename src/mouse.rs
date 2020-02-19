@@ -60,19 +60,8 @@ impl Mouse {
         self.wheel_scroll_delta += delta;
     }
 
-    pub(crate) fn handle_input_event(&mut self, button: MouseButton, action: KeyAction) -> bool {
-        let new_state = action.into();
-        if let Some(state) = self.button_states.get_mut(&button) {
-            if state == &new_state || (state == &KeyState::Hold && new_state == KeyState::Down) {
-                false
-            } else {
-                *state = new_state;
-                true
-            }
-        } else {
-            self.button_states.insert(button, new_state);
-            true
-        }
+    pub(crate) fn handle_input_event(&mut self, button: MouseButton, action: KeyAction) {
+        self.button_states.insert(button, action.into());
     }
 
     pub(crate) fn clear_states(&mut self) {
