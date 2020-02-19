@@ -22,14 +22,14 @@ impl Keyboard {
         let new_state = action.into();
         if let Some(state) = self.key_states.get_mut(&key) {
             if state == &new_state || (state == &KeyState::Hold && new_state == KeyState::Down) {
-                false
+                true
             } else {
                 *state = new_state;
-                true
+                false
             }
         } else {
             self.key_states.insert(key, new_state);
-            true
+            false
         }
     }
 

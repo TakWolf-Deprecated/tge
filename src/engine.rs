@@ -127,9 +127,8 @@ impl Engine {
                         WindowEvent::KeyboardInput { input, .. } => {
                             let key = (input.virtual_keycode, input.scancode).into();
                             let action = input.state.into();
-                            if self.keyboard.handle_input_event(key, action) {
-                                game.event(self, Event::KeyboardInput { key, action })?;
-                            }
+                            let repeated = self.keyboard.handle_input_event(key, action);
+                            game.event(self, Event::KeyboardInput { key, action, repeated })?;
                         }
                         WindowEvent::CursorMoved { position, .. } => {
                             let scale_factor = self.window.window().scale_factor();

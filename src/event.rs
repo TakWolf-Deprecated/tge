@@ -53,6 +53,7 @@ pub enum Event {
     KeyboardInput {
         key: KeyCode,
         action: KeyAction,
+        repeated: bool,
     },
     MouseMove(Position),
     MouseEnterWindow,
