@@ -260,11 +260,11 @@ impl Engine {
     pub fn run(&mut self, game: &mut dyn Game) -> GameResult {
         match &self.state {
             State::Ready => self.state = State::Running,
-            _ => return Err(GameError::StateError(format!("engine can not be run on state {:?}", self.state))),
+            _ => return Err(GameError::StateError(format!("engine can not be run on state {:?}", self.state).into())),
         }
 
         let mut event_loop = self.event_loop.take()
-            .ok_or_else(|| GameError::RuntimeError("no event_loop instance".to_owned()))?;
+            .ok_or_else(|| GameError::RuntimeError("no event_loop instance".into()))?;
         event_loop.run_return(|event, _, control_flow| {
             match &self.state {
                 State::Finished | State::Broken(_) => *control_flow = ControlFlow::Exit,
@@ -273,7 +273,7 @@ impl Engine {
                         self.exit(error);
                     }
                 }
-                _ => self.exit(GameError::StateError(format!("engine state {:?} incorrect on handle event", self.state))),
+                _ => self.exit(GameError::StateError(format!("engine state {:?} incorrect on handle event", self.state).into())),
             }
         });
         self.event_loop = Some(event_loop);
@@ -282,10 +282,10 @@ impl Engine {
             State::Finished => Ok(()),
             State::Broken(error) => {
                 let error = error.take()
-                    .unwrap_or_else(|| GameError::RuntimeError("no engine broken error instance".to_owned()));
+                    .unwrap_or_else(|| GameError::RuntimeError("no engine broken error instance".into()));
                 Err(error)
             }
-            _ => Err(GameError::StateError(format!("engine state {:?} incorrect on event loop returned", self.state))),
+            _ => Err(GameError::StateError(format!("engine state {:?} incorrect on event loop returned", self.state).into())),
         }
     }
 

@@ -8,14 +8,14 @@ impl Icon {
 
     pub fn load<P: AsRef<Path>>(path: P) -> GameResult<Self> {
         let image = image::open(path)
-            .map_err(|error| GameError::IoError(format!("{}", error)))?;
+            .map_err(|error| GameError::IoError(Box::new(error)))?;
         let (width, height) = image.dimensions();
         let mut rgba = Vec::with_capacity((width * height * 4) as usize);
         for (_, _, pixel) in image.pixels() {
             rgba.extend_from_slice(&pixel.to_rgba().0);
         }
         let icon = winit::window::Icon::from_rgba(rgba, width, height)
-            .map_err(|error| GameError::NotSupportedError(format!("{}", error)))?;
+            .map_err(|error| GameError::NotSupportedError(Box::new(error)))?;
         Ok(Self(icon))
     }
 

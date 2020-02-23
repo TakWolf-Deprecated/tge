@@ -38,7 +38,7 @@ impl Graphics {
 
     pub(crate) fn present(&mut self) -> GameResult {
         self.context_wrapper.swap_buffers()
-            .map_err(|error| GameError::RuntimeError(format!("{}", error)))
+            .map_err(|error| GameError::RuntimeError(Box::new(error)))
     }
 
     pub(crate) fn clean(&mut self) {

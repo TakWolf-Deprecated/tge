@@ -108,7 +108,7 @@ impl Mouse {
     pub fn set_position<P: Into<Position<f32>>>(&mut self, position: P) -> GameResult {
         let position = position.into();
         self.window().set_cursor_position(LogicalPosition::new(position.x, position.y))
-            .map_err(|error| GameError::NotSupportedError(format!("{}", error)))?;
+            .map_err(|error| GameError::NotSupportedError(Box::new(error)))?;
         self.position = position;
         Ok(())
     }

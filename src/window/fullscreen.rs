@@ -40,5 +40,5 @@ fn get_preferred_video_mode(monitor: MonitorHandle) -> GameResult<VideoMode> {
             preferred_video_mode = Some(video_mode);
         }
     }
-    preferred_video_mode.ok_or_else(|| GameError::NotSupportedError("no available video mode".to_owned()))
+    preferred_video_mode.ok_or_else(|| GameError::NotSupportedError("no available video mode".into()))
 }
