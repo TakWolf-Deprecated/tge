@@ -1,4 +1,4 @@
-use super::{opengl, Filter, Wrap, Texture};
+use super::{opengl, Filter, Wrap, Texture, TextureHolder};
 use super::opengl::{Attachment, Framebuffer};
 use crate::error::{GameError, GameResult};
 use crate::math::Size;
@@ -52,6 +52,14 @@ impl Canvas {
 
     pub fn set_wrap(&mut self, wrap: Wrap) {
         self.texture.set_wrap(wrap)
+    }
+
+}
+
+impl TextureHolder for Canvas {
+
+    fn texture(&self) -> &Rc<opengl::Texture> {
+        self.texture.texture()
     }
 
 }

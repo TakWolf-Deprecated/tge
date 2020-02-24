@@ -54,10 +54,6 @@ impl Texture {
         Self::new(engine, size, Some(image.into_raw().as_slice()))
     }
 
-    pub(crate) fn texture(&self) -> &Rc<opengl::Texture> {
-        &self.texture
-    }
-
     pub fn size(&self) -> Size<u32> {
         self.size
     }
@@ -121,6 +117,20 @@ impl Texture {
             self.mipmap_generated = false;
         }
         self.texture.unbind();
+    }
+
+}
+
+pub(crate) trait TextureHolder {
+
+    fn texture(&self) -> &Rc<opengl::Texture>;
+
+}
+
+impl TextureHolder for Texture {
+
+    fn texture(&self) -> &Rc<opengl::Texture> {
+        &self.texture
     }
 
 }
