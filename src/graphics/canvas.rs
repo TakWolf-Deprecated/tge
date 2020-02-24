@@ -18,7 +18,7 @@ impl Canvas {
         let texture = Texture::new(engine, size, None)?;
         framebuffer.bind();
         framebuffer.attach_texture(Attachment::Color(0), Some(texture.texture().id()));
-        framebuffer.check_status().map_err(|error| GameError::InitError(Box::new(error)))?;
+        framebuffer.check_status().map_err(|error| GameError::InitError(error.into()))?;
         framebuffer.unbind();
         Ok(Self {
             framebuffer: Rc::new(framebuffer),
@@ -28,10 +28,6 @@ impl Canvas {
 
     pub(crate) fn framebuffer(&self) -> &Rc<Framebuffer> {
         &self.framebuffer
-    }
-
-    pub(crate) fn texture(&self) -> &Rc<opengl::Texture> {
-        self.texture.texture()
     }
 
     pub fn size(&self) -> Size<u32> {
