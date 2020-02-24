@@ -1,4 +1,4 @@
-mod opengl;
+pub mod opengl;
 mod color;
 mod program;
 mod texture;
