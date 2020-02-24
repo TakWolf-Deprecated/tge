@@ -54,7 +54,7 @@ impl Texture {
         Self::new(engine, size, Some(image.into_raw().as_slice()))
     }
 
-    pub fn texture(&self) -> &Rc<opengl::Texture> {
+    pub(crate) fn texture(&self) -> &Rc<opengl::Texture> {
         &self.texture
     }
 
