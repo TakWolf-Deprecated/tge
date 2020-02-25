@@ -260,7 +260,7 @@ impl Engine {
     pub fn run(&mut self, game: &mut dyn Game) -> GameResult {
         match &self.state {
             State::Ready => self.state = State::Running,
-            _ => return Err(GameError::StateError(format!("engine can not be run on state {:?}", self.state).into())),
+            _ => return Err(GameError::StateError(format!("engine can not be run on state `{:?}`", self.state).into())),
         }
 
         let mut event_loop = self.event_loop.take()
@@ -273,7 +273,7 @@ impl Engine {
                         self.exit(error);
                     }
                 }
-                _ => self.exit(GameError::StateError(format!("engine state {:?} incorrect on handle event", self.state).into())),
+                _ => self.exit(GameError::StateError(format!("engine state `{:?}` incorrect on handle event", self.state).into())),
             }
         });
         self.event_loop = Some(event_loop);
@@ -285,7 +285,7 @@ impl Engine {
                     .unwrap_or_else(|| GameError::RuntimeError("no engine broken error instance".into()));
                 Err(error)
             }
-            _ => Err(GameError::StateError(format!("engine state {:?} incorrect on event loop returned", self.state).into())),
+            _ => Err(GameError::StateError(format!("engine state `{:?}` incorrect on event loop returned", self.state).into())),
         }
     }
 
