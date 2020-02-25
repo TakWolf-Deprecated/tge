@@ -26,7 +26,7 @@ impl Texture {
         let texture = opengl::Texture::new(engine.graphics().gl().clone())
             .map_err(|error| GameError::InitError(error.into()))?;
         texture.bind();
-        texture.init_image_2d(size.width, size.height, pixels);
+        texture.init_image(size.width, size.height, pixels);
         texture.set_filter(filter);
         if generate_mipmap {
             texture.generate_mipmap();
@@ -95,7 +95,7 @@ impl Texture {
             pixel::validate_pixels_len(size, pixels)?;
         }
         self.texture.bind();
-        self.texture.init_image_2d(size.width, size.height, pixels);
+        self.texture.init_image(size.width, size.height, pixels);
         self.size = size;
         if self.filter.mipmap.is_some() {
             self.texture.generate_mipmap();
@@ -113,7 +113,7 @@ impl Texture {
             pixel::validate_pixels_len(region.size(), pixels)?;
         }
         self.texture.bind();
-        self.texture.sub_image_2d(
+        self.texture.sub_image(
             region.x,
             region.y,
             region.width,

@@ -34,7 +34,7 @@ impl Texture {
         }
     }
 
-    pub fn init_image_2d(&self, width: u32, height: u32, pixels: Option<&[u8]>) {
+    pub fn init_image(&self, width: u32, height: u32, pixels: Option<&[u8]>) {
         unsafe {
             self.gl.tex_image_2d(
                 glow::TEXTURE_2D,
@@ -50,7 +50,7 @@ impl Texture {
         }
     }
 
-    pub fn sub_image_2d(&self, offset_x: u32, offset_y: u32, width: u32, height: u32, pixels: Option<&[u8]>) {
+    pub fn sub_image(&self, offset_x: u32, offset_y: u32, width: u32, height: u32, pixels: Option<&[u8]>) {
         unsafe {
             self.gl.tex_sub_image_2d_u8_slice(
                 glow::TEXTURE_2D,
