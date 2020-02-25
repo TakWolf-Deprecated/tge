@@ -131,7 +131,7 @@ impl Graphics {
                 unsafe {
                     self.gl.viewport(
                         self.viewport.x.round() as i32,
-                        self.viewport.y.round() as i32,
+                        (self.size.height - self.viewport.y - self.viewport.height).round() as i32,
                         self.viewport.width.round() as i32,
                         self.viewport.height.round() as i32,
                     );
@@ -139,14 +139,21 @@ impl Graphics {
                 self.projection_matrix = Mat4::orthographic_rh_gl(0.0, self.viewport.width, 0.0, self.viewport.height, -1.0, 1.0);
             } else {
                 let scale_factor = self.window().scale_factor();
-                let physical_position = LogicalPosition::new(self.viewport.x, self.viewport.y).to_physical::<u32>(scale_factor);
-                let physical_size = LogicalSize::new(self.viewport.width, self.viewport.height).to_physical::<u32>(scale_factor);
+                let physical_viewport = {
+                    let physical_position = LogicalPosition::new(self.viewport.x, self.viewport.y).to_physical::<i32>(scale_factor);
+                    let physical_size = LogicalSize::new(self.viewport.width, self.viewport.height).to_physical::<i32>(scale_factor);
+                    Viewport::new(physical_position.x, physical_position.y, physical_size.width, physical_size.height)
+                };
+                let physical_size = {
+                    let physical_size = LogicalSize::new(self.size.width, self.size.height).to_physical::<i32>(scale_factor);
+                    Size::new(physical_size.width, physical_size.height)
+                };
                 unsafe {
                     self.gl.viewport(
-                        physical_position.x as i32,
-                        physical_position.y as i32,
-                        physical_size.width as i32,
-                        physical_size.height as i32,
+                        physical_viewport.x,
+                        physical_size.height - physical_viewport.y - physical_viewport.height,
+                        physical_viewport.width,
+                        physical_viewport.height,
                     );
                 }
                 self.projection_matrix = Mat4::orthographic_rh_gl(0.0, self.viewport.width, self.viewport.height, 0.0, -1.0, 1.0);
