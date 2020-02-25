@@ -3,6 +3,7 @@ use crate::error::{GameError, GameResult};
 use crate::engine::Engine;
 use glow::Context;
 use std::rc::Rc;
+use std::path::Path;
 
 const DEFAULT_VERTEX_SHADER_SOURCE: &str = include_str!("shaders/default.vert");
 const DEFAULT_FRAGMENT_SHADER_SOURCE: &str = include_str!("shaders/default.frag");
@@ -24,6 +25,18 @@ impl Program {
             fragment_shader_source,
         ).map_err(|error| GameError::InitError(error.into()))?;
         Ok(Self { program: Rc::new(program) })
+    }
+
+    pub fn load<P: AsRef<Path>>(
+        engine: &mut Engine,
+        vertex_shader_path: P,
+        fragment_shader_path: P,
+    ) -> GameResult<Self> {
+        let vertex_shader_source = std::fs::read_to_string(vertex_shader_path)
+            .map_err(|error| GameError::IoError(Box::new(error)))?;
+        let fragment_shader_source = std::fs::read_to_string(fragment_shader_path)
+            .map_err(|error| GameError::IoError(Box::new(error)))?;
+        Self::new(engine, &vertex_shader_source, &fragment_shader_source)
     }
 
     pub(crate) fn default(gl: Rc<Context>) -> GameResult<Rc<opengl::Program>> {
