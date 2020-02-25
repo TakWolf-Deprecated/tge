@@ -1,6 +1,7 @@
 use crate::error::{GameError, GameResult};
 use crate::math::{Position, Delta, Size};
 use crate::event::{Event, KeyAction};
+use crate::filesystem::{Filesystem, FilesystemConfig};
 use crate::window::{Window, WindowConfig};
 use crate::graphics::{Graphics, GraphicsConfig};
 use crate::timer::{Timer, TimerConfig};
@@ -25,6 +26,7 @@ enum State {
 
 pub struct Engine {
     event_loop: Option<EventLoop<()>>,
+    filesystem: Filesystem,
     window: Window,
     graphics: Graphics,
     timer: Timer,
@@ -38,6 +40,10 @@ pub struct Engine {
 }
 
 impl Engine {
+
+    pub fn filesystem(&mut self) -> &mut Filesystem {
+        &mut self.filesystem
+    }
 
     pub fn window(&mut self) -> &mut Window {
         &mut self.window
@@ -302,6 +308,7 @@ impl Engine {
 
 #[derive(Debug, Clone)]
 pub struct EngineBuilder {
+    filesystem_config: Option<FilesystemConfig>,
     window_config: Option<WindowConfig>,
     graphics_config: Option<GraphicsConfig>,
     timer_config: Option<TimerConfig>,
@@ -317,6 +324,7 @@ impl EngineBuilder {
 
     pub fn new() -> Self {
         Self {
+            filesystem_config: None,
             window_config: None,
             graphics_config: None,
             timer_config: None,
@@ -327,6 +335,11 @@ impl EngineBuilder {
             gamepad_config: None,
             audio_config: None,
         }
+    }
+
+    pub fn filesystem_config(mut self, filesystem_config: FilesystemConfig) -> Self {
+        self.filesystem_config = Some(filesystem_config);
+        self
     }
 
     pub fn window_config(mut self, window_config: WindowConfig) -> Self {
@@ -375,6 +388,7 @@ impl EngineBuilder {
     }
 
     pub fn build(self) -> GameResult<Engine> {
+        let filesystem_config = self.filesystem_config.unwrap_or_else(|| FilesystemConfig::new());
         let window_config = self.window_config.unwrap_or_else(|| WindowConfig::new());
         let graphics_config = self.graphics_config.unwrap_or_else(|| GraphicsConfig::new());
         let timer_config = self.timer_config.unwrap_or_else(|| TimerConfig::new());
@@ -387,6 +401,7 @@ impl EngineBuilder {
 
         let event_loop = EventLoop::new();
 
+        let filesystem = Filesystem::new(filesystem_config)?;
         let window = Window::new(window_config, &event_loop)?;
         let graphics = Graphics::new(graphics_config, window.context_wrapper().clone())?;
         let timer = Timer::new(timer_config)?;
@@ -399,6 +414,7 @@ impl EngineBuilder {
 
         Ok(Engine {
             event_loop: Some(event_loop),
+            filesystem,
             window,
             graphics,
             timer,

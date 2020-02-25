@@ -2,6 +2,7 @@ pub mod error;
 pub mod math;
 pub mod engine;
 pub mod event;
+pub mod filesystem;
 pub mod window;
 pub mod graphics;
 pub mod timer;
