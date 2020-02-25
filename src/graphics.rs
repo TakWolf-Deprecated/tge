@@ -1,14 +1,16 @@
 #[allow(dead_code)]
 mod opengl;
-mod color;
 mod program;
+mod color;
+mod vertex;
 pub(crate) mod pixel;
 mod texture;
 mod canvas;
 
 pub use opengl::{FilterMode, Filter, WrapMode, Wrap};
-pub use color::Color;
 pub use program::Program;
+pub use color::Color;
+pub use vertex::Vertex;
 pub use texture::Texture;
 pub use canvas::Canvas;
 
@@ -215,7 +217,8 @@ impl Graphics {
         self.default_wrap = wrap;
     }
 
-    pub fn clear(&mut self, color: Color) {
+    pub fn clear<C: Into<Color>>(&mut self, color: C) {
+        let color = color.into();
         unsafe {
             self.gl.clear_color(color.red, color.green, color.blue, color.alpha);
             self.gl.clear(glow::COLOR_BUFFER_BIT | glow::DEPTH_BUFFER_BIT);
