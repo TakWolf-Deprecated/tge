@@ -3,7 +3,7 @@ mod opengl;
 mod program;
 mod color;
 mod vertex;
-mod vertex_renderer;
+mod mesh;
 pub(crate) mod pixel;
 mod texture;
 mod canvas;
@@ -12,7 +12,7 @@ pub use opengl::{BufferUsage, PrimitiveType, FilterMode, Filter, WrapMode, Wrap}
 pub use program::Program;
 pub use color::Color;
 pub use vertex::Vertex;
-pub use vertex_renderer::{VertexRenderer, VertexRendererBuilder};
+pub use mesh::{Mesh, MeshBuilder};
 pub use texture::Texture;
 pub use canvas::Canvas;
 

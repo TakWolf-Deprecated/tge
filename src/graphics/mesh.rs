@@ -1,10 +1,11 @@
 use super::opengl::{VertexArray, BufferUsage, Buffer, VertexBuffer, ElementBuffer, PrimitiveType};
 use super::vertex;
 use crate::error::{GameError, GameResult};
+use crate::engine::Engine;
 use glow::Context;
 use std::rc::Rc;
 
-pub struct VertexRenderer {
+pub struct Mesh {
     vertex_array: VertexArray,
     vertex_buffer: VertexBuffer,
     vertex_buffer_size: usize,
@@ -12,7 +13,11 @@ pub struct VertexRenderer {
     element_buffer_size: Option<usize>,
 }
 
-impl VertexRenderer {
+impl Mesh {
+
+    pub fn builder(engine: &mut Engine) -> GameResult<MeshBuilder> {
+        MeshBuilder::new(engine.graphics().gl().clone())
+    }
 
     pub(crate) fn vertex_array(&self) -> &VertexArray {
         &self.vertex_array
@@ -90,7 +95,7 @@ impl VertexRenderer {
 
 }
 
-pub struct VertexRendererBuilder {
+pub struct MeshBuilder {
     gl: Rc<Context>,
     vertex_array: VertexArray,
     vertex_buffer: Option<VertexBuffer>,
@@ -99,9 +104,9 @@ pub struct VertexRendererBuilder {
     element_buffer_size: Option<usize>,
 }
 
-impl VertexRendererBuilder {
+impl MeshBuilder {
 
-    pub fn new(gl: Rc<Context>) -> GameResult<Self> {
+    pub(crate) fn new(gl: Rc<Context>) -> GameResult<Self> {
         let vertex_array = VertexArray::new(gl.clone())
             .map_err(|error| GameError::InitError(error.into()))?;
         vertex_array.bind();
@@ -176,7 +181,7 @@ impl VertexRendererBuilder {
         self
     }
 
-    pub fn build(self) -> GameResult<VertexRenderer> {
+    pub fn build(self) -> GameResult<Mesh> {
         let vertex_array = self.vertex_array;
         let vertex_buffer = self.vertex_buffer
             .ok_or_else(|| GameError::InitError("must setup vertex buffer".into()))?;
@@ -189,7 +194,7 @@ impl VertexRendererBuilder {
         if let Some(element_buffer) = element_buffer.as_ref() {
             element_buffer.unbind();
         }
-        Ok(VertexRenderer {
+        Ok(Mesh {
             vertex_array,
             vertex_buffer,
             vertex_buffer_size,
