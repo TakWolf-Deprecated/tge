@@ -144,13 +144,17 @@ impl MeshBuilder {
         self
     }
 
+    fn vertex_buffer(&self) -> &VertexBuffer {
+        self.vertex_buffer.as_ref().expect("vertex buffer has not been setup")
+    }
+
     pub fn vertex_attribute_pointer(self, index: usize, size: usize, stride: usize, offset: usize) -> Self {
-        self.vertex_buffer.as_ref().unwrap().set_attrib_pointer_f32(index, size, stride, offset);
+        self.vertex_buffer().set_attrib_pointer_f32(index, size, stride, offset);
         self
     }
 
     pub fn default_vertex_attribute_pointer(self) -> Self {
-        let vertex_buffer = self.vertex_buffer.as_ref().unwrap();
+        let vertex_buffer = self.vertex_buffer();
         vertex_buffer.set_attrib_pointer_f32(0, vertex::ATTRIBUTE_POSITION_SIZE, vertex::ATTRIBUTE_STRIDE, vertex::ATTRIBUTE_OFFSET_0);
         vertex_buffer.set_attrib_pointer_f32(1, vertex::ATTRIBUTE_UV_SIZE, vertex::ATTRIBUTE_STRIDE, vertex::ATTRIBUTE_OFFSET_1);
         vertex_buffer.set_attrib_pointer_f32(2, vertex::ATTRIBUTE_COLOR_SIZE, vertex::ATTRIBUTE_STRIDE, vertex::ATTRIBUTE_OFFSET_2);
