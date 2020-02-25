@@ -4,17 +4,13 @@ pub struct Audio {}
 
 impl Audio {
 
-    pub(crate) fn new(audio_config: AudioConfig) -> GameResult<Self> {
+    pub(crate) fn new(_: AudioConfig) -> GameResult<Self> {
         Ok(Self {})
     }
 
-    pub(crate) fn suspend(&mut self) {
-        // TODO
-    }
+    pub(crate) fn suspend(&mut self) {}
 
-    pub(crate) fn resume(&mut self) {
-        // TODO
-    }
+    pub(crate) fn resume(&mut self) {}
 
 }
 
