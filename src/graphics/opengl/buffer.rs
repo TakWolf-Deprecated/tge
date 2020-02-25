@@ -88,21 +88,21 @@ impl<T> Buffer<T> {
         }
     }
 
-    pub fn init_data(&self, usage: BufferUsage, data: &[T]) {
+    pub fn init_size(&self, usage: BufferUsage, size: usize) {
         unsafe {
-            self.gl.buffer_data_u8_slice(
+            self.gl.buffer_data_size(
                 self.target.to_flag(),
-                std::slice::from_raw_parts(data.as_ptr().cast(), std::mem::size_of_val(data)),
+                (self.unit_bytes_size * size) as i32,
                 usage.to_flag(),
             );
         }
     }
 
-    pub fn init_data_size(&self, usage: BufferUsage, size: usize) {
+    pub fn init_with_data(&self, usage: BufferUsage, data: &[T]) {
         unsafe {
-            self.gl.buffer_data_size(
+            self.gl.buffer_data_u8_slice(
                 self.target.to_flag(),
-                (self.unit_bytes_size * size) as i32,
+                std::slice::from_raw_parts(data.as_ptr().cast(), std::mem::size_of_val(data)),
                 usage.to_flag(),
             );
         }
