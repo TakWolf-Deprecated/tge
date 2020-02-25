@@ -1,22 +1,26 @@
 use crate::error::{GameError, GameResult};
-use image::{GenericImageView, Pixel};
+use crate::math::Size;
+use crate::graphics::pixel;
 use std::path::Path;
 
 pub struct Icon(winit::window::Icon);
 
 impl Icon {
 
-    pub fn load<P: AsRef<Path>>(path: P) -> GameResult<Self> {
-        let image = image::open(path)
-            .map_err(|error| GameError::IoError(Box::new(error)))?;
-        let (width, height) = image.dimensions();
-        let mut rgba = Vec::with_capacity((width * height * 4) as usize);
-        for (_, _, pixel) in image.pixels() {
-            rgba.extend_from_slice(&pixel.to_rgba().0);
-        }
-        let icon = winit::window::Icon::from_rgba(rgba, width, height)
+    pub fn new<S: Into<Size<u32>>>(size: S, pixels: Vec<u8>) -> GameResult<Self> {
+        let size = size.into();
+        pixel::validate_pixels_len(size, &pixels)?;
+        let icon = winit::window::Icon::from_rgba(pixels, size.width, size.height)
             .map_err(|error| GameError::NotSupportedError(Box::new(error)))?;
         Ok(Self(icon))
+    }
+
+    pub fn load<P: AsRef<Path>>(path: P) -> GameResult<Self> {
+        let image = image::open(path)
+            .map_err(|error| GameError::InitError(Box::new(error)))?
+            .into_rgba();
+        let size = Size::new(image.width(), image.height());
+        Self::new(size, image.into_raw())
     }
 
 }

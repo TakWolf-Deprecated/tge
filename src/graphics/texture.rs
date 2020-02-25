@@ -1,4 +1,4 @@
-use super::{opengl, Filter, Wrap};
+use super::{opengl, Filter, Wrap, pixel};
 use crate::error::{GameError, GameResult};
 use crate::math::{Size, Region};
 use crate::engine::Engine;
@@ -15,7 +15,11 @@ pub struct Texture {
 
 impl Texture {
 
-    pub fn new(engine: &mut Engine, size: Size<u32>, pixels: Option<&[u8]>) -> GameResult<Self> {
+    pub fn new<S: Into<Size<u32>>>(engine: &mut Engine, size: S, pixels: Option<&[u8]>) -> GameResult<Self> {
+        let size = size.into();
+        if let Some(pixels) = pixels {
+            pixel::validate_pixels_len(size, pixels)?;
+        }
         let filter = engine.graphics().default_filter();
         let generate_mipmap = filter.mipmap.is_some();
         let wrap = engine.graphics().default_wrap();
@@ -88,7 +92,11 @@ impl Texture {
         }
     }
 
-    pub fn init_pixels(&mut self, size: Size<u32>, pixels: Option<&[u8]>) {
+    pub fn init_pixels<S: Into<Size<u32>>>(&mut self, size: S, pixels: Option<&[u8]>) -> GameResult {
+        let size = size.into();
+        if let Some(pixels) = pixels {
+            pixel::validate_pixels_len(size, pixels)?;
+        }
         self.texture.bind();
         self.texture.init_image_2d(size.width, size.height, pixels);
         self.size = size;
@@ -99,9 +107,14 @@ impl Texture {
             self.mipmap_generated = false;
         }
         self.texture.unbind();
+        Ok(())
     }
 
-    pub fn update_pixels(&mut self, region: Region<u32>, pixels: Option<&[u8]>) {
+    pub fn update_pixels<R: Into<Region<u32>>>(&mut self, region: R, pixels: Option<&[u8]>) -> GameResult {
+        let region = region.into();
+        if let Some(pixels) = pixels {
+            pixel::validate_pixels_len(region.size(), pixels)?;
+        }
         self.texture.bind();
         self.texture.sub_image_2d(
             region.x,
@@ -117,6 +130,7 @@ impl Texture {
             self.mipmap_generated = false;
         }
         self.texture.unbind();
+        Ok(())
     }
 
 }

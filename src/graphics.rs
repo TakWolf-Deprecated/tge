@@ -1,6 +1,7 @@
 pub mod opengl;
 mod color;
 mod program;
+pub(crate) mod pixel;
 mod texture;
 mod canvas;
 
