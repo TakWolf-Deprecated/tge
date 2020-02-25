@@ -1,4 +1,5 @@
-pub mod opengl;
+#[allow(dead_code)]
+mod opengl;
 mod color;
 mod program;
 pub(crate) mod pixel;
