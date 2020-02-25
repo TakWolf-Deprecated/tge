@@ -91,7 +91,12 @@ impl Graphics {
         }
     }
 
+    pub fn flush(&mut self) {
+        // TODO
+    }
+
     pub(crate) fn present(&mut self) -> GameResult {
+        self.flush();
         self.context_wrapper.swap_buffers()
             .map_err(|error| GameError::RuntimeError(Box::new(error)))
     }
@@ -113,39 +118,44 @@ impl Graphics {
     }
 
     pub fn set_viewport<V: Into<Viewport>>(&mut self, viewport: Option<V>) {
-        self.viewport = viewport.map(|viewport| viewport.into())
+        let viewport = viewport.map(|viewport| viewport.into())
             .unwrap_or_else(|| Viewport::new(0.0, 0.0, self.size.width, self.size.height));
-        if self.current_canvas.is_some() {
-            unsafe {
-                self.gl.viewport(
-                    self.viewport.x.round() as i32,
-                    self.viewport.y.round() as i32,
-                    self.viewport.width.round() as i32,
-                    self.viewport.height.round() as i32,
-                );
+        if self.viewport != viewport {
+            self.flush();
+            self.viewport = viewport;
+            if self.current_canvas.is_some() {
+                unsafe {
+                    self.gl.viewport(
+                        self.viewport.x.round() as i32,
+                        self.viewport.y.round() as i32,
+                        self.viewport.width.round() as i32,
+                        self.viewport.height.round() as i32,
+                    );
+                }
+                self.projection_matrix = Mat4::orthographic_rh_gl(0.0, self.viewport.width, 0.0, self.viewport.height, -1.0, 1.0);
+            } else {
+                let scale_factor = self.window().scale_factor();
+                let physical_position = LogicalPosition::new(self.viewport.x, self.viewport.y).to_physical::<u32>(scale_factor);
+                let physical_size = LogicalSize::new(self.viewport.width, self.viewport.height).to_physical::<u32>(scale_factor);
+                unsafe {
+                    self.gl.viewport(
+                        physical_position.x as i32,
+                        physical_position.y as i32,
+                        physical_size.width as i32,
+                        physical_size.height as i32,
+                    );
+                }
+                self.projection_matrix = Mat4::orthographic_rh_gl(0.0, self.viewport.width, self.viewport.height, 0.0, -1.0, 1.0);
             }
-            self.projection_matrix = Mat4::orthographic_rh_gl(0.0, self.viewport.width, 0.0, self.viewport.height, -1.0, 1.0);
-        } else {
-            let scale_factor = self.window().scale_factor();
-            let physical_position = LogicalPosition::new(self.viewport.x, self.viewport.y).to_physical::<u32>(scale_factor);
-            let physical_size = LogicalSize::new(self.viewport.width, self.viewport.height).to_physical::<u32>(scale_factor);
-            unsafe {
-                self.gl.viewport(
-                    physical_position.x as i32,
-                    physical_position.y as i32,
-                    physical_size.width as i32,
-                    physical_size.height as i32,
-                );
-            }
-            self.projection_matrix = Mat4::orthographic_rh_gl(0.0, self.viewport.width, self.viewport.height, 0.0, -1.0, 1.0);
+            self.current_program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
         }
-        self.current_program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
     }
 
     pub fn use_program(&mut self, program: Option<&Program>) {
         let program = program.map(|program| program.program().clone())
             .unwrap_or_else(|| self.default_program.clone());
         if self.current_program != program {
+            self.flush();
             self.current_program = program;
             self.current_program.bind();
             self.current_program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
@@ -158,6 +168,7 @@ impl Graphics {
             None => (None, None),
         };
         if self.current_canvas != canvas {
+            self.flush();
             if canvas.is_none() {
                 if let Some(canvas) = &self.current_canvas {
                     canvas.unbind();
