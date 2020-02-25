@@ -51,11 +51,8 @@ impl Texture {
     }
 
     pub fn load<P: AsRef<Path>>(engine: &mut Engine, path: P) -> GameResult<Self> {
-        let image = image::open(path)
-            .map_err(|error| GameError::InitError(Box::new(error)))?
-            .into_rgba();
-        let size = Size::new(image.width(), image.height());
-        Self::new(engine, size, Some(image.into_raw().as_slice()))
+        let bytes = engine.filesystem().read(path)?;
+        Self::from_bytes(engine, &bytes)
     }
 
     pub fn size(&self) -> Size<u32> {

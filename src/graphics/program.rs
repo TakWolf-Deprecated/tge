@@ -32,10 +32,8 @@ impl Program {
         vertex_shader_path: P,
         fragment_shader_path: P,
     ) -> GameResult<Self> {
-        let vertex_shader_source = std::fs::read_to_string(vertex_shader_path)
-            .map_err(|error| GameError::IoError(Box::new(error)))?;
-        let fragment_shader_source = std::fs::read_to_string(fragment_shader_path)
-            .map_err(|error| GameError::IoError(Box::new(error)))?;
+        let vertex_shader_source = engine.filesystem().read_to_string(vertex_shader_path)?;
+        let fragment_shader_source = engine.filesystem().read_to_string(fragment_shader_path)?;
         Self::new(engine, &vertex_shader_source, &fragment_shader_source)
     }
 

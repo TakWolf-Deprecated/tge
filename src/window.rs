@@ -6,6 +6,7 @@ pub use fullscreen::FullscreenMode;
 
 use crate::error::{GameError, GameResult};
 use crate::math::{Position, Size};
+use crate::filesystem::Filesystem;
 use winit::event_loop::EventLoop;
 use winit::window::WindowBuilder;
 use winit::dpi::{LogicalPosition, LogicalSize};
@@ -26,12 +27,13 @@ pub struct Window {
 
 impl Window {
 
-    pub(crate) fn new(window_config: WindowConfig, event_loop: &EventLoop<()>) -> GameResult<Self> {
+    pub(crate) fn new(window_config: WindowConfig, event_loop: &EventLoop<()>, filesystem: &Filesystem) -> GameResult<Self> {
         let mut window_builder = WindowBuilder::new()
             .with_title(&window_config.title)
             .with_window_icon(match window_config.icon {
                 Some(path) => {
-                    let icon = Icon::load(path)?;
+                    let bytes = filesystem.read(path)?;
+                    let icon = Icon::from_bytes(&bytes)?;
                     Some(icon.into())
                 }
                 None => None,

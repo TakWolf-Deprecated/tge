@@ -1,5 +1,6 @@
 use crate::error::{GameError, GameResult};
 use crate::math::Size;
+use crate::engine::Engine;
 use crate::graphics::pixel;
 use std::path::Path;
 
@@ -15,12 +16,17 @@ impl Icon {
         Ok(Self(icon))
     }
 
-    pub fn load<P: AsRef<Path>>(path: P) -> GameResult<Self> {
-        let image = image::open(path)
+    pub fn from_bytes(bytes: &[u8]) -> GameResult<Self> {
+        let image = image::load_from_memory(bytes)
             .map_err(|error| GameError::InitError(Box::new(error)))?
             .into_rgba();
         let size = Size::new(image.width(), image.height());
         Self::new(size, image.into_raw())
+    }
+
+    pub fn load<P: AsRef<Path>>(engine: &mut Engine, path: P) -> GameResult<Self> {
+        let bytes = engine.filesystem().read(path)?;
+        Self::from_bytes(&bytes)
     }
 
 }

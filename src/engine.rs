@@ -402,7 +402,7 @@ impl EngineBuilder {
         let event_loop = EventLoop::new();
 
         let filesystem = Filesystem::new(filesystem_config)?;
-        let window = Window::new(window_config, &event_loop)?;
+        let window = Window::new(window_config, &event_loop, &filesystem)?;
         let graphics = Graphics::new(graphics_config, window.context_wrapper().clone())?;
         let timer = Timer::new(timer_config)?;
         let keyboard = Keyboard::new(keyboard_config)?;
