@@ -1,5 +1,6 @@
 use super::opengl::{VertexArray, BufferUsage, Buffer, VertexBuffer, ElementBuffer, PrimitiveType};
 use super::vertex;
+use super::vertex::{Vertex, Vertices};
 use crate::error::{GameError, GameResult};
 use crate::engine::Engine;
 use glow::Context;
@@ -37,10 +38,18 @@ impl Mesh {
         self.vertex_buffer_size = data.len();
     }
 
+    pub fn init_vertex_buffer_with_vertices(&mut self, usage: BufferUsage, vertices: &[Vertex]) {
+        self.init_vertex_buffer_with_data(usage, &vertices.to_raw_data());
+    }
+
     pub fn update_vertex_data(&self, offset: usize, data: &[f32]) {
         self.vertex_buffer.bind();
         self.vertex_buffer.sub_data(offset, data);
         self.vertex_buffer.unbind();
+    }
+
+    pub fn update_vertices(&self, offset: usize, vertices: &[Vertex]) {
+        self.update_vertex_data(offset, &vertices.to_raw_data());
     }
 
     pub fn vertex_buffer_size(&self) -> usize {
@@ -142,6 +151,10 @@ impl MeshBuilder {
         self.vertex_buffer = Some(vertex_buffer);
         self.vertex_buffer_size = Some(data.len());
         self
+    }
+
+    pub fn init_vertex_buffer_with_vertices(mut self, usage: BufferUsage, vertices: &[Vertex]) -> Self {
+        self.init_vertex_buffer_with_data(usage, &vertices.to_raw_data())
     }
 
     fn vertex_buffer(&self) -> &VertexBuffer {
