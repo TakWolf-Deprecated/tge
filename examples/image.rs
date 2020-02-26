@@ -4,6 +4,8 @@ use tge::window::WindowConfig;
 use tge::graphics::*;
 use tge::game::Game;
 
+const TITLE: &str = "Image";
+
 struct App {
     ferris: Texture,
 }
@@ -22,7 +24,7 @@ impl App {
 impl Game for App {
 
     fn update(&mut self, engine: &mut Engine) -> GameResult {
-        let title = format!("FPS: {}", engine.timer().real_time_fps().round());
+        let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
         Ok(())
     }
@@ -54,7 +56,7 @@ impl Game for App {
 fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
-            .title("My Game")
+            .title(TITLE)
             .inner_size((800, 600)))
         .build()?
         .run_with(App::new)
