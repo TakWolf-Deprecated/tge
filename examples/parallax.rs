@@ -30,7 +30,7 @@ impl App {
         let mountains = Texture::load(engine, "assets/parallax-mountain/mountains.png")?;
         let trees = Texture::load(engine, "assets/parallax-mountain/trees.png")?;
         let foreground_trees = Texture::load(engine, "assets/parallax-mountain/foreground-trees.png")?;
-        let camera = Position::new(view_size.width / 2.0, view_size.height / 2.0);
+        let camera = Position::new(scene_size.width / 2.0, scene_size.height / 2.0);
         Ok(Self {
             view_size,
             scene_size,
