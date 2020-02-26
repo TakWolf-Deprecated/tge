@@ -82,10 +82,6 @@ impl Texture {
         })
     }
 
-    pub fn size(&self) -> Size<u32> {
-        self.size
-    }
-
     pub fn filter(&self) -> Filter {
         self.filter
     }
@@ -159,9 +155,11 @@ impl Texture {
 
 }
 
-pub(crate) trait TextureHolder {
+pub trait TextureHolder {
 
     fn texture(&self) -> &Rc<opengl::Texture>;
+
+    fn size(&self) -> Size<u32>;
 
 }
 
@@ -169,6 +167,10 @@ impl TextureHolder for Texture {
 
     fn texture(&self) -> &Rc<opengl::Texture> {
         &self.texture
+    }
+
+    fn size(&self) -> Size<u32> {
+        self.size
     }
 
 }

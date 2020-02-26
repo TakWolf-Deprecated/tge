@@ -18,11 +18,10 @@ pub use opengl::{PrimitiveType, FilterMode, Filter, WrapMode, Wrap};
 pub use program::Program;
 pub use color::Color;
 pub use vertex::Vertex;
-pub use texture::Texture;
+pub use texture::{Texture, TextureHolder};
 pub use canvas::Canvas;
 pub use draw_command::{VertexDrawParams, SpriteDrawParams};
 
-use texture::TextureHolder;
 use crate::error::{GameError, GameResult};
 use crate::math::{Position, Point, Size, Region, Viewport};
 use winit::window::Window;
@@ -316,7 +315,7 @@ impl Graphics {
 
     pub fn draw_vertices(
         &mut self,
-        texture: Option<&Texture>,
+        texture: Option<&dyn TextureHolder>,
         params: VertexDrawParams,
         vertices: Vec<Vertex>,
         elements: Option<Vec<u32>>,
@@ -332,7 +331,7 @@ impl Graphics {
         self.append_vertices_and_elements(vertices, elements);
     }
 
-    pub fn draw_sprite(&mut self, texture: Option<&Texture>, params: SpriteDrawParams) {
+    pub fn draw_sprite(&mut self, texture: Option<&dyn TextureHolder>, params: SpriteDrawParams) {
         let (texture, texture_size) = match texture {
             Some(texture) => (texture.texture().clone(), texture.size()),
             None => (self.default_texture.texture().clone(), self.default_texture.size()),

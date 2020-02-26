@@ -30,10 +30,6 @@ impl Canvas {
         &self.framebuffer
     }
 
-    pub fn size(&self) -> Size<u32> {
-        self.texture.size()
-    }
-
     pub fn filter(&self) -> Filter {
         self.texture.filter()
     }
@@ -56,6 +52,10 @@ impl TextureHolder for Canvas {
 
     fn texture(&self) -> &Rc<opengl::Texture> {
         self.texture.texture()
+    }
+
+    fn size(&self) -> Size<u32> {
+        self.texture.size()
     }
 
 }
