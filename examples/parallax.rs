@@ -146,7 +146,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((272 * 4, 160 * 4)))
+            .inner_size((272 * 2, 160 * 2)))
         .graphics_config(GraphicsConfig::new()
             .default_filter(Filter::new(
                 FilterMode::Nearest,
