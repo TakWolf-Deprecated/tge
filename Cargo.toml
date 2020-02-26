@@ -19,3 +19,6 @@ image = "0.23.0"
 rusttype = "0.8.2"
 rodio = "0.10.0"
 gilrs = "0.7.4"
+
+[dev-dependencies]
+rand = "0.7.3"
