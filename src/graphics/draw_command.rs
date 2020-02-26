@@ -9,13 +9,27 @@ pub struct DrawCommand {
 }
 
 #[derive(Debug, Default, Copy, Clone, PartialEq)]
+pub struct VertexDrawParams {
+    pub(crate) primitive_type: Option<PrimitiveType>,
+}
+
+impl VertexDrawParams {
+
+    pub fn primitive_type(mut self, primitive_type: PrimitiveType) -> Self {
+        self.primitive_type = Some(primitive_type);
+        self
+    }
+
+}
+
+#[derive(Debug, Default, Copy, Clone, PartialEq)]
 pub struct SpriteDrawParams {
-    pub source: Option<Region>,
-    pub origin: Option<Point>,
-    pub position: Option<Position>,
-    pub rotation: Option<Angle>,
-    pub scale: Option<Scale>,
-    pub colors: Option<[Color; 4]>,
+    pub(crate) source: Option<Region>,
+    pub(crate) origin: Option<Point>,
+    pub(crate) position: Option<Position>,
+    pub(crate) rotation: Option<Angle>,
+    pub(crate) scale: Option<Scale>,
+    pub(crate) colors: Option<[Color; 4]>,
 }
 
 impl SpriteDrawParams {

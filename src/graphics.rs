@@ -20,7 +20,7 @@ pub use color::Color;
 pub use vertex::Vertex;
 pub use texture::Texture;
 pub use canvas::Canvas;
-pub use draw_command::SpriteDrawParams;
+pub use draw_command::{VertexDrawParams, SpriteDrawParams};
 
 use texture::TextureHolder;
 use crate::error::{GameError, GameResult};
@@ -312,16 +312,18 @@ impl Graphics {
     pub fn draw_vertices(
         &mut self,
         texture: Option<&Texture>,
-        primitive_type: PrimitiveType,
+        params: VertexDrawParams,
         vertices: Vec<Vertex>,
         elements: Option<Vec<u32>>,
     ) {
         let texture = texture.map(|texture| texture.texture().clone())
             .unwrap_or_else(|| self.default_texture.texture().clone());
+
         self.switch_draw_command(DrawCommand {
             texture,
-            primitive_type,
+            primitive_type: params.primitive_type.unwrap_or(PrimitiveType::Triangles),
         });
+
         self.append_vertices_and_elements(vertices, elements);
     }
 
