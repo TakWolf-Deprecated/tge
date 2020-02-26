@@ -31,6 +31,10 @@ impl Mesh {
         self.vertex_buffer_size = size;
     }
 
+    pub fn init_vertex_buffer_with_vertex_size(&mut self, usage: BufferUsage, size: usize) {
+        self.init_vertex_buffer_with_data_size(usage, vertex::ATTRIBUTE_STRIDE * size);
+    }
+
     pub fn init_vertex_buffer_with_data(&mut self, usage: BufferUsage, data: &[f32]) {
         self.vertex_buffer.bind();
         self.vertex_buffer.init_with_data(usage, data);
@@ -141,6 +145,10 @@ impl MeshBuilder {
         self.vertex_buffer = Some(vertex_buffer);
         self.vertex_buffer_size = Some(size);
         self
+    }
+
+    pub fn init_vertex_buffer_with_vertex_size(mut self, usage: BufferUsage, size: usize) -> Self {
+        self.init_vertex_buffer_size(usage, vertex::ATTRIBUTE_STRIDE * size)
     }
 
     pub fn init_vertex_buffer_with_data(mut self, usage: BufferUsage, data: &[f32]) -> Self {
