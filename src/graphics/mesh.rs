@@ -81,13 +81,13 @@ impl Mesh {
         self.element_buffer_size
     }
 
-    pub fn draw_arrays(&self, primitive: PrimitiveType, first: usize, count: usize) {
+    pub(crate) fn draw_arrays(&self, primitive: PrimitiveType, first: usize, count: usize) {
         self.vertex_array.bind();
         self.vertex_array.draw_arrays(primitive, first, count);
         self.vertex_array.unbind();
     }
 
-    pub fn draw_elements(&self, primitive: PrimitiveType, count: usize, offset: usize) {
+    pub(crate) fn draw_elements(&self, primitive: PrimitiveType, count: usize, offset: usize) {
         self.vertex_array.bind();
         self.vertex_array.draw_elements(primitive, count, offset);
         self.vertex_array.unbind();
