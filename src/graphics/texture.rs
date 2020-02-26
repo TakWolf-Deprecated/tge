@@ -1,7 +1,8 @@
-use super::{opengl, Filter, Wrap, pixel};
+use super::{opengl, FilterMode, Filter, WrapMode, Wrap, pixel};
 use crate::error::{GameError, GameResult};
 use crate::math::{Size, Region};
 use crate::engine::Engine;
+use glow::Context;
 use std::rc::Rc;
 use std::path::Path;
 
@@ -53,6 +54,17 @@ impl Texture {
     pub fn load<P: AsRef<Path>>(engine: &mut Engine, path: P) -> GameResult<Self> {
         let bytes = engine.filesystem().read(path)?;
         Self::from_bytes(engine, &bytes)
+    }
+
+    pub(crate) fn white_1_x_1(gl: Rc<Context>) -> GameResult<Rc<opengl::Texture>> {
+        let texture = opengl::Texture::new(gl)
+            .map_err(|error| GameError::InitError(error.into()))?;
+        texture.bind();
+        texture.init_image(1, 1, Some(&[255, 255, 255, 255]));
+        texture.set_filter(Filter::new(FilterMode::Nearest, FilterMode::Nearest, None));
+        texture.set_wrap(Wrap::uv(WrapMode::Repeat, WrapMode::Repeat));
+        texture.unbind();
+        Ok(Rc::new(texture))
     }
 
     pub fn size(&self) -> Size<u32> {
