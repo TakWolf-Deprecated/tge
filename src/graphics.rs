@@ -358,10 +358,10 @@ impl Graphics {
 
         let model_matrix = Mat4::from_scale_rotation_translation(scale, rotation, position);
 
-        let x0y0 = model_matrix * Vec4::new(- origin.x, - origin.y, 0.0, 1.0);
-        let x1y0 = model_matrix * Vec4::new(source.width - origin.x, - origin.y, 0.0, 1.0);
-        let x0y1 = model_matrix * Vec4::new(- origin.x, source.height - origin.y, 0.0, 1.0);
-        let x1y1 = model_matrix * Vec4::new(source.width - origin.x, source.height - origin.y, 0.0, 1.0);
+        let x0y0 = model_matrix * Vec4::new(-origin.x, -origin.y, 0.0, 1.0);
+        let x1y0 = model_matrix * Vec4::new(-origin.x + source.width, -origin.y, 0.0, 1.0);
+        let x0y1 = model_matrix * Vec4::new(-origin.x, -origin.y + source.height, 0.0, 1.0);
+        let x1y1 = model_matrix * Vec4::new(-origin.x + source.width, -origin.y + source.height, 0.0, 1.0);
 
         let vertices = vec![
             Vertex {
