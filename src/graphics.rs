@@ -91,6 +91,11 @@ impl Graphics {
             primitive_type: PrimitiveType::Triangles,
         };
 
+        unsafe {
+            gl.enable(glow::BLEND);
+            gl.blend_func(glow::SRC_ALPHA, glow::ONE_MINUS_SRC_ALPHA);
+        }
+
         Ok(Self {
             context_wrapper,
             gl,
