@@ -1,0 +1,59 @@
+use super::{opengl, Color, PrimitiveType};
+use crate::math::{Position, Point, Scale, Region, Angle};
+use std::rc::Rc;
+
+#[derive(PartialEq)]
+pub struct DrawCommand {
+    pub texture: Rc<opengl::Texture>,
+    pub primitive_type: PrimitiveType,
+}
+
+#[derive(Debug, Default, Copy, Clone, PartialEq)]
+pub struct SpriteDrawParams {
+    pub source: Option<Region>,
+    pub origin: Option<Point>,
+    pub position: Option<Position>,
+    pub rotation: Option<Angle>,
+    pub scale: Option<Scale>,
+    pub colors: Option<[Color; 4]>,
+}
+
+impl SpriteDrawParams {
+
+    pub fn source<R: Into<Region>>(mut self, source: R) -> Self {
+        self.source = Some(source.into());
+        self
+    }
+
+    pub fn origin<P: Into<Point>>(mut self, origin: P) -> Self {
+        self.origin = Some(origin.into());
+        self
+    }
+
+    pub fn position<P: Into<Position>>(mut self, position: P) -> Self {
+        self.position = Some(position.into());
+        self
+    }
+
+    pub fn rotation(mut self, angle: Angle) -> Self {
+        self.rotation = Some(angle);
+        self
+    }
+
+    pub fn scale<S: Into<Scale>>(mut self, scale: S) -> Self {
+        self.scale = Some(scale.into());
+        self
+    }
+
+    pub fn colors(mut self, colors: [Color; 4]) -> Self {
+        self.colors = Some(colors);
+        self
+    }
+
+    pub fn color<C: Into<Color>>(mut self, color: C) -> Self {
+        let color = color.into();
+        self.colors = Some([color, color, color, color]);
+        self
+    }
+
+}
