@@ -37,6 +37,8 @@ pub struct Graphics {
     current_canvas: Option<Rc<opengl::Framebuffer>>,
     default_filter: Filter,
     default_wrap: Wrap,
+    default_texture: Rc<opengl::Texture>,
+    current_texture: Rc<opengl::Texture>,
 }
 
 impl Graphics {
@@ -59,6 +61,9 @@ impl Graphics {
         current_program.bind();
         current_program.set_uniform_matrix_4("u_projection", &projection_matrix.to_cols_array());
 
+        let default_texture = Texture::white_1_x_1(gl.clone())?;
+        let current_texture = default_texture.clone();
+
         Ok(Self {
             context_wrapper,
             gl,
@@ -70,6 +75,8 @@ impl Graphics {
             current_canvas: None,
             default_filter: graphics_config.default_filter,
             default_wrap: graphics_config.default_wrap,
+            default_texture,
+            current_texture,
         })
     }
 
