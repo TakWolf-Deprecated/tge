@@ -76,6 +76,14 @@ impl Game for App {
                 .rotation(self.second_angle)
                 .color(Color::new(1.0, 0.2, 0.2, 1.0)),
         );
+        engine.graphics().draw_sprite(
+            None,
+            SpriteDrawParams::default()
+                .source((0.0, 0.0, 6.0, 6.0))
+                .origin((3.0, 3.0))
+                .position((300.0, 300.0))
+                .color(Color::BLACK),
+        );
 
         Ok(())
     }
