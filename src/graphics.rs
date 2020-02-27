@@ -180,7 +180,7 @@ impl Graphics {
                 unsafe {
                     self.gl.viewport(
                         self.viewport.x.round() as i32,
-                        (self.size.height - self.viewport.y - self.viewport.height).round() as i32,
+                        self.viewport.y.round() as i32,
                         self.viewport.width.round() as i32,
                         self.viewport.height.round() as i32,
                     );
