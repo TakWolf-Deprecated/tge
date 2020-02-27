@@ -31,6 +31,7 @@ impl Game for App {
 
     fn render(&mut self, engine: &mut Engine) -> GameResult {
         engine.graphics().clear(Color::WHITE);
+
         engine.graphics().draw_sprite(
             Some(&self.ferris),
             SpriteDrawParams::default()
@@ -48,6 +49,7 @@ impl Game for App {
                     Color::WHITE,
                 ]),
         );
+
         Ok(())
     }
 
