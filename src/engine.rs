@@ -113,9 +113,14 @@ impl Engine {
                             }
                         }
                         WindowEvent::Resized(physical_size) => {
-                            self.graphics.resize(physical_size);
                             let scale_factor = self.window.window().scale_factor();
                             let logical_size = physical_size.to_logical::<u32>(scale_factor);
+                            self.graphics.resize(scale_factor, physical_size);
+                            game.event(self, Event::WindowResize(Size::new(logical_size.width, logical_size.height)))?;
+                        }
+                        WindowEvent::ScaleFactorChanged { scale_factor, new_inner_size } => {
+                            let logical_size = new_inner_size.to_logical::<u32>(scale_factor);
+                            self.graphics.resize(scale_factor, *new_inner_size);
                             game.event(self, Event::WindowResize(Size::new(logical_size.width, logical_size.height)))?;
                         }
                         WindowEvent::Moved(physical_position) => {

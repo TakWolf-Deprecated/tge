@@ -122,10 +122,10 @@ impl Graphics {
         &self.gl
     }
 
-    pub(crate) fn resize(&mut self, physical_size: PhysicalSize<u32>) {
+    pub(crate) fn resize(&mut self, scale_factor: f64, physical_size: PhysicalSize<u32>) {
         self.context_wrapper.resize(physical_size);
         if self.current_canvas.is_none() {
-            let logical_size = physical_size.to_logical::<f32>(self.window().scale_factor());
+            let logical_size = physical_size.to_logical::<f32>(scale_factor);
             self.size.set(logical_size.width, logical_size.height);
             self.viewport.set(0.0, 0.0, logical_size.width, logical_size.height);
             unsafe {
