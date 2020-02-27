@@ -5,7 +5,7 @@ use tge::window::WindowConfig;
 use tge::graphics::*;
 use tge::game::Game;
 
-const TITLE: &str = "Parallax";
+const TITLE: &str = "Parallax Mountain";
 
 struct App {
     view_size: Size,
