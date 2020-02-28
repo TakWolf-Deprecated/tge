@@ -12,7 +12,7 @@ impl Icon {
         let size = size.into();
         pixel::validate_pixels_len(size, &pixels)?;
         let icon = winit::window::Icon::from_rgba(pixels, size.width, size.height)
-            .map_err(|error| GameError::NotSupportedError(Box::new(error)))?;
+            .map_err(|error| GameError::InitError(Box::new(error)))?;
         Ok(Self(icon))
     }
 
