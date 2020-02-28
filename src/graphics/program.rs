@@ -14,11 +14,7 @@ pub struct Program {
 
 impl Program {
 
-    pub fn new(
-        engine: &mut Engine,
-        vertex_shader_source: &str,
-        fragment_shader_source: &str,
-    ) -> GameResult<Self> {
+    pub fn new(engine: &mut Engine, vertex_shader_source: &str, fragment_shader_source: &str) -> GameResult<Self> {
         let program = opengl::Program::new(
             engine.graphics().gl().clone(),
             vertex_shader_source,
@@ -27,11 +23,7 @@ impl Program {
         Ok(Self { program: Rc::new(program) })
     }
 
-    pub fn load<P: AsRef<Path>>(
-        engine: &mut Engine,
-        vertex_shader_path: P,
-        fragment_shader_path: P,
-    ) -> GameResult<Self> {
+    pub fn load<P: AsRef<Path>>(engine: &mut Engine, vertex_shader_path: P, fragment_shader_path: P) -> GameResult<Self> {
         let vertex_shader_source = engine.filesystem().read_to_string(vertex_shader_path)?;
         let fragment_shader_source = engine.filesystem().read_to_string(fragment_shader_path)?;
         Self::new(engine, &vertex_shader_source, &fragment_shader_source)

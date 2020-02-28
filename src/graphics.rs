@@ -8,11 +8,11 @@ mod renderer;
 pub(crate) mod pixel;
 mod texture;
 mod canvas;
-mod draw_command;
+mod command;
 
 use opengl::BufferUsage;
 use renderer::{Renderer, RendererBuilder};
-use draw_command::DrawCommand;
+use command::DrawCommand;
 
 pub use opengl::{PrimitiveType, FilterMode, Filter, WrapMode, Wrap};
 pub use program::Program;
@@ -20,7 +20,7 @@ pub use color::Color;
 pub use vertex::Vertex;
 pub use texture::{Texture, TextureHolder};
 pub use canvas::Canvas;
-pub use draw_command::{VertexDrawParams, SpriteDrawParams};
+pub use command::{VertexDrawParams, SpriteDrawParams};
 
 use crate::error::{GameError, GameResult};
 use crate::math::{Position, Point, Size, Region, Viewport};
@@ -298,6 +298,7 @@ impl Graphics {
             }
             elements
         });
+
         let renderer_vertex_size = self.renderer.vertex_size();
         let renderer_element_size = self.renderer.element_size().unwrap_or(0);
         if renderer_vertex_size - self.vertices.len() < vertices.len() || renderer_element_size - self.elements.len() < elements.len() {
@@ -305,6 +306,7 @@ impl Graphics {
         }
         assert!(renderer_vertex_size >= vertices.len(), "no enough renderer vertex size ({}): expect {}", renderer_vertex_size, vertices.len());
         assert!(renderer_element_size >= elements.len(), "no enough renderer element size ({}): expect {}", renderer_element_size, elements.len());
+
         let element_offset = self.vertices.len() as u32;
         self.vertices.extend(vertices);
         for element in elements.iter_mut() {
@@ -313,13 +315,7 @@ impl Graphics {
         self.elements.extend(elements);
     }
 
-    pub fn draw_vertices(
-        &mut self,
-        texture: Option<&dyn TextureHolder>,
-        params: VertexDrawParams,
-        vertices: Vec<Vertex>,
-        elements: Option<Vec<u32>>,
-    ) {
+    pub fn draw_vertices(&mut self, texture: Option<&dyn TextureHolder>, vertices: Vec<Vertex>, elements: Option<Vec<u32>>, params: VertexDrawParams) {
         let texture = texture.map(|texture| texture.texture().clone())
             .unwrap_or_else(|| self.default_texture.texture().clone());
 

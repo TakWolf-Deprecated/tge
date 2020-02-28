@@ -10,11 +10,7 @@ pub struct Program {
 
 impl Program {
 
-    pub fn new(
-        gl: Rc<Context>,
-        vertex_shader_source: &str,
-        fragment_shader_source: &str,
-    ) -> Result<Self, String> {
+    pub fn new(gl: Rc<Context>, vertex_shader_source: &str, fragment_shader_source: &str) -> Result<Self, String> {
         let id = unsafe {
             let vertex_shader_id = gl.create_shader(glow::VERTEX_SHADER)?;
             gl.shader_source(vertex_shader_id, vertex_shader_source);
