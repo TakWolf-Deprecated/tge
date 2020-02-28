@@ -19,7 +19,7 @@ impl Texture {
     pub fn new<S: Into<Size<u32>>>(engine: &mut Engine, size: S, pixels: Option<&[u8]>) -> GameResult<Self> {
         let size = size.into();
         if let Some(pixels) = pixels {
-            pixel::validate_pixels_len(size, pixels)?;
+            pixel::validate_pixels(size, pixels)?;
         }
         let filter = engine.graphics().default_filter();
         let generate_mipmap = filter.mipmap.is_some();
@@ -59,7 +59,7 @@ impl Texture {
     pub(crate) fn white_1_x_1(gl: Rc<Context>) -> GameResult<Self> {
         let size = Size::new(1, 1);
         let pixels = [255, 255, 255, 255];
-        pixel::validate_pixels_len(size, &pixels)?;
+        pixel::validate_pixels(size, &pixels)?;
         let filter = Filter::new(FilterMode::Nearest, FilterMode::Nearest, None);
         let generate_mipmap = filter.mipmap.is_some();
         let wrap = Wrap::uv(WrapMode::Repeat, WrapMode::Repeat);
@@ -115,7 +115,7 @@ impl Texture {
     pub fn init_pixels<S: Into<Size<u32>>>(&mut self, size: S, pixels: Option<&[u8]>) -> GameResult {
         let size = size.into();
         if let Some(pixels) = pixels {
-            pixel::validate_pixels_len(size, pixels)?;
+            pixel::validate_pixels(size, pixels)?;
         }
         self.texture.bind();
         self.texture.init_image(size.width, size.height, pixels);
@@ -133,7 +133,7 @@ impl Texture {
     pub fn update_pixels<R: Into<Region<u32>>>(&mut self, region: R, pixels: Option<&[u8]>) -> GameResult {
         let region = region.into();
         if let Some(pixels) = pixels {
-            pixel::validate_pixels_len(region.size(), pixels)?;
+            pixel::validate_pixels(region.size(), pixels)?;
         }
         self.texture.bind();
         self.texture.sub_image(

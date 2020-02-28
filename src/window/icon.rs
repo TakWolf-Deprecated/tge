@@ -10,7 +10,7 @@ impl Icon {
 
     pub fn new<S: Into<Size<u32>>>(size: S, pixels: Vec<u8>) -> GameResult<Self> {
         let size = size.into();
-        pixel::validate_pixels_len(size, &pixels)?;
+        pixel::validate_pixels(size, &pixels)?;
         let icon = winit::window::Icon::from_rgba(pixels, size.width, size.height)
             .map_err(|error| GameError::InitError(Box::new(error)))?;
         Ok(Self(icon))
