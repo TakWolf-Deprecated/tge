@@ -133,6 +133,12 @@ impl Texture {
         Ok(())
     }
 
+    pub fn init_with_image(&mut self, image: &Image) -> GameResult {
+        let size = image.size();
+        let pixels = image.pixels();
+        self.init_pixels(size, Some(pixels))
+    }
+
     pub fn update_pixels<R: Into<Region<u32>>>(&mut self, region: R, pixels: Option<&[u8]>) -> GameResult {
         let region = region.into();
         if let Some(pixels) = pixels {
