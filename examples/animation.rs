@@ -78,7 +78,7 @@ impl Game for App {
             Some(&self.character),
             SpriteDrawParams::default()
                 .source(*&self.frames[self.current_frame])
-                .scale((4.0, 4.0)),
+                .scale((8.0, 8.0)),
         );
 
         Ok(())
@@ -90,7 +90,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((400, 300)))
+            .inner_size((384, 384)))
         .graphics_config(GraphicsConfig::new()
             .default_filter(Filter::new(
                 FilterMode::Nearest,
