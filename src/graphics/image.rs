@@ -3,6 +3,7 @@ use crate::math::Size;
 use crate::engine::Engine;
 use std::path::Path;
 
+#[derive(Clone)]
 pub struct Image {
     size: Size<u32>,
     pixels: Vec<u8>,
