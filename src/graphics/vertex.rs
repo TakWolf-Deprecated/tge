@@ -30,13 +30,13 @@ impl Vertex {
 
 pub(crate) trait Vertices {
 
-    fn to_raw_data(&self) -> Vec<f32>;
+    fn to_vertex_data(&self) -> Vec<f32>;
 
 }
 
 impl Vertices for [Vertex] {
 
-    fn to_raw_data(&self) -> Vec<f32> {
+    fn to_vertex_data(&self) -> Vec<f32> {
         let mut data = Vec::with_capacity(ATTRIBUTE_STRIDE * self.len());
         for vertex in self {
             data.push(vertex.position.x);

@@ -25,7 +25,7 @@ impl Renderer {
 
     pub fn init_with_vertices(&mut self, usage: BufferUsage, vertices: &[Vertex]) {
         self.vertex_buffer.bind();
-        self.vertex_buffer.init_with_data(usage, &vertices.to_raw_data());
+        self.vertex_buffer.init_with_data(usage, &vertices.to_vertex_data());
         init_vertex_attribute_pointer(&self.vertex_buffer);
         self.vertex_buffer.unbind();
         self.vertex_size = vertices.len();
@@ -33,7 +33,7 @@ impl Renderer {
 
     pub fn update_vertices(&self, offset: usize, vertices: &[Vertex]) {
         self.vertex_buffer.bind();
-        self.vertex_buffer.sub_data(offset, &vertices.to_raw_data());
+        self.vertex_buffer.sub_data(offset, &vertices.to_vertex_data());
         self.vertex_buffer.unbind();
     }
 
@@ -133,7 +133,7 @@ impl RendererBuilder {
         self.assert_vertex_buffer_not_init();
         let vertex_buffer = Buffer::new_vertex(self.gl.clone()).unwrap();
         vertex_buffer.bind();
-        vertex_buffer.init_with_data(usage, &vertices.to_raw_data());
+        vertex_buffer.init_with_data(usage, &vertices.to_vertex_data());
         init_vertex_attribute_pointer(&vertex_buffer);
         self.vertex_buffer = Some(vertex_buffer);
         self.vertex_size = Some(vertices.len());
