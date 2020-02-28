@@ -5,7 +5,7 @@ mod color;
 mod vertex;
 #[allow(dead_code)]
 mod renderer;
-pub(crate) mod pixel;
+mod image;
 mod texture;
 mod canvas;
 mod command;
@@ -18,6 +18,7 @@ pub use opengl::{PrimitiveType, FilterMode, Filter, WrapMode, Wrap};
 pub use program::Program;
 pub use color::Color;
 pub use vertex::Vertex;
+pub use self::image::{Image, validate_pixels};
 pub use texture::{Texture, TextureHolder};
 pub use canvas::Canvas;
 pub use command::{VertexDrawParams, SpriteDrawParams};

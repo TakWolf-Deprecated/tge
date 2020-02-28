@@ -1,4 +1,4 @@
-use super::{opengl, FilterMode, Filter, WrapMode, Wrap, pixel};
+use super::{opengl, FilterMode, Filter, WrapMode, Wrap, Image, validate_pixels};
 use crate::error::{GameError, GameResult};
 use crate::math::{Size, Region};
 use crate::engine::Engine;
@@ -19,7 +19,7 @@ impl Texture {
     pub fn new<S: Into<Size<u32>>>(engine: &mut Engine, size: S, pixels: Option<&[u8]>) -> GameResult<Self> {
         let size = size.into();
         if let Some(pixels) = pixels {
-            pixel::validate_pixels(size, pixels)?;
+            validate_pixels(size, pixels)?;
         }
         let filter = engine.graphics().default_filter();
         let generate_mipmap = filter.mipmap.is_some();
@@ -43,23 +43,26 @@ impl Texture {
         })
     }
 
+    pub fn from_image(engine: &mut Engine, image: &Image) -> GameResult<Self> {
+        let size = image.size();
+        let pixels = image.pixels();
+        Self::new(engine, size, Some(pixels))
+    }
+
     pub fn from_bytes(engine: &mut Engine, bytes: &[u8]) -> GameResult<Self> {
-        let image = image::load_from_memory(bytes)
-            .map_err(|error| GameError::InitError(Box::new(error)))?
-            .into_rgba();
-        let size = Size::new(image.width(), image.height());
-        Self::new(engine, size, Some(image.into_raw().as_slice()))
+        let image = Image::from_bytes(bytes)?;
+        Self::from_image(engine, &image)
     }
 
     pub fn load<P: AsRef<Path>>(engine: &mut Engine, path: P) -> GameResult<Self> {
-        let bytes = engine.filesystem().read(path)?;
-        Self::from_bytes(engine, &bytes)
+        let image = Image::load(engine, path)?;
+        Self::from_image(engine, &image)
     }
 
     pub(crate) fn white_1_x_1(gl: Rc<Context>) -> GameResult<Self> {
         let size = Size::new(1, 1);
         let pixels = [255, 255, 255, 255];
-        pixel::validate_pixels(size, &pixels)?;
+        validate_pixels(size, &pixels)?;
         let filter = Filter::new(FilterMode::Nearest, FilterMode::Nearest, None);
         let generate_mipmap = filter.mipmap.is_some();
         let wrap = Wrap::uv(WrapMode::Repeat, WrapMode::Repeat);
@@ -115,7 +118,7 @@ impl Texture {
     pub fn init_pixels<S: Into<Size<u32>>>(&mut self, size: S, pixels: Option<&[u8]>) -> GameResult {
         let size = size.into();
         if let Some(pixels) = pixels {
-            pixel::validate_pixels(size, pixels)?;
+            validate_pixels(size, pixels)?;
         }
         self.texture.bind();
         self.texture.init_image(size.width, size.height, pixels);
@@ -133,7 +136,7 @@ impl Texture {
     pub fn update_pixels<R: Into<Region<u32>>>(&mut self, region: R, pixels: Option<&[u8]>) -> GameResult {
         let region = region.into();
         if let Some(pixels) = pixels {
-            pixel::validate_pixels(region.size(), pixels)?;
+            validate_pixels(region.size(), pixels)?;
         }
         self.texture.bind();
         self.texture.sub_image(
