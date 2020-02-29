@@ -12,13 +12,14 @@ mod params;
 
 use opengl::BufferUsage;
 use renderer::{Renderer, RendererBuilder};
+use texture::TextureHolder;
 
 pub use opengl::{PrimitiveType, FilterMode, Filter, WrapMode, Wrap};
 pub use program::Program;
 pub use color::Color;
 pub use vertex::Vertex;
 pub use self::image::{Image, validate_pixels};
-pub use texture::{Texture, TextureHolder};
+pub use texture::Texture;
 pub use canvas::Canvas;
 pub use params::SpriteDrawParams;
 
@@ -335,7 +336,7 @@ impl Graphics {
 
     pub fn draw_sprite(&mut self, texture: Option<&dyn TextureHolder>, params: SpriteDrawParams) {
         let (texture, texture_size) = match texture {
-            Some(texture) => (texture.texture().clone(), texture.size()),
+            Some(texture) => (texture.texture().clone(), texture.texture_size()),
             None => (self.default_texture.texture().clone(), self.default_texture.size()),
         };
 
