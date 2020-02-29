@@ -16,7 +16,7 @@ glutin = "0.23.0"
 glow = "0.4.0"
 glam = "0.8.6"
 image = "0.23.0"
-rusttype = "0.8.2"
+fontdue = "0.0.1"
 rodio = "0.10.0"
 gilrs = "0.7.4"
 
