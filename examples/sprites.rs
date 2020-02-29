@@ -47,8 +47,8 @@ impl App {
             sprites.push(Sprite {
                 position: Position::new(x, y),
                 speed: Vector::new(speed_x, speed_y),
-                angle: Angle::Radians(angle),
-                angle_speed: Angle::Radians(angle_speed),
+                angle: Angle::radians(angle),
+                angle_speed: Angle::radians(angle_speed),
                 scale: Scale::new(scale, scale),
                 color: Color::new(red, green, blue, alpha),
             });

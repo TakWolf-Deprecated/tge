@@ -35,9 +35,9 @@ impl Game for App {
         let title = format!("{} - FPS: {}", now_time.format("%H:%M:%S"), engine.timer().real_time_fps().round());
         engine.window().set_title(title);
 
-        self.second_angle = Angle::Degrees(now_time.second() as f32 * 6.0);
-        self.minute_angle = Angle::Degrees(now_time.minute() as f32 * 6.0 + now_time.second() as f32 / 10.0);
-        self.hour_angle = Angle::Degrees(now_time.hour() as f32 * 30.0 + now_time.minute() as f32 / 2.0 + now_time.second() as f32 / 120.0);
+        self.second_angle = Angle::degrees(now_time.second() as f32 * 6.0);
+        self.minute_angle = Angle::degrees(now_time.minute() as f32 * 6.0 + now_time.second() as f32 / 10.0);
+        self.hour_angle = Angle::degrees(now_time.hour() as f32 * 30.0 + now_time.minute() as f32 / 2.0 + now_time.second() as f32 / 120.0);
 
         Ok(())
     }

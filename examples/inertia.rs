@@ -70,7 +70,7 @@ impl Game for App {
         }
 
         if self.speed != 0.0 {
-            let angle_speed = Angle::Degrees(self.speed / 2.0);
+            let angle_speed = Angle::degrees(self.speed / 2.0);
             if engine.keyboard().is_key_hold(KeyCode::Left) || engine.keyboard().is_key_hold(KeyCode::A) {
                 self.angle -= angle_speed;
             }
