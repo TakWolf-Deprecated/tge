@@ -2,7 +2,7 @@ use tge::error::GameResult;
 use tge::math::Angle;
 use tge::engine::{Engine, EngineBuilder};
 use tge::window::WindowConfig;
-use tge::graphics::{Color, Texture, SpriteDrawParams};
+use tge::graphics::*;
 use tge::game::Game;
 use chrono::{Local, Timelike};
 
