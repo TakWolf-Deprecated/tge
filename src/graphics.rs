@@ -21,7 +21,7 @@ pub use vertex::Vertex;
 pub use self::image::{Image, validate_pixels};
 pub use texture::{Texture, TextureHolder};
 pub use canvas::Canvas;
-pub use command::{VertexDrawParams, SpriteDrawParams};
+pub use command::SpriteDrawParams;
 
 use crate::error::{GameError, GameResult};
 use crate::math::{Position, Point, Size, Region, Viewport};
@@ -88,7 +88,7 @@ impl Graphics {
 
         let draw_command = DrawCommand {
             texture: default_texture.texture().clone(),
-            primitive_type: PrimitiveType::Triangles,
+            primitive: PrimitiveType::Triangles,
         };
 
         unsafe {
@@ -142,7 +142,7 @@ impl Graphics {
             self.renderer.update_vertices(0, &self.vertices);
             self.renderer.update_elements(0, &self.elements).expect("renderer update elements error");
             self.draw_command.texture.bind();
-            self.renderer.draw_elements(self.draw_command.primitive_type, self.elements.len(), 0);
+            self.renderer.draw_elements(self.draw_command.primitive, self.elements.len(), 0);
             self.draw_command.texture.unbind();
         }
         self.vertices.clear();
@@ -316,13 +316,13 @@ impl Graphics {
         self.elements.extend(elements);
     }
 
-    pub fn draw_vertices(&mut self, texture: Option<&dyn TextureHolder>, vertices: Vec<Vertex>, elements: Option<Vec<u32>>, params: VertexDrawParams) {
+    pub fn draw_vertices(&mut self, texture: Option<&dyn TextureHolder>, primitive: PrimitiveType, vertices: Vec<Vertex>, elements: Option<Vec<u32>>) {
         let texture = texture.map(|texture| texture.texture().clone())
             .unwrap_or_else(|| self.default_texture.texture().clone());
 
         self.switch_draw_command(DrawCommand {
             texture,
-            primitive_type: params.primitive_type.unwrap_or(PrimitiveType::Triangles),
+            primitive,
         });
 
         self.append_vertices_and_elements(vertices, elements);
@@ -336,7 +336,7 @@ impl Graphics {
 
         self.switch_draw_command(DrawCommand {
             texture,
-            primitive_type: PrimitiveType::Triangles,
+            primitive: PrimitiveType::Triangles,
         });
 
         let texture_size = Size::new(texture_size.width as f32, texture_size.height as f32);

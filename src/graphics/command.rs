@@ -5,21 +5,7 @@ use std::rc::Rc;
 #[derive(PartialEq)]
 pub struct DrawCommand {
     pub texture: Rc<opengl::Texture>,
-    pub primitive_type: PrimitiveType,
-}
-
-#[derive(Debug, Default, Copy, Clone, PartialEq)]
-pub struct VertexDrawParams {
-    pub(crate) primitive_type: Option<PrimitiveType>,
-}
-
-impl VertexDrawParams {
-
-    pub fn primitive_type(mut self, primitive_type: PrimitiveType) -> Self {
-        self.primitive_type = Some(primitive_type);
-        self
-    }
-
+    pub primitive: PrimitiveType,
 }
 
 #[derive(Debug, Default, Copy, Clone, PartialEq)]
