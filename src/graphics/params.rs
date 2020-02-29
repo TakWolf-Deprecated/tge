@@ -1,12 +1,5 @@
-use super::{opengl, Color, PrimitiveType};
+use super::Color;
 use crate::math::{Position, Point, Scale, Region, Angle};
-use std::rc::Rc;
-
-#[derive(PartialEq)]
-pub struct DrawCommand {
-    pub texture: Rc<opengl::Texture>,
-    pub primitive: PrimitiveType,
-}
 
 #[derive(Debug, Default, Copy, Clone, PartialEq)]
 pub struct SpriteDrawParams {

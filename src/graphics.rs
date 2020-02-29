@@ -8,11 +8,10 @@ mod renderer;
 mod image;
 mod texture;
 mod canvas;
-mod command;
+mod params;
 
 use opengl::BufferUsage;
 use renderer::{Renderer, RendererBuilder};
-use command::DrawCommand;
 
 pub use opengl::{PrimitiveType, FilterMode, Filter, WrapMode, Wrap};
 pub use program::Program;
@@ -21,7 +20,7 @@ pub use vertex::Vertex;
 pub use self::image::{Image, validate_pixels};
 pub use texture::{Texture, TextureHolder};
 pub use canvas::Canvas;
-pub use command::SpriteDrawParams;
+pub use params::SpriteDrawParams;
 
 use crate::error::{GameError, GameResult};
 use crate::math::{Position, Point, Size, Region, Viewport};
@@ -38,6 +37,12 @@ const SPRITE_ELEMENTS: [u32; SPRITE_ELEMENT_COUNT] = [
     0, 2, 1,
     1, 2, 3
 ];
+
+#[derive(PartialEq)]
+struct DrawCommand {
+    pub texture: Rc<opengl::Texture>,
+    pub primitive: PrimitiveType,
+}
 
 pub struct Graphics {
     context_wrapper: Rc<ContextWrapper<PossiblyCurrent, Window>>,
