@@ -8,7 +8,7 @@ mod angle;
 use number::Number;
 use float::Float;
 
-pub use vector::{Vector2, Position, Point, Scale, Delta};
+pub use vector::{Vector, Position, Point, Scale, Delta};
 pub use size::Size;
 pub use region::{Region, Viewport};
 pub use angle::Angle;

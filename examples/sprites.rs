@@ -1,5 +1,5 @@
 use tge::error::GameResult;
-use tge::math::{Vector2, Position, Point, Scale, Angle};
+use tge::math::{Vector, Position, Point, Scale, Angle};
 use tge::engine::{Engine, EngineBuilder};
 use tge::window::WindowConfig;
 use tge::graphics::*;
@@ -12,7 +12,7 @@ const SPRITE_COUNT: usize = 1000;
 
 struct Sprite {
     position: Position,
-    speed: Vector2,
+    speed: Vector,
     angle: Angle,
     angle_speed: Angle,
     scale: Scale,
@@ -46,7 +46,7 @@ impl App {
             let alpha = rand.gen_range(0.5, 1.0);
             sprites.push(Sprite {
                 position: Position::new(x, y),
-                speed: Vector2::new(speed_x, speed_y),
+                speed: Vector::new(speed_x, speed_y),
                 angle: Angle::Radians(angle),
                 angle_speed: Angle::Radians(angle_speed),
                 scale: Scale::new(scale, scale),

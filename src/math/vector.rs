@@ -2,17 +2,17 @@ use super::Number;
 use std::ops::{Add, Sub, AddAssign, SubAssign};
 
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Vector2<N: Number = f32> {
+pub struct Vector<N: Number = f32> {
     pub x: N,
     pub y: N,
 }
 
-pub type Position<N = f32> = Vector2<N>;
-pub type Point<N = f32> = Vector2<N>;
-pub type Scale<N = f32> = Vector2<N>;
-pub type Delta<N = f32> = Vector2<N>;
+pub type Position<N = f32> = Vector<N>;
+pub type Point<N = f32> = Vector<N>;
+pub type Scale<N = f32> = Vector<N>;
+pub type Delta<N = f32> = Vector<N>;
 
-impl<N: Number> Vector2<N> {
+impl<N: Number> Vector<N> {
 
     pub fn new(x: N, y: N) -> Self {
         Self { x, y }
@@ -34,7 +34,7 @@ impl<N: Number> Vector2<N> {
 
 }
 
-impl<N: Number> Add for Vector2<N> {
+impl<N: Number> Add for Vector<N> {
 
     type Output = Self;
 
@@ -44,7 +44,7 @@ impl<N: Number> Add for Vector2<N> {
 
 }
 
-impl<N: Number> Sub for Vector2<N> {
+impl<N: Number> Sub for Vector<N> {
 
     type Output = Self;
 
@@ -54,7 +54,7 @@ impl<N: Number> Sub for Vector2<N> {
 
 }
 
-impl<N: Number> AddAssign for Vector2<N> {
+impl<N: Number> AddAssign for Vector<N> {
 
     fn add_assign(&mut self, other: Self) {
         self.x += other.x;
@@ -63,7 +63,7 @@ impl<N: Number> AddAssign for Vector2<N> {
 
 }
 
-impl<N: Number> SubAssign for Vector2<N> {
+impl<N: Number> SubAssign for Vector<N> {
 
     fn sub_assign(&mut self, other: Self) {
         self.x -= other.x;
@@ -72,7 +72,7 @@ impl<N: Number> SubAssign for Vector2<N> {
 
 }
 
-impl<N: Number> From<(N, N)> for Vector2<N> {
+impl<N: Number> From<(N, N)> for Vector<N> {
 
     fn from((x, y): (N, N)) -> Self {
         Self::new(x, y)
@@ -80,7 +80,7 @@ impl<N: Number> From<(N, N)> for Vector2<N> {
 
 }
 
-impl<N: Number> Into<(N, N)> for Vector2<N> {
+impl<N: Number> Into<(N, N)> for Vector<N> {
 
     fn into(self) -> (N, N) {
         (self.x, self.y)
@@ -91,19 +91,19 @@ impl<N: Number> Into<(N, N)> for Vector2<N> {
 #[cfg(test)]
 mod tests {
 
-    use super::Vector2;
+    use super::Vector;
 
     #[test]
     fn operator() {
-        let mut vec = Vector2::<f32>::new(100.0, 50.0);
-        vec = vec + Vector2::<f32>::new(40.0, 20.0);
-        assert_eq!(vec, Vector2::<f32>::new(140.0, 70.0));
-        vec = vec - Vector2::<f32>::new(40.0, 70.0);
-        assert_eq!(vec, Vector2::<f32>::new(100.0, 0.0));
-        vec += Vector2::<f32>::new(20.0, 50.0);
-        assert_eq!(vec, Vector2::new(120.0, 50.0));
-        vec -= Vector2::<f32>::new(80.0, 10.0);
-        assert_eq!(vec, Vector2::new(40.0, 40.0));
+        let mut vec = Vector::<f32>::new(100.0, 50.0);
+        vec = vec + Vector::<f32>::new(40.0, 20.0);
+        assert_eq!(vec, Vector::<f32>::new(140.0, 70.0));
+        vec = vec - Vector::<f32>::new(40.0, 70.0);
+        assert_eq!(vec, Vector::<f32>::new(100.0, 0.0));
+        vec += Vector::<f32>::new(20.0, 50.0);
+        assert_eq!(vec, Vector::new(120.0, 50.0));
+        vec -= Vector::<f32>::new(80.0, 10.0);
+        assert_eq!(vec, Vector::new(40.0, 40.0));
     }
 
 }

@@ -1,5 +1,5 @@
 use tge::error::GameResult;
-use tge::math::{Vector2, Position, Size};
+use tge::math::{Vector, Position, Size};
 use tge::engine::{Engine, EngineBuilder};
 use tge::window::WindowConfig;
 use tge::graphics::*;
@@ -11,7 +11,7 @@ struct App {
     dvd_logo: Texture,
     size: Size,
     position: Position,
-    speed: Vector2,
+    speed: Vector,
 }
 
 impl App {
@@ -24,7 +24,7 @@ impl App {
         };
         let graphics_size = engine.graphics().size();
         let position = Position::new(graphics_size.width / 2.0, graphics_size.height / 2.0);
-        let speed = Vector2::new(1.0, 1.0);
+        let speed = Vector::new(1.0, 1.0);
         Ok(Self {
             dvd_logo,
             size,
