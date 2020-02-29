@@ -346,25 +346,25 @@ impl Graphics {
         });
 
         let texture_size = Size::new(texture_size.width as f32, texture_size.height as f32);
-        let source = params.source.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
+        let region = params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
         let origin = params.origin.unwrap_or_else(|| Point::zero());
         let position = params.position.map(|position| Vec3::new(position.x, position.y, 0.0)).unwrap_or_else(|| Vec3::zero());
         let rotation = params.rotation.map(|angle| Quat::from_rotation_z(angle.radians_value())).unwrap_or_else(|| Quat::from_rotation_z(0.0));
         let scale = params.scale.map(|scale| Vec3::new(scale.x, scale.y, 1.0)).unwrap_or_else(|| Vec3::new(1.0, 1.0, 1.0));
         let uv = Region::new(
-            source.x / texture_size.width,
-            source.y / texture_size.height,
-            source.width / texture_size.width,
-            source.height / texture_size.height,
+            region.x / texture_size.width,
+            region.y / texture_size.height,
+            region.width / texture_size.width,
+            region.height / texture_size.height,
         );
         let colors = params.colors.unwrap_or_else(|| [Color::WHITE, Color::WHITE, Color::WHITE, Color::WHITE]);
 
         let model_matrix = Mat4::from_scale_rotation_translation(scale, rotation, position);
 
         let x0y0 = model_matrix * Vec4::new(-origin.x, -origin.y, 0.0, 1.0);
-        let x1y0 = model_matrix * Vec4::new(-origin.x + source.width, -origin.y, 0.0, 1.0);
-        let x0y1 = model_matrix * Vec4::new(-origin.x, -origin.y + source.height, 0.0, 1.0);
-        let x1y1 = model_matrix * Vec4::new(-origin.x + source.width, -origin.y + source.height, 0.0, 1.0);
+        let x1y0 = model_matrix * Vec4::new(-origin.x + region.width, -origin.y, 0.0, 1.0);
+        let x0y1 = model_matrix * Vec4::new(-origin.x, -origin.y + region.height, 0.0, 1.0);
+        let x1y1 = model_matrix * Vec4::new(-origin.x + region.width, -origin.y + region.height, 0.0, 1.0);
 
         let vertices = vec![
             Vertex {

@@ -77,7 +77,7 @@ impl Game for App {
         engine.graphics().draw_sprite(
             Some(&self.character),
             SpriteDrawParams::default()
-                .source(*&self.frames[self.current_frame])
+                .region(*&self.frames[self.current_frame])
                 .scale((8.0, 8.0)),
         );
 

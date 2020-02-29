@@ -57,25 +57,25 @@ impl App {
         engine.graphics().draw_sprite(
             Some(&self.mountain_far),
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 1000.0, 160.0))
+                .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x / 64.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             Some(&self.mountains),
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 1000.0, 160.0))
+                .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x / 32.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             Some(&self.trees),
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 1000.0, 160.0))
+                .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x / 2.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             Some(&self.foreground_trees),
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 1000.0, 160.0))
+                .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x, 0.0)),
         );
     }

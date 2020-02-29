@@ -50,25 +50,25 @@ impl App {
         engine.graphics().draw_sprite(
             Some(&self.back_trees),
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 1000.0, 160.0))
+                .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x / 8.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             Some(&self.lights),
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 1000.0, 160.0))
+                .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x / 4.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             Some(&self.middle_trees),
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 1000.0, 160.0))
+                .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x / 2.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             Some(&self.front_trees),
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 1000.0, 160.0))
+                .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x, 0.0)),
         );
     }

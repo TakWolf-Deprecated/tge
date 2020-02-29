@@ -52,7 +52,7 @@ impl Game for App {
         engine.graphics().draw_sprite(
             None,
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 30.0, 200.0))
+                .region((0.0, 0.0, 30.0, 200.0))
                 .origin((15.0, 190.0))
                 .position((300.0, 300.0))
                 .rotation(self.hour_angle)
@@ -61,7 +61,7 @@ impl Game for App {
         engine.graphics().draw_sprite(
             None,
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 20.0, 240.0))
+                .region((0.0, 0.0, 20.0, 240.0))
                 .origin((10.0, 220.0))
                 .position((300.0, 300.0))
                 .rotation(self.minute_angle)
@@ -70,7 +70,7 @@ impl Game for App {
         engine.graphics().draw_sprite(
             None,
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 10.0, 270.0))
+                .region((0.0, 0.0, 10.0, 270.0))
                 .origin((5.0, 240.0))
                 .position((300.0, 300.0))
                 .rotation(self.second_angle)
@@ -79,7 +79,7 @@ impl Game for App {
         engine.graphics().draw_sprite(
             None,
             SpriteDrawParams::default()
-                .source((0.0, 0.0, 6.0, 6.0))
+                .region((0.0, 0.0, 6.0, 6.0))
                 .origin((3.0, 3.0))
                 .position((300.0, 300.0))
                 .color(Color::BLACK),
