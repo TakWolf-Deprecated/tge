@@ -1,6 +1,5 @@
+use super::{vertex, Vertex};
 use super::opengl::{VertexArray, BufferUsage, Buffer, VertexBuffer, ElementBuffer, PrimitiveType};
-use super::vertex;
-use super::vertex::{Vertex, Vertices};
 use crate::error::{GameError, GameResult};
 use glow::Context;
 use std::rc::Rc;
@@ -25,7 +24,7 @@ impl Renderer {
 
     pub fn init_with_vertices(&mut self, usage: BufferUsage, vertices: &[Vertex]) {
         self.vertex_buffer.bind();
-        self.vertex_buffer.init_with_data(usage, &vertices.to_vertex_data());
+        self.vertex_buffer.init_with_data(usage, &convert_vertices_to_data(vertices));
         init_vertex_attribute_pointer(&self.vertex_buffer);
         self.vertex_buffer.unbind();
         self.vertex_size = vertices.len();
@@ -33,7 +32,7 @@ impl Renderer {
 
     pub fn update_vertices(&self, offset: usize, vertices: &[Vertex]) {
         self.vertex_buffer.bind();
-        self.vertex_buffer.sub_data(offset, &vertices.to_vertex_data());
+        self.vertex_buffer.sub_data(offset, &convert_vertices_to_data(vertices));
         self.vertex_buffer.unbind();
     }
 
@@ -133,7 +132,7 @@ impl RendererBuilder {
         self.assert_vertex_buffer_not_init();
         let vertex_buffer = Buffer::new_vertex(self.gl.clone()).unwrap();
         vertex_buffer.bind();
-        vertex_buffer.init_with_data(usage, &vertices.to_vertex_data());
+        vertex_buffer.init_with_data(usage, &convert_vertices_to_data(vertices));
         init_vertex_attribute_pointer(&vertex_buffer);
         self.vertex_buffer = Some(vertex_buffer);
         self.vertex_size = Some(vertices.len());
@@ -192,4 +191,19 @@ fn init_vertex_attribute_pointer(vertex_buffer: &VertexBuffer) {
     vertex_buffer.set_attrib_pointer_f32(0, vertex::ATTRIBUTE_POSITION_SIZE, vertex::ATTRIBUTE_STRIDE, vertex::ATTRIBUTE_OFFSET_0);
     vertex_buffer.set_attrib_pointer_f32(1, vertex::ATTRIBUTE_UV_SIZE, vertex::ATTRIBUTE_STRIDE, vertex::ATTRIBUTE_OFFSET_1);
     vertex_buffer.set_attrib_pointer_f32(2, vertex::ATTRIBUTE_COLOR_SIZE, vertex::ATTRIBUTE_STRIDE, vertex::ATTRIBUTE_OFFSET_2);
+}
+
+fn convert_vertices_to_data(vertices: &[Vertex]) -> Vec<f32> {
+    let mut data = Vec::with_capacity(vertex::ATTRIBUTE_STRIDE * vertices.len());
+    for vertex in vertices {
+        data.push(vertex.position.x);
+        data.push(vertex.position.y);
+        data.push(vertex.uv.x);
+        data.push(vertex.uv.y);
+        data.push(vertex.color.red);
+        data.push(vertex.color.green);
+        data.push(vertex.color.blue);
+        data.push(vertex.color.alpha);
+    }
+    data
 }
