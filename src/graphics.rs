@@ -410,8 +410,8 @@ impl GraphicsConfig {
         Self {
             default_filter: Filter::default(),
             default_wrap: Wrap::default(),
-            renderer_vertex_size: SPRITE_VERTEX_COUNT * 1024,
-            renderer_element_size: SPRITE_ELEMENT_COUNT * 1024,
+            renderer_vertex_size: SPRITE_VERTEX_COUNT * 2048,
+            renderer_element_size: SPRITE_ELEMENT_COUNT * 2048,
         }
     }
 
