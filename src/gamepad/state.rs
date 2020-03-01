@@ -2,7 +2,7 @@ use super::{GamepadButton, GamepadAxis};
 use crate::event::{KeyState, KeyAction};
 use std::collections::HashMap;
 
-pub(crate) struct GamepadState {
+pub struct GamepadState {
     connected: bool,
     button_states: HashMap<GamepadButton, KeyState>,
     button_values: HashMap<GamepadButton, f32>,
