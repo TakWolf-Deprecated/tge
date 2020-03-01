@@ -138,8 +138,6 @@ impl<T> PartialEq for Buffer<T> {
 
 }
 
-const F32_BYTES_SIZE: usize = std::mem::size_of::<f32>();
-
 pub type VertexBuffer = Buffer<f32>;
 
 impl VertexBuffer {
@@ -155,8 +153,8 @@ impl VertexBuffer {
                 size as i32,
                 glow::FLOAT,
                 false,
-                (F32_BYTES_SIZE * stride) as i32,
-                (F32_BYTES_SIZE * offset) as i32,
+                (self.unit_bytes_size * stride) as i32,
+                (self.unit_bytes_size * offset) as i32,
             );
             self.gl.enable_vertex_attrib_array(index as u32);
         }
