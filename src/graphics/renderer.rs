@@ -74,13 +74,13 @@ impl Renderer {
         self.element_size
     }
 
-    pub(crate) fn draw_arrays(&self, primitive: PrimitiveType, first: usize, count: usize) {
+    pub fn draw_arrays(&self, primitive: PrimitiveType, first: usize, count: usize) {
         self.vertex_array.bind();
         self.vertex_array.draw_arrays(primitive, first, count);
         self.vertex_array.unbind();
     }
 
-    pub(crate) fn draw_elements(&self, primitive: PrimitiveType, count: usize, offset: usize) {
+    pub fn draw_elements(&self, primitive: PrimitiveType, count: usize, offset: usize) {
         self.vertex_array.bind();
         self.vertex_array.draw_elements(primitive, count, offset);
         self.vertex_array.unbind();
@@ -99,7 +99,7 @@ pub struct RendererBuilder {
 
 impl RendererBuilder {
 
-    pub(crate) fn new(gl: Rc<Context>) -> GameResult<Self> {
+    pub fn new(gl: Rc<Context>) -> GameResult<Self> {
         let vertex_array = VertexArray::new(gl.clone())
             .map_err(|error| GameError::InitError(error.into()))?;
         vertex_array.bind();
