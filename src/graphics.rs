@@ -315,10 +315,13 @@ impl Graphics {
         assert!(renderer_vertex_size >= vertices.len(), "no enough renderer vertex size ({}): expect {}", renderer_vertex_size, vertices.len());
         assert!(renderer_element_size >= elements.len(), "no enough renderer element size ({}): expect {}", renderer_element_size, elements.len());
 
+        let append_vertex_count = vertices.len() as u32;
         let element_offset = self.vertices.len() as u32;
         self.vertices.extend(vertices);
         for element in elements.iter_mut() {
-            *element += element_offset;
+            let mut element = *element;
+            assert!(element < append_vertex_count, "element must < append vertex count");
+            element += element_offset;
         }
         self.elements.extend(elements);
     }
