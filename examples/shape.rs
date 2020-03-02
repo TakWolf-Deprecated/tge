@@ -4,20 +4,15 @@ use tge::engine::{Engine, EngineBuilder};
 use tge::window::WindowConfig;
 use tge::graphics::*;
 use tge::game::Game;
-use rand::Rng;
-use rand::rngs::ThreadRng;
 
 const TITLE: &str = "Shape";
 
-struct App {
-    rand: ThreadRng,
-}
+struct App {}
 
 impl App {
 
     fn new(_: &mut Engine) -> GameResult<Self> {
-        let rand = rand::thread_rng();
-        Ok(Self { rand })
+        Ok(Self {})
     }
 
 }
@@ -34,19 +29,16 @@ impl Game for App {
         engine.graphics().clear(Color::WHITE);
 
         // point
-        for j in 0..50 {
-            for i in 0..50 {
+        for j in 0..10 {
+            for i in 0..10 {
                 let i = i as f32;
                 let j = j as f32;
-                let red = self.rand.gen_range(0.5, 1.0);
-                let green = self.rand.gen_range(0.5, 1.0);
-                let blue = self.rand.gen_range(0.5, 1.0);
                 engine.graphics().draw_sprite(
                     None,
                     SpriteDrawParams::default()
                         .position((10.0 * i, 10.0 * j))
                         .region((0.0, 0.0, 1.0, 1.0))
-                        .color(Color::new(red, green, blue, 1.0)),
+                        .color(Color::CYAN),
                 );
             }
         }
