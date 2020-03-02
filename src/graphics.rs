@@ -323,7 +323,7 @@ impl Graphics {
         self.elements.extend(elements);
     }
 
-    pub fn draw_vertices(&mut self, texture: Option<&dyn TextureHolder>, primitive: PrimitiveType, vertices: Vec<Vertex>, elements: Option<Vec<u32>>) {
+    pub fn draw_mesh(&mut self, texture: Option<&dyn TextureHolder>, primitive: PrimitiveType, vertices: Vec<Vertex>, elements: Option<Vec<u32>>) {
         let texture = texture.map(|texture| texture.texture().clone())
             .unwrap_or_else(|| self.default_texture.texture().clone());
 

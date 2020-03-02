@@ -45,7 +45,7 @@ impl Game for App {
                 color: Color::BLUE,
             },
         ];
-        engine.graphics().draw_vertices(None, PrimitiveType::Triangles, vertices, None);
+        engine.graphics().draw_mesh(None, PrimitiveType::Triangles, vertices, None);
 
         Ok(())
     }
