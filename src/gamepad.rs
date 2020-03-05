@@ -98,7 +98,7 @@ impl Gamepad {
     }
 
     pub fn connected_devices(&self) -> Vec<GamepadDevice> {
-        let mut devices = Vec::new();
+        let mut devices = Vec::with_capacity(self.connected_states.len());
         for (id, state) in &self.connected_states {
             devices.push(GamepadDevice::new(self.gilrs.clone(), *id, state.clone()))
         }
