@@ -318,7 +318,7 @@ impl Graphics {
         let append_vertex_count = vertices.len() as u32;
         let element_offset = self.vertices.len() as u32;
         self.vertices.extend(vertices);
-        for element in elements.iter_mut() {
+        for element in &mut elements {
             assert!(*element < append_vertex_count, "element must < append vertex count");
             *element += element_offset;
         }

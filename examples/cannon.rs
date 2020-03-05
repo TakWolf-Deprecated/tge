@@ -70,7 +70,7 @@ impl Game for App {
         engine.window().set_title(title);
 
         if let Some(mouse_position) = engine.mouse().position() {
-            for cannon in self.cannons.iter_mut() {
+            for cannon in &mut self.cannons {
                 let x = mouse_position.x - cannon.position.x;
                 let y = mouse_position.y - cannon.position.y;
                 cannon.angle = Angle::radians(x.atan2(-y));

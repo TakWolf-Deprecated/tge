@@ -81,7 +81,7 @@ impl Game for App {
 
         let graphics_size = engine.graphics().size();
         let delta_time_f32 = engine.timer().delta_time().as_secs_f32();
-        for sprite in self.sprites.iter_mut() {
+        for sprite in &mut self.sprites {
             sprite.position.x += sprite.speed.x * delta_time_f32;
             sprite.position.y += sprite.speed.y * delta_time_f32;
             if sprite.position.x < 0.0 {
