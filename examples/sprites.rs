@@ -1,5 +1,5 @@
 use tge::error::GameResult;
-use tge::math::{Vector, Position, Point, Scale, Angle};
+use tge::math::{Vector, Position, Point, Scale, Size, Angle};
 use tge::engine::{Engine, EngineBuilder};
 use tge::window::WindowConfig;
 use tge::graphics::*;
@@ -20,10 +20,9 @@ struct Sprite {
     color: Color,
 }
 
-fn create_sprites(engine: &mut Engine, rand: &mut ThreadRng, count: usize) -> Vec<Sprite> {
-    let mut sprites = Vec::with_capacity(count);
-    let graphics_size = engine.graphics().size();
-    for _ in 0..count {
+impl Sprite {
+
+    fn new(rand: &mut ThreadRng, graphics_size: &Size) -> Self {
         let x = rand.gen_range(0.0, graphics_size.width);
         let y = rand.gen_range(0.0, graphics_size.height);
         let speed_x = rand.gen_range(-100.0, 100.0);
@@ -35,16 +34,16 @@ fn create_sprites(engine: &mut Engine, rand: &mut ThreadRng, count: usize) -> Ve
         let green = rand.gen_range(0.5, 1.0);
         let blue = rand.gen_range(0.5, 1.0);
         let alpha = rand.gen_range(0.5, 1.0);
-        sprites.push(Sprite {
+        Self {
             position: Position::new(x, y),
             speed: Vector::new(speed_x, speed_y),
             angle: Angle::radians(angle),
             angle_speed: Angle::radians(angle_speed),
             scale: Scale::new(scale, scale),
             color: Color::new(red, green, blue, alpha),
-        });
+        }
     }
-    sprites
+
 }
 
 struct App {
@@ -58,8 +57,11 @@ impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let zazaka = Texture::load(engine, "assets/zazaka.png")?;
         let mut rand = rand::thread_rng();
-        let mut sprites = Vec::new();
-        sprites.extend(create_sprites(engine, &mut rand, STEP_COUNT));
+        let mut sprites = Vec::with_capacity(STEP_COUNT);
+        let graphics_size = engine.graphics().size();
+        for _ in 0..STEP_COUNT {
+            sprites.push(Sprite::new(&mut rand, &graphics_size));
+        }
         Ok(Self {
             zazaka,
             rand,
@@ -75,12 +77,15 @@ impl Game for App {
         let title = format!("{}: {} - FPS: {}", TITLE, self.sprites.len(), engine.timer().real_time_fps().round());
         engine.window().set_title(title);
 
+        let delta_time_f32 = engine.timer().delta_time().as_secs_f32();
+        let graphics_size = engine.graphics().size();
+
         if engine.mouse().is_button_down(MouseButton::Left) {
-            self.sprites.extend(create_sprites(engine, &mut self.rand, STEP_COUNT));
+            for _ in 0..STEP_COUNT {
+                self.sprites.push(Sprite::new(&mut self.rand, &graphics_size));
+            }
         }
 
-        let graphics_size = engine.graphics().size();
-        let delta_time_f32 = engine.timer().delta_time().as_secs_f32();
         for sprite in &mut self.sprites {
             sprite.position.x += sprite.speed.x * delta_time_f32;
             sprite.position.y += sprite.speed.y * delta_time_f32;
