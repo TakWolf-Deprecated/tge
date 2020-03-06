@@ -54,10 +54,10 @@ pub struct Graphics {
     projection_matrix: Mat4,
     default_program: Rc<opengl::Program>,
     current_program: Rc<opengl::Program>,
-    current_canvas: Option<Rc<opengl::Framebuffer>>,
     default_filter: Filter,
     default_wrap: Wrap,
     default_texture: Texture,
+    current_canvas: Option<Rc<opengl::Framebuffer>>,
     renderer: Renderer,
     vertices: Vec<Vertex>,
     elements: Vec<u32>,
@@ -111,10 +111,10 @@ impl Graphics {
             projection_matrix,
             default_program,
             current_program,
-            current_canvas: None,
             default_filter: graphics_config.default_filter,
             default_wrap: graphics_config.default_wrap,
             default_texture,
+            current_canvas: None,
             renderer,
             vertices,
             elements,
@@ -230,6 +230,22 @@ impl Graphics {
         }
     }
 
+    pub fn default_filter(&self) -> Filter {
+        self.default_filter
+    }
+
+    pub fn set_default_filter(&mut self, filter: Filter) {
+        self.default_filter = filter;
+    }
+
+    pub fn default_wrap(&self) -> Wrap {
+        self.default_wrap
+    }
+
+    pub fn set_default_wrap(&mut self, wrap: Wrap) {
+        self.default_wrap = wrap;
+    }
+
     pub fn set_canvas(&mut self, canvas: Option<&Canvas>) {
         let (canvas, canvas_size) = match canvas {
             Some(canvas) => (Some(canvas.framebuffer().clone()), Some(canvas.size())),
@@ -265,22 +281,6 @@ impl Graphics {
             }
             self.current_program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
         }
-    }
-
-    pub fn default_filter(&self) -> Filter {
-        self.default_filter
-    }
-
-    pub fn set_default_filter(&mut self, filter: Filter) {
-        self.default_filter = filter;
-    }
-
-    pub fn default_wrap(&self) -> Wrap {
-        self.default_wrap
-    }
-
-    pub fn set_default_wrap(&mut self, wrap: Wrap) {
-        self.default_wrap = wrap;
     }
 
     pub fn clear<C: Into<Color>>(&mut self, color: C) {
