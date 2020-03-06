@@ -8,6 +8,7 @@ categories = ["game-engines"]
 keywords = ["game", "graphics"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/TakWolf/tge"
+readme = "README.md"
 publish = false
 
 [dependencies]
