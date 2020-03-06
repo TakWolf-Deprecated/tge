@@ -10,6 +10,7 @@ WIP
 ## TODO
 
 - blend
+- program uniform
 - font and text
 - texture to image and screenshot
 - virtual assets path
