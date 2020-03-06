@@ -53,7 +53,7 @@ pub struct Graphics {
     viewport: Viewport,
     projection_matrix: Mat4,
     default_program: Rc<opengl::Program>,
-    current_program: Rc<opengl::Program>,
+    program: Rc<opengl::Program>,
     default_filter: Filter,
     default_wrap: Wrap,
     default_texture: Texture,
@@ -80,9 +80,9 @@ impl Graphics {
         let projection_matrix = Mat4::orthographic_rh_gl(0.0, logical_size.width, logical_size.height, 0.0, -1.0, 1.0);
 
         let default_program = Program::default(gl.clone())?;
-        let current_program = default_program.clone();
-        current_program.bind();
-        current_program.set_uniform_matrix_4("u_projection", &projection_matrix.to_cols_array());
+        let program = default_program.clone();
+        program.bind();
+        program.set_uniform_matrix_4("u_projection", &projection_matrix.to_cols_array());
 
         let default_texture = Texture::white_1_x_1(gl.clone())?;
 
@@ -110,7 +110,7 @@ impl Graphics {
             viewport,
             projection_matrix,
             default_program,
-            current_program,
+            program,
             default_filter: graphics_config.default_filter,
             default_wrap: graphics_config.default_wrap,
             default_texture,
@@ -140,7 +140,7 @@ impl Graphics {
                 self.gl.viewport(0, 0, physical_size.width as i32, physical_size.height as i32);
             }
             self.projection_matrix = Mat4::orthographic_rh_gl(0.0, logical_size.width, logical_size.height, 0.0, -1.0, 1.0);
-            self.current_program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
+            self.program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
         }
     }
 
@@ -215,18 +215,18 @@ impl Graphics {
                 }
                 self.projection_matrix = Mat4::orthographic_rh_gl(0.0, self.viewport.width, self.viewport.height, 0.0, -1.0, 1.0);
             }
-            self.current_program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
+            self.program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
         }
     }
 
     pub fn use_program(&mut self, program: Option<&Program>) {
         let program = program.map(|program| program.program().clone())
             .unwrap_or_else(|| self.default_program.clone());
-        if self.current_program != program {
+        if self.program != program {
             self.flush();
-            self.current_program = program;
-            self.current_program.bind();
-            self.current_program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
+            self.program = program;
+            self.program.bind();
+            self.program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
         }
     }
 
@@ -279,7 +279,7 @@ impl Graphics {
                 }
                 self.projection_matrix = Mat4::orthographic_rh_gl(0.0, logical_size.width, logical_size.height, 0.0, -1.0, 1.0);
             }
-            self.current_program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
+            self.program.set_uniform_matrix_4("u_projection", &self.projection_matrix.to_cols_array());
         }
     }
 
