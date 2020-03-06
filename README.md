@@ -73,8 +73,8 @@ fn main() -> GameResult {
 }
 ```
 
-Just execute `cargo run --example hello_world` to run this example.
-And you can browse the [`examples/`](examples/) directory to learn more.
+Execute `cargo run --example hello_world` to run this example.
+You can also browse the [`examples/`](examples/) directory to learn more.
 
 ## Performance
 
