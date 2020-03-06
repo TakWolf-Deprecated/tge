@@ -6,7 +6,7 @@ use tge::graphics::*;
 use tge::keyboard::KeyCode;
 use tge::game::Game;
 
-const TITLE: &str = "Inertia";
+const TITLE: &str = "Car";
 
 struct App {
     car: Texture,
@@ -88,13 +88,14 @@ impl Game for App {
     fn render(&mut self, engine: &mut Engine) -> GameResult {
         engine.graphics().clear(Color::new(0.6, 0.6, 0.6, 1.0));
 
+        let car_size = self.car.size();
         engine.graphics().draw_sprite(
             Some(&self.car),
             SpriteDrawParams::default()
-                .origin((50.0, 105.0))
+                .origin((car_size.width as f32 / 2.0, car_size.height as f32 / 2.0))
                 .position(self.position)
                 .rotation(self.angle)
-                .scale((0.3, 0.3)),
+                .scale((0.16, 0.16)),
         );
 
         Ok(())
