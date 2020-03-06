@@ -9,6 +9,7 @@ struct App {}
 impl App {
 
     fn new(_: &mut Engine) -> GameResult<Self> {
+        // load assets
         Ok(Self {})
     }
 
@@ -17,11 +18,13 @@ impl App {
 impl Game for App {
 
     fn update(&mut self, _: &mut Engine) -> GameResult {
+        // handle logic
         Ok(())
     }
 
     fn render(&mut self, engine: &mut Engine) -> GameResult {
         engine.graphics().clear(Color::BLUE);
+        // draw sprites
         Ok(())
     }
 
