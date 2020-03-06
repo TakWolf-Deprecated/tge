@@ -57,7 +57,7 @@ pub struct Graphics {
     default_filter: Filter,
     default_wrap: Wrap,
     default_texture: Texture,
-    current_canvas: Option<Rc<opengl::Framebuffer>>,
+    canvas: Option<Rc<opengl::Framebuffer>>,
     renderer: Renderer,
     vertices: Vec<Vertex>,
     elements: Vec<u32>,
@@ -114,7 +114,7 @@ impl Graphics {
             default_filter: graphics_config.default_filter,
             default_wrap: graphics_config.default_wrap,
             default_texture,
-            current_canvas: None,
+            canvas: None,
             renderer,
             vertices,
             elements,
@@ -132,7 +132,7 @@ impl Graphics {
 
     pub(crate) fn resize(&mut self, scale_factor: f64, physical_size: PhysicalSize<u32>) {
         self.context_wrapper.resize(physical_size);
-        if self.current_canvas.is_none() {
+        if self.canvas.is_none() {
             let logical_size = physical_size.to_logical::<f32>(scale_factor);
             self.size.set(logical_size.width, logical_size.height);
             self.viewport.set(0.0, 0.0, logical_size.width, logical_size.height);
@@ -184,7 +184,7 @@ impl Graphics {
         if self.viewport != viewport {
             self.flush();
             self.viewport = viewport;
-            if self.current_canvas.is_some() {
+            if self.canvas.is_some() {
                 unsafe {
                     self.gl.viewport(
                         self.viewport.x.round() as i32,
@@ -251,15 +251,15 @@ impl Graphics {
             Some(canvas) => (Some(canvas.framebuffer().clone()), Some(canvas.size())),
             None => (None, None),
         };
-        if self.current_canvas != canvas {
+        if self.canvas != canvas {
             self.flush();
             if canvas.is_none() {
-                if let Some(canvas) = &self.current_canvas {
+                if let Some(canvas) = &self.canvas {
                     canvas.unbind();
                 }
             }
-            self.current_canvas = canvas;
-            if let Some(canvas) = &self.current_canvas {
+            self.canvas = canvas;
+            if let Some(canvas) = &self.canvas {
                 canvas.bind();
             }
             if let Some(canvas_size) = canvas_size {
