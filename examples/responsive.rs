@@ -11,6 +11,7 @@ struct App {
     view_size: Size,
     canvas: Canvas,
     sky: Texture,
+    background_x: f32,
 }
 
 impl App {
@@ -23,7 +24,18 @@ impl App {
             view_size,
             canvas,
             sky,
+            background_x: 0.0,
         })
+    }
+
+    fn draw_scene(&mut self, engine: &mut Engine) {
+        let sky_size = self.sky.size();
+        engine.graphics().draw_sprite(
+            Some(&self.sky),
+            SpriteDrawParams::default()
+                .region((0.0, 0.0, sky_size.width as f32 * 2.0, sky_size.height as f32))
+                .position((self.background_x, 0.0)),
+        );
     }
 
 }
@@ -33,6 +45,12 @@ impl Game for App {
     fn update(&mut self, engine: &mut Engine) -> GameResult {
         let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
+
+        self.background_x -= 1.0;
+        if self.background_x <= -(self.sky.size().width as f32) {
+            self.background_x = 0.0;
+        }
+
         Ok(())
     }
 
@@ -40,10 +58,7 @@ impl Game for App {
         engine.graphics().set_canvas(Some(&self.canvas));
         engine.graphics().clear(Color::BLACK);
 
-        engine.graphics().draw_sprite(
-            Some(&self.sky),
-            SpriteDrawParams::default(),
-        );
+        self.draw_scene(engine);
 
         engine.graphics().set_canvas(None);
         engine.graphics().clear(Color::BLACK);
