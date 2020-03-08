@@ -38,7 +38,7 @@ impl Game for App {
                     SpriteDrawParams::default()
                         .position((10.0 * i, 10.0 * j))
                         .region((0.0, 0.0, 1.0, 1.0))
-                        .color(Color::CYAN),
+                        .color(Color::BLACK),
                 );
             }
         }
