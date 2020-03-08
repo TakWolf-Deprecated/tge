@@ -76,6 +76,8 @@ fn main() -> GameResult {
 Execute `cargo run --example hello_world` to run this example.
 You can also browse the [`examples/`](examples/) directory to learn more.
 
+More complete demos can be found in [tge-demos](https://github.com/TakWolf/tge-demos).
+
 ## Performance
 
 Cargo builds projects in debug mode by default.
