@@ -69,7 +69,7 @@ impl Game for App {
             SpriteDrawParams::default()
                 .position(self.position)
                 .origin((self.size.width / 2.0, self.size.height / 2.0))
-                .color(Color::new(0.5, 0.5, 1.0, 1.0)),
+                .color((0.5, 0.5, 1.0, 1.0)),
         );
 
         Ok(())

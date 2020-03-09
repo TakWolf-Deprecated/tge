@@ -43,7 +43,7 @@ impl Game for App {
     }
 
     fn render(&mut self, engine: &mut Engine) -> GameResult {
-        engine.graphics().clear(Color::new(0.9, 0.9, 0.9, 1.0));
+        engine.graphics().clear((0.9, 0.9, 0.9, 1.0));
 
         engine.graphics().draw_sprite(
             Some(&self.clock_disk),
@@ -56,7 +56,7 @@ impl Game for App {
                 .origin((15.0, 190.0))
                 .position((300.0, 300.0))
                 .rotation(self.hour_angle)
-                .color(Color::new(0.2, 0.2, 1.0, 1.0)),
+                .color((0.2, 0.2, 1.0, 1.0)),
         );
         engine.graphics().draw_sprite(
             None,
@@ -65,7 +65,7 @@ impl Game for App {
                 .origin((10.0, 220.0))
                 .position((300.0, 300.0))
                 .rotation(self.minute_angle)
-                .color(Color::new(0.2, 1.0, 0.2, 1.0)),
+                .color((0.2, 1.0, 0.2, 1.0)),
         );
         engine.graphics().draw_sprite(
             None,
@@ -74,7 +74,7 @@ impl Game for App {
                 .origin((5.0, 240.0))
                 .position((300.0, 300.0))
                 .rotation(self.second_angle)
-                .color(Color::new(1.0, 0.2, 0.2, 1.0)),
+                .color((1.0, 0.2, 0.2, 1.0)),
         );
         engine.graphics().draw_sprite(
             None,

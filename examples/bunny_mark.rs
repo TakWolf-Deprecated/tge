@@ -102,7 +102,7 @@ impl Game for App {
     }
 
     fn render(&mut self, engine: &mut Engine) -> GameResult {
-        engine.graphics().clear(Color::new(0.392, 0.584, 0.929, 1.0));
+        engine.graphics().clear((0.392, 0.584, 0.929, 1.0));
 
         for bunny in &self.bunnies {
             engine.graphics().draw_sprite(

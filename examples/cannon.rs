@@ -81,7 +81,7 @@ impl Game for App {
     }
 
     fn render(&mut self, engine: &mut Engine) -> GameResult {
-        engine.graphics().clear(Color::new(0.8, 0.8, 0.8, 1.0));
+        engine.graphics().clear((0.8, 0.8, 0.8, 1.0));
 
         for cannon in self.cannons.iter() {
             engine.graphics().draw_sprite(

@@ -86,7 +86,7 @@ impl Game for App {
     }
 
     fn render(&mut self, engine: &mut Engine) -> GameResult {
-        engine.graphics().clear(Color::new(0.6, 0.6, 0.6, 1.0));
+        engine.graphics().clear((0.6, 0.6, 0.6, 1.0));
 
         let car_size = self.car.size();
         engine.graphics().draw_sprite(
