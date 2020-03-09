@@ -95,7 +95,7 @@ impl Engine {
         }
     }
 
-    fn handle_event(&mut self, event: winit::event::Event<()>, control_flow: &mut ControlFlow, game: &mut dyn Game) -> GameResult {
+    fn handle_event(&mut self, event: winit::event::Event<()>, control_flow: &mut ControlFlow, game: &mut impl Game) -> GameResult {
         match event {
             winit::event::Event::NewEvents(start_cause) => {
                 match start_cause {
@@ -268,7 +268,7 @@ impl Engine {
         Ok(())
     }
 
-    pub fn run(&mut self, game: &mut dyn Game) -> GameResult {
+    pub fn run(&mut self, game: &mut impl Game) -> GameResult {
         match &self.state {
             State::Ready => self.state = State::Running,
             _ => return Err(GameError::StateError(format!("engine can not be run on state `{:?}`", self.state).into())),
