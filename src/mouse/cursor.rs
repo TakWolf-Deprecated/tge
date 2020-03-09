@@ -10,7 +10,7 @@ pub enum CursorIcon {
     Wait,
     Help,
     Progress,
-    
+
     NotAllowed,
     ContextMenu,
     Cell,
@@ -23,7 +23,7 @@ pub enum CursorIcon {
     AllScroll,
     ZoomIn,
     ZoomOut,
-    
+
     EResize,
     NResize,
     NeResize,
