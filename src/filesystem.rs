@@ -9,11 +9,11 @@ impl Filesystem {
         Ok(Self {})
     }
 
-    pub fn read<P: AsRef<Path>>(&self, path: P) -> GameResult<Vec<u8>> {
+    pub fn read(&self, path: impl AsRef<Path>) -> GameResult<Vec<u8>> {
         std::fs::read(path).map_err(|error| GameError::IoError(Box::new(error)))
     }
 
-    pub fn read_to_string<P: AsRef<Path>>(&self, path: P) -> GameResult<String> {
+    pub fn read_to_string(&self, path: impl AsRef<Path>) -> GameResult<String> {
         std::fs::read_to_string(path).map_err(|error| GameError::IoError(Box::new(error)))
     }
 

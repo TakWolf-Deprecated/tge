@@ -8,7 +8,7 @@ pub struct Icon(winit::window::Icon);
 
 impl Icon {
 
-    pub fn new<S: Into<Size<u32>>>(size: S, pixels: Vec<u8>) -> GameResult<Self> {
+    pub fn new(size: impl Into<Size<u32>>, pixels: Vec<u8>) -> GameResult<Self> {
         let size = size.into();
         validate_pixels(size, &pixels)?;
         let icon = winit::window::Icon::from_rgba(pixels, size.width, size.height)
@@ -27,7 +27,7 @@ impl Icon {
         Self::from_image(image)
     }
 
-    pub fn load<P: AsRef<Path>>(engine: &mut Engine, path: P) -> GameResult<Self> {
+    pub fn load(engine: &mut Engine, path: impl AsRef<Path>) -> GameResult<Self> {
         let image = Image::load(engine, path)?;
         Self::from_image(image)
     }

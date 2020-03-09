@@ -11,7 +11,7 @@ pub struct Image {
 
 impl Image {
 
-    pub fn new<S: Into<Size<u32>>>(size: S, pixels: Vec<u8>) -> GameResult<Self> {
+    pub fn new(size: impl Into<Size<u32>>, pixels: Vec<u8>) -> GameResult<Self> {
         let size = size.into();
         validate_pixels(size, &pixels)?;
         Ok(Self { size, pixels })
@@ -26,7 +26,7 @@ impl Image {
         Self::new(size, pixels)
     }
 
-    pub fn load<P: AsRef<Path>>(engine: &mut Engine, path: P) -> GameResult<Self> {
+    pub fn load(engine: &mut Engine, path: impl AsRef<Path>) -> GameResult<Self> {
         let bytes = engine.filesystem().read(path)?;
         Self::from_bytes(&bytes)
     }

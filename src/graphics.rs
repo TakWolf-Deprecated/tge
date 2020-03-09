@@ -178,7 +178,7 @@ impl Graphics {
         self.viewport
     }
 
-    pub fn set_viewport<V: Into<Viewport>>(&mut self, viewport: Option<V>) {
+    pub fn set_viewport(&mut self, viewport: Option<impl Into<Viewport>>) {
         let viewport = viewport.map(|viewport| viewport.into())
             .unwrap_or_else(|| Viewport::new(0.0, 0.0, self.size.width, self.size.height));
         if self.viewport != viewport {
@@ -283,7 +283,7 @@ impl Graphics {
         }
     }
 
-    pub fn clear<C: Into<Color>>(&mut self, color: C) {
+    pub fn clear(&mut self, color: impl Into<Color>) {
         let color = color.into();
         unsafe {
             self.gl.clear_color(color.red, color.green, color.blue, color.alpha);

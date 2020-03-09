@@ -13,17 +13,17 @@ pub struct SpriteDrawParams {
 
 impl SpriteDrawParams {
 
-    pub fn region<R: Into<Region>>(mut self, region: R) -> Self {
+    pub fn region(mut self, region: impl Into<Region>) -> Self {
         self.region = Some(region.into());
         self
     }
 
-    pub fn origin<P: Into<Point>>(mut self, origin: P) -> Self {
+    pub fn origin(mut self, origin: impl Into<Point>) -> Self {
         self.origin = Some(origin.into());
         self
     }
 
-    pub fn position<P: Into<Position>>(mut self, position: P) -> Self {
+    pub fn position(mut self, position: impl Into<Position>) -> Self {
         self.position = Some(position.into());
         self
     }
@@ -33,7 +33,7 @@ impl SpriteDrawParams {
         self
     }
 
-    pub fn scale<S: Into<Scale>>(mut self, scale: S) -> Self {
+    pub fn scale(mut self, scale: impl Into<Scale>) -> Self {
         self.scale = Some(scale.into());
         self
     }
@@ -43,7 +43,7 @@ impl SpriteDrawParams {
         self
     }
 
-    pub fn color<C: Into<Color>>(mut self, color: C) -> Self {
+    pub fn color(mut self, color: impl Into<Color>) -> Self {
         let color = color.into();
         self.colors = Some([color, color, color, color]);
         self

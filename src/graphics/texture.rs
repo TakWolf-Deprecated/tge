@@ -16,7 +16,7 @@ pub struct Texture {
 
 impl Texture {
 
-    pub fn new<S: Into<Size<u32>>>(engine: &mut Engine, size: S, pixels: Option<&[u8]>) -> GameResult<Self> {
+    pub fn new(engine: &mut Engine, size: impl Into<Size<u32>>, pixels: Option<&[u8]>) -> GameResult<Self> {
         let size = size.into();
         if let Some(pixels) = pixels {
             validate_pixels(size, pixels)?;
@@ -54,7 +54,7 @@ impl Texture {
         Self::from_image(engine, &image)
     }
 
-    pub fn load<P: AsRef<Path>>(engine: &mut Engine, path: P) -> GameResult<Self> {
+    pub fn load(engine: &mut Engine, path: impl AsRef<Path>) -> GameResult<Self> {
         let image = Image::load(engine, path)?;
         Self::from_image(engine, &image)
     }
@@ -119,7 +119,7 @@ impl Texture {
         }
     }
 
-    pub fn init_pixels<S: Into<Size<u32>>>(&mut self, size: S, pixels: Option<&[u8]>) -> GameResult {
+    pub fn init_pixels(&mut self, size: impl Into<Size<u32>>, pixels: Option<&[u8]>) -> GameResult {
         let size = size.into();
         if let Some(pixels) = pixels {
             validate_pixels(size, pixels)?;
@@ -143,7 +143,7 @@ impl Texture {
         self.init_pixels(size, Some(pixels))
     }
 
-    pub fn update_pixels<R: Into<Region<u32>>>(&mut self, region: R, pixels: Option<&[u8]>) -> GameResult {
+    pub fn update_pixels(&mut self, region: impl Into<Region<u32>>, pixels: Option<&[u8]>) -> GameResult {
         let region = region.into();
         if let Some(pixels) = pixels {
             validate_pixels(region.size(), pixels)?;

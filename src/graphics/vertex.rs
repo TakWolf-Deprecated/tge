@@ -1,5 +1,5 @@
 use super::Color;
-use crate::math::Vector;
+use crate::math::{Vector, Position};
 
 pub const ATTRIBUTE_POSITION_SIZE: usize = 2;
 pub const ATTRIBUTE_UV_SIZE: usize = 2;
@@ -11,14 +11,14 @@ pub const ATTRIBUTE_OFFSET_2: usize = ATTRIBUTE_OFFSET_1 + ATTRIBUTE_UV_SIZE;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Vertex {
-    pub position: Vector,
+    pub position: Position,
     pub uv: Vector,
     pub color: Color,
 }
 
 impl Vertex {
 
-    pub fn new<V: Into<Vector>, C: Into<Color>>(position: V, uv: V, color: C) -> Self {
+    pub fn new(position: impl Into<Position>, uv: impl Into<Vector>, color: impl Into<Color>) -> Self {
         Self {
             position: position.into(),
             uv: uv.into(),

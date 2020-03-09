@@ -98,7 +98,7 @@ impl Window {
         &self.title
     }
 
-    pub fn set_title<T: Into<String>>(&mut self, title: T) {
+    pub fn set_title(&mut self, title: impl Into<String>) {
         self.title = title.into();
         self.window().set_title(&self.title);
     }
@@ -114,7 +114,7 @@ impl Window {
         Size::new(logical_size.width, logical_size.height)
     }
 
-    pub fn set_inner_size<S: Into<Size<u32>>>(&mut self, size: S) {
+    pub fn set_inner_size(&mut self, size: impl Into<Size<u32>>) {
         let size = size.into();
         self.window().set_inner_size(LogicalSize::new(size.width, size.height));
     }
@@ -126,14 +126,14 @@ impl Window {
         Size::new(logical_size.width, logical_size.height)
     }
 
-    pub fn set_min_inner_size<S: Into<Size<u32>>>(&mut self, size: Option<S>) {
+    pub fn set_min_inner_size(&mut self, size: Option<impl Into<Size<u32>>>) {
         self.window().set_min_inner_size(size.map(|size| {
             let size = size.into();
             LogicalSize::new(size.width, size.height)
         }));
     }
 
-    pub fn set_max_inner_size<S: Into<Size<u32>>>(&mut self, size: Option<S>) {
+    pub fn set_max_inner_size(&mut self, size: Option<impl Into<Size<u32>>>) {
         self.window().set_max_inner_size(size.map(|size| {
             let size = size.into();
             LogicalSize::new(size.width, size.height)
@@ -156,12 +156,12 @@ impl Window {
         Ok(Position::new(logical_position.x, logical_position.y))
     }
 
-    pub fn set_outer_position<P: Into<Position>>(&mut self, position: P) {
+    pub fn set_outer_position(&mut self, position: impl Into<Position>) {
         let position = position.into();
         self.window().set_outer_position(LogicalPosition::new(position.x, position.y));
     }
 
-    pub fn set_ime_position<P: Into<Position>>(&mut self, position: P) {
+    pub fn set_ime_position(&mut self, position: impl Into<Position>) {
         let position = position.into();
         self.window().set_ime_position(LogicalPosition::new(position.x, position.y));
     }
@@ -283,27 +283,27 @@ impl WindowConfig {
         }
     }
 
-    pub fn title<T: Into<String>>(mut self, title: T) -> Self {
+    pub fn title(mut self, title: impl Into<String>) -> Self {
         self.title = title.into();
         self
     }
 
-    pub fn icon<P: Into<String>>(mut self, path: Option<P>) -> Self {
+    pub fn icon(mut self, path: Option<impl Into<String>>) -> Self {
         self.icon = path.map(|path| path.into());
         self
     }
 
-    pub fn inner_size<S: Into<Size<u32>>>(mut self, size: S) -> Self {
+    pub fn inner_size(mut self, size: impl Into<Size<u32>>) -> Self {
         self.inner_size = Some(size.into());
         self
     }
 
-    pub fn min_inner_size<S: Into<Size<u32>>>(mut self, size: Option<S>) -> Self {
+    pub fn min_inner_size(mut self, size: Option<impl Into<Size<u32>>>) -> Self {
         self.min_inner_size = size.map(|size| size.into());
         self
     }
 
-    pub fn max_inner_size<S: Into<Size<u32>>>(mut self, size: Option<S>) -> Self {
+    pub fn max_inner_size(mut self, size: Option<impl Into<Size<u32>>>) -> Self {
         self.max_inner_size = size.map(|size| size.into());
         self
     }
