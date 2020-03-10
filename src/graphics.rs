@@ -339,8 +339,11 @@ impl Graphics {
 
     pub fn draw_sprite(&mut self, texture: Option<&dyn TextureHolder>, params: SpriteDrawParams) {
         let (texture, texture_size) = match texture {
-            Some(texture) => (texture.texture().clone(), texture.texture_size()),
-            None => (self.default_texture.texture().clone(), self.default_texture.size()),
+            Some(texture) => {
+                let texture_size = texture.texture_size();
+                (texture.texture().clone(), Size::new(texture_size.width as f32, texture_size.height as f32))
+            }
+            None => (self.default_texture.texture().clone(), Size::zero()),
         };
 
         self.switch_draw_command(DrawCommand {
@@ -348,7 +351,6 @@ impl Graphics {
             primitive: PrimitiveType::Triangles,
         });
 
-        let texture_size = Size::new(texture_size.width as f32, texture_size.height as f32);
         let region = params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
         let origin = params.origin.unwrap_or_else(|| Point::zero());
         let position = params.position.map(|position| Vec3::new(position.x, position.y, 0.0)).unwrap_or_else(|| Vec3::zero());
