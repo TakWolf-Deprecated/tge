@@ -56,7 +56,7 @@ pub struct Graphics {
     program: Rc<opengl::Program>,
     default_filter: Filter,
     default_wrap: Wrap,
-    default_texture: Texture,
+    default_texture: Rc<opengl::Texture>,
     canvas: Option<Rc<opengl::Framebuffer>>,
     renderer: Renderer,
     vertices: Vec<Vertex>,
@@ -84,7 +84,7 @@ impl Graphics {
         program.bind();
         program.set_uniform_matrix_4("u_projection", &projection_matrix.to_cols_array());
 
-        let default_texture = Texture::white_1_x_1(gl.clone())?;
+        let default_texture = Texture::default(gl.clone())?;
 
         let renderer = RendererBuilder::new(gl.clone())?
             .init_vertex_size(BufferUsage::Stream, graphics_config.renderer_vertex_size)
@@ -94,7 +94,7 @@ impl Graphics {
         let elements = Vec::with_capacity(graphics_config.renderer_element_size);
 
         let draw_command = DrawCommand {
-            texture: default_texture.texture().clone(),
+            texture: default_texture.clone(),
             primitive: PrimitiveType::Triangles,
         };
 
@@ -327,7 +327,7 @@ impl Graphics {
 
     pub fn draw_mesh(&mut self, texture: Option<&dyn TextureHolder>, primitive: PrimitiveType, vertices: Vec<Vertex>, elements: Option<Vec<u32>>) {
         let texture = texture.map(|texture| texture.texture().clone())
-            .unwrap_or_else(|| self.default_texture.texture().clone());
+            .unwrap_or_else(|| self.default_texture.clone());
 
         self.switch_draw_command(DrawCommand {
             texture,
@@ -343,7 +343,7 @@ impl Graphics {
                 let texture_size = texture.texture_size();
                 (texture.texture().clone(), Size::new(texture_size.width as f32, texture_size.height as f32))
             }
-            None => (self.default_texture.texture().clone(), Size::zero()),
+            None => (self.default_texture.clone(), Size::zero()),
         };
 
         self.switch_draw_command(DrawCommand {

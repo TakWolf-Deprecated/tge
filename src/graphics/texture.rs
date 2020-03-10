@@ -59,30 +59,15 @@ impl Texture {
         Self::from_image(engine, &image)
     }
 
-    pub(crate) fn white_1_x_1(gl: Rc<Context>) -> GameResult<Self> {
-        let size = Size::new(1, 1);
-        let pixels = [255, 255, 255, 255];
-        validate_pixels(size, &pixels)?;
-        let filter = Filter::new(FilterMode::Nearest, FilterMode::Nearest, None);
-        let generate_mipmap = filter.mipmap.is_some();
-        let wrap = Wrap::uv(WrapMode::Repeat, WrapMode::Repeat);
+    pub(crate) fn default(gl: Rc<Context>) -> GameResult<Rc<opengl::Texture>> {
         let texture = opengl::Texture::new(gl)
             .map_err(|error| GameError::InitError(error.into()))?;
         texture.bind();
-        texture.init_image(size.width, size.height, Some(&pixels));
-        texture.set_filter(filter);
-        if generate_mipmap {
-            texture.generate_mipmap();
-        }
-        texture.set_wrap(wrap);
+        texture.init_image(1, 1, Some(&[255, 255, 255, 255]));
+        texture.set_filter(Filter::new(FilterMode::Nearest, FilterMode::Nearest, None));
+        texture.set_wrap(Wrap::uv(WrapMode::Repeat, WrapMode::Repeat));
         texture.unbind();
-        Ok(Self {
-            texture: Rc::new(texture),
-            size,
-            filter,
-            mipmap_generated: generate_mipmap,
-            wrap,
-        })
+        Ok(Rc::new(texture))
     }
 
     pub fn size(&self) -> Size<u32> {
