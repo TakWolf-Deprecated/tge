@@ -103,6 +103,7 @@ Working in progress:
 * program uniform
 * font and text
 * texture to image and screenshot
+* graphics transform matrix
 * virtual assets path
 * assets load async
 * audio
