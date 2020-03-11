@@ -1,4 +1,4 @@
-# TakWolf's Game Engine (Tge)
+# TakWolf's Game Engine (tge)
 
 [![Crates.io](https://img.shields.io/crates/v/tge)](https://crates.io/crates/tge)
 [![Docs.rs](https://docs.rs/tge/badge.svg)](https://docs.rs/tge)
