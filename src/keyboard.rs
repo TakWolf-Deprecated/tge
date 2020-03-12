@@ -1,6 +1,8 @@
 mod code;
+mod modifier;
 
 pub use code::KeyCode;
+pub use modifier::ModifiersState;
 
 use crate::error::GameResult;
 use crate::event::{KeyState, KeyAction};
@@ -8,6 +10,7 @@ use std::collections::HashMap;
 
 pub struct Keyboard {
     key_states: HashMap<KeyCode, KeyState>,
+    modifiers_state: ModifiersState,
 }
 
 impl Keyboard {
@@ -15,6 +18,12 @@ impl Keyboard {
     pub(crate) fn new(_: KeyboardConfig) -> GameResult<Self> {
         Ok(Self {
             key_states: HashMap::new(),
+            modifiers_state: ModifiersState {
+                shift: false,
+                ctrl: false,
+                alt: false,
+                logo: false,
+            },
         })
     }
 
@@ -31,6 +40,10 @@ impl Keyboard {
             self.key_states.insert(key, new_state);
             false
         }
+    }
+
+    pub(crate) fn handle_modifiers_state_change(&mut self, state: ModifiersState) {
+        self.modifiers_state = state;
     }
 
     pub(crate) fn clear_states(&mut self) {
@@ -62,6 +75,10 @@ impl Keyboard {
             KeyState::Up => true,
             _ => false,
         }
+    }
+
+    pub fn modifiers_state(&self) -> ModifiersState {
+        self.modifiers_state
     }
 
 }

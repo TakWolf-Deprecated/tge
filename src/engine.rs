@@ -141,6 +141,11 @@ impl Engine {
                             let repeated = self.keyboard.handle_input_event(key, action);
                             game.event(self, Event::KeyboardInput { key, action, repeated })?;
                         }
+                        WindowEvent::ModifiersChanged(state) => {
+                            let state = state.into();
+                            self.keyboard.handle_modifiers_state_change(state);
+                            game.event(self, Event::ModifiersChange(state))?;
+                        }
                         WindowEvent::CursorMoved { position, .. } => {
                             let scale_factor = self.window.window().scale_factor();
                             let logical_position = position.to_logical::<f32>(scale_factor);

@@ -1,5 +1,5 @@
 use crate::math::{Position, Size, Delta};
-use crate::keyboard::KeyCode;
+use crate::keyboard::{KeyCode, ModifiersState};
 use crate::mouse::MouseButton;
 use crate::touch::TouchPhase;
 use crate::gamepad::{GamepadButton, GamepadAxis, GamepadId};
@@ -55,6 +55,7 @@ pub enum Event {
         action: KeyAction,
         repeated: bool,
     },
+    ModifiersChange(ModifiersState),
     MouseMove(Position),
     MouseEnterWindow,
     MouseLeaveWindow,
