@@ -12,15 +12,15 @@ readme = "README.md"
 publish = false
 
 [dependencies]
-winit = "0.21.0"
-glutin = "0.23.0"
+winit = "0.22.0"
+glutin = "0.24.0"
 glow = "0.4.0"
 glam = "0.8.6"
-image = "0.23.0"
+image = "0.23.1"
 fontdue = "0.0.1"
 rodio = "0.10.0"
 gilrs = "0.7.4"
 
 [dev-dependencies]
 rand = "0.7.3"
-chrono = "0.4.10"
+chrono = "0.4.11"
