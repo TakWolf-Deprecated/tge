@@ -16,6 +16,34 @@ __Tge is currently in a very early stage of development. The API may be changed.
 * Interface for handling keyboard, mouse, touch, touchpad and gamepad.
 * Audio play. (TODO)
 
+## Non goals
+
+Tge is a lightweight 2D game framework.
+So it doesn't support:
+
+* 3D. (But can be expanded in theory.)
+* Visual editor.
+
+Some features depends on the specific formats.
+They can be easily implemented.
+So tge doesn't include:
+
+* Animation engine.
+* Particle system.
+* Tile map.
+
+Some features depends on the specific programming paradigms.
+You can design them by yourself.
+So tge doesn't include:
+
+* Scene manager.
+
+Tge can easily work with other crates.
+So tge doesn't include:
+
+* Physics engines and collision detection.
+* [Entity Component System (ECS)](https://en.wikipedia.org/wiki/Entity_component_system).
+
 ## Usage
 
 Just add the dependency line to your `Cargo.toml` file:
