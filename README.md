@@ -41,8 +41,9 @@ So tge doesn't include:
 Tge can easily work with other crates.
 So tge doesn't include:
 
-* Physics engines and collision detection.
 * [Entity Component System (ECS)](https://en.wikipedia.org/wiki/Entity_component_system).
+* Physics engines and collision detection.
+* Network.
 
 ## Usage
 
