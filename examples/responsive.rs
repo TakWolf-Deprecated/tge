@@ -68,16 +68,10 @@ impl Game for App {
         let scale;
         if graphics_size.width / graphics_size.height <= self.view_size.width / self.view_size.height {
             scale = graphics_size.width / self.view_size.width;
-            position = Position::new(
-                0.0,
-                (graphics_size.height - self.view_size.height * scale) / 2.0,
-            );
+            position = Position::new(0.0, (graphics_size.height - self.view_size.height * scale) / 2.0);
         } else {
             scale = graphics_size.height / self.view_size.height;
-            position = Position::new(
-                (graphics_size.width - self.view_size.width * scale) / 2.0,
-                0.0,
-            );
+            position = Position::new((graphics_size.width - self.view_size.width * scale) / 2.0, 0.0);
         }
 
         engine.graphics().draw_sprite(
