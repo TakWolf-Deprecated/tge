@@ -50,7 +50,7 @@ impl Game for App {
             SpriteDrawParams::default(),
         );
         engine.graphics().draw_sprite(
-            None,
+            NO_TEXTURE,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 30.0, 200.0))
                 .origin((15.0, 190.0))
@@ -59,7 +59,7 @@ impl Game for App {
                 .color((0.2, 0.2, 1.0, 1.0)),
         );
         engine.graphics().draw_sprite(
-            None,
+            NO_TEXTURE,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 20.0, 240.0))
                 .origin((10.0, 220.0))
@@ -68,7 +68,7 @@ impl Game for App {
                 .color((0.2, 1.0, 0.2, 1.0)),
         );
         engine.graphics().draw_sprite(
-            None,
+            NO_TEXTURE,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 10.0, 270.0))
                 .origin((5.0, 240.0))
@@ -77,7 +77,7 @@ impl Game for App {
                 .color((1.0, 0.2, 0.2, 1.0)),
         );
         engine.graphics().draw_sprite(
-            None,
+            NO_TEXTURE,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 6.0, 6.0))
                 .origin((3.0, 3.0))

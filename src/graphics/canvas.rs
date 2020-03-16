@@ -63,3 +63,5 @@ impl TextureHolder for Canvas {
     }
 
 }
+
+pub const NO_CANVAS: Option<&Canvas> = None;

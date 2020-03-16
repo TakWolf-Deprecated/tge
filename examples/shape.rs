@@ -34,7 +34,7 @@ impl Game for App {
                 let i = i as f32;
                 let j = j as f32;
                 engine.graphics().draw_sprite(
-                    None,
+                    NO_TEXTURE,
                     SpriteDrawParams::default()
                         .position((10.0 * i, 10.0 * j))
                         .region((0.0, 0.0, 1.0, 1.0))
@@ -45,7 +45,7 @@ impl Game for App {
 
         // line
         engine.graphics().draw_sprite(
-            None,
+            NO_TEXTURE,
             SpriteDrawParams::default()
                 .position((100.0, 100.0))
                 .region((0.0, 0.0, 1.0, 300.0))
@@ -75,11 +75,11 @@ impl Game for App {
                 color: Color::BLUE,
             },
         ];
-        engine.graphics().draw_mesh(None, PrimitiveType::Triangles, vertices, None);
+        engine.graphics().draw_mesh(NO_TEXTURE, PrimitiveType::Triangles, vertices, None);
 
         // rectangle
         engine.graphics().draw_sprite(
-            None,
+            NO_TEXTURE,
             SpriteDrawParams::default()
                 .position((150.0, 350.0))
                 .region((0.0, 0.0, 300.0, 200.0))

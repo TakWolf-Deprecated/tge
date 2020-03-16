@@ -172,3 +172,5 @@ impl TextureHolder for Texture {
     }
 
 }
+
+pub const NO_TEXTURE: Option<&Texture> = None;

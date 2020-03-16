@@ -20,8 +20,8 @@ pub use color::Color;
 pub use vertex::Vertex;
 pub use self::image::Image;
 pub(crate) use self::image::validate_pixels;
-pub use texture::Texture;
-pub use canvas::Canvas;
+pub use texture::{Texture, NO_TEXTURE};
+pub use canvas::{Canvas, NO_CANVAS};
 pub use params::SpriteDrawParams;
 
 use crate::error::{GameError, GameResult};
@@ -325,7 +325,7 @@ impl Graphics {
         self.elements.extend(elements);
     }
 
-    pub fn draw_mesh(&mut self, texture: Option<&dyn TextureHolder>, primitive: PrimitiveType, vertices: Vec<Vertex>, elements: Option<Vec<u32>>) {
+    pub fn draw_mesh(&mut self, texture: Option<&impl TextureHolder>, primitive: PrimitiveType, vertices: Vec<Vertex>, elements: Option<Vec<u32>>) {
         let texture = texture.map(|texture| texture.texture().clone())
             .unwrap_or_else(|| self.default_texture.clone());
 
@@ -337,7 +337,7 @@ impl Graphics {
         self.append_vertices_and_elements(vertices, elements);
     }
 
-    pub fn draw_sprite(&mut self, texture: Option<&dyn TextureHolder>, params: SpriteDrawParams) {
+    pub fn draw_sprite(&mut self, texture: Option<&impl TextureHolder>, params: SpriteDrawParams) {
         let (texture, texture_size) = match texture {
             Some(texture) => {
                 let texture_size = texture.texture_size();
