@@ -1,7 +1,7 @@
 use super::Color;
 use crate::math::{Position, Point, Scale, Region, Angle};
 
-#[derive(Debug, Default, Copy, Clone, PartialEq)]
+#[derive(Debug, Default, Clone, PartialEq)]
 pub struct SpriteDrawParams {
     pub(crate) region: Option<Region>,
     pub(crate) origin: Option<Point>,
