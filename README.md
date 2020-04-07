@@ -11,8 +11,8 @@ __Tge is currently in a very early stage of development. The API may be changed.
 ## Features
 
 * Modular API like [LÖVE](https://love2d.org).
-* Vertex and sprite rendering use hardware-accelerated.
-* Font support and text rendering. (TODO)
+* Vertex and sprite rendering by hardware-accelerated.
+* Dynamic font and text rendering. (TODO)
 * Interface for handling keyboard, mouse, touch, touchpad and gamepad.
 * Audio play. (TODO)
 
