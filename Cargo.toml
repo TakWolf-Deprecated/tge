@@ -4,11 +4,12 @@ version = "0.0.1"
 authors = ["TakWolf <takwolf@foxmail.com>"]
 edition = "2018"
 description = "A lightweight cross-platform 2D game framework written in pure Rust and based on OpenGL 3.3+."
-categories = ["game-engines"]
-keywords = ["game", "graphics"]
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/TakWolf/tge"
 readme = "README.md"
+repository = "https://github.com/TakWolf/tge"
+license = "MIT OR Apache-2.0"
+keywords = ["game", "graphics"]
+categories = ["game-engines"]
+exclude = ["examples/**", "assets/**"]
 publish = false
 
 [dependencies]
