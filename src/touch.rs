@@ -3,11 +3,11 @@ mod phase;
 pub use phase::TouchPhase;
 
 use crate::error::GameResult;
-use crate::math::Position;
+use crate::window::LogicalPosition;
 use std::collections::HashMap;
 
 pub struct Touch {
-    positions: HashMap<u64, Position>,
+    positions: HashMap<u64, LogicalPosition>,
 }
 
 impl Touch {
@@ -18,7 +18,7 @@ impl Touch {
         })
     }
 
-    pub(crate) fn handle_event(&mut self, id: u64, phase: TouchPhase, position: Position) {
+    pub(crate) fn handle_event(&mut self, id: u64, phase: TouchPhase, position: LogicalPosition) {
         match phase {
             TouchPhase::Start | TouchPhase::Move => self.positions.insert(id, position),
             TouchPhase::End | TouchPhase::Cancel => self.positions.remove(&id),
@@ -36,7 +36,7 @@ impl Touch {
         touches
     }
 
-    pub fn position(&self, id: u64) -> Option<Position> {
+    pub fn position(&self, id: u64) -> Option<LogicalPosition> {
         self.positions.get(&id).map(|position| *position)
     }
 

@@ -84,7 +84,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((16 * 16, 16 * 16))
+            .inner_size((16.0 * 16.0, 16.0 * 16.0))
             .resizable(false))
         .graphics_config(GraphicsConfig::new()
             .default_filter(Filter::new(

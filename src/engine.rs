@@ -1,8 +1,8 @@
 use crate::error::{GameError, GameResult};
-use crate::math::{Position, Delta, Size};
+use crate::math::Delta;
 use crate::event::{Event, KeyAction};
 use crate::filesystem::{Filesystem, FilesystemConfig};
-use crate::window::{Window, WindowConfig};
+use crate::window::{Window, WindowConfig, LogicalPosition, LogicalSize};
 use crate::graphics::{Graphics, GraphicsConfig};
 use crate::timer::{Timer, TimerConfig};
 use crate::keyboard::{Keyboard, KeyboardConfig};
@@ -114,19 +114,19 @@ impl Engine {
                         }
                         WindowEvent::Resized(physical_size) => {
                             let scale_factor = self.window.window().scale_factor();
-                            let logical_size = physical_size.to_logical::<u32>(scale_factor);
-                            self.graphics.resize(scale_factor, physical_size);
-                            game.event(self, Event::WindowResize(Size::new(logical_size.width, logical_size.height)))?;
+                            let logical_size = physical_size.to_logical(scale_factor);
+                            self.graphics.resize(physical_size, scale_factor);
+                            game.event(self, Event::WindowResize(LogicalSize::new(logical_size.width, logical_size.height)))?;
                         }
                         WindowEvent::ScaleFactorChanged { scale_factor, new_inner_size } => {
-                            let logical_size = new_inner_size.to_logical::<u32>(scale_factor);
-                            self.graphics.resize(scale_factor, *new_inner_size);
-                            game.event(self, Event::WindowResize(Size::new(logical_size.width, logical_size.height)))?;
+                            let logical_size = new_inner_size.to_logical(scale_factor);
+                            self.graphics.resize(*new_inner_size, scale_factor);
+                            game.event(self, Event::WindowResize(LogicalSize::new(logical_size.width, logical_size.height)))?;
                         }
                         WindowEvent::Moved(physical_position) => {
                             let scale_factor = self.window.window().scale_factor();
-                            let logical_position = physical_position.to_logical::<f32>(scale_factor);
-                            game.event(self, Event::WindowMove(Position::new(logical_position.x, logical_position.y)))?;
+                            let logical_position = physical_position.to_logical(scale_factor);
+                            game.event(self, Event::WindowMove(LogicalPosition::new(logical_position.x, logical_position.y)))?;
                         }
                         WindowEvent::Focused(focused) => {
                             self.window.handle_focus_change_event(focused);
@@ -148,8 +148,8 @@ impl Engine {
                         }
                         WindowEvent::CursorMoved { position, .. } => {
                             let scale_factor = self.window.window().scale_factor();
-                            let logical_position = position.to_logical::<f32>(scale_factor);
-                            let position = Position::new(logical_position.x, logical_position.y);
+                            let logical_position = position.to_logical(scale_factor);
+                            let position = LogicalPosition::new(logical_position.x, logical_position.y);
                             self.mouse.handle_move_event(position);
                             game.event(self, Event::MouseMove(position))?;
                         }
@@ -186,8 +186,8 @@ impl Engine {
                             let phase = touch.phase.into();
                             let position = {
                                 let scale_factor = self.window.window().scale_factor();
-                                let logical_position = touch.location.to_logical::<f32>(scale_factor);
-                                Position::new(logical_position.x, logical_position.y)
+                                let logical_position = touch.location.to_logical(scale_factor);
+                                LogicalPosition::new(logical_position.x, logical_position.y)
                             };
                             self.touch.handle_event(id, phase, position);
                             game.event(self, Event::Touch { id, phase, position })?;

@@ -1,4 +1,5 @@
-use crate::math::{Position, Size, Delta};
+use crate::math::Delta;
+use crate::window::{LogicalPosition, LogicalSize};
 use crate::keyboard::{KeyCode, ModifiersState};
 use crate::mouse::MouseButton;
 use crate::touch::TouchPhase;
@@ -46,8 +47,8 @@ pub enum Event {
     AppSuspend,
     AppResume,
     WindowClose,
-    WindowResize(Size<u32>),
-    WindowMove(Position),
+    WindowResize(LogicalSize),
+    WindowMove(LogicalPosition),
     WindowFocusChange(bool),
     ReceiveChar(char),
     KeyboardInput {
@@ -56,7 +57,7 @@ pub enum Event {
         repeated: bool,
     },
     ModifiersChange(ModifiersState),
-    MouseMove(Position),
+    MouseMove(LogicalPosition),
     MouseEnterWindow,
     MouseLeaveWindow,
     MouseWheelScroll(Delta),
@@ -67,7 +68,7 @@ pub enum Event {
     Touch {
         id: u64,
         phase: TouchPhase,
-        position: Position,
+        position: LogicalPosition,
     },
     TouchpadScroll {
         delta: Delta,

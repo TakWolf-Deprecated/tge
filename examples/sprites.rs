@@ -140,7 +140,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((1280, 720)))
+            .inner_size((1280.0, 720.0)))
         .graphics_config(GraphicsConfig::new()
             .default_filter(Filter::new(
                 FilterMode::Nearest,

@@ -71,7 +71,8 @@ impl Graphics {
         let gl = Rc::new(gl);
 
         let physical_size = context_wrapper.window().inner_size();
-        let logical_size = physical_size.to_logical::<f32>(context_wrapper.window().scale_factor());
+        let scale_factor = context_wrapper.window().scale_factor();
+        let logical_size = physical_size.to_logical(scale_factor);
         let size = Size::new(logical_size.width, logical_size.height);
         let viewport = Viewport::new(0.0, 0.0, logical_size.width, logical_size.height);
         unsafe {
@@ -130,10 +131,10 @@ impl Graphics {
         &self.gl
     }
 
-    pub(crate) fn resize(&mut self, scale_factor: f64, physical_size: PhysicalSize<u32>) {
+    pub(crate) fn resize(&mut self, physical_size: PhysicalSize<u32>, scale_factor: f64) {
         self.context_wrapper.resize(physical_size);
         if self.canvas.is_none() {
-            let logical_size = physical_size.to_logical::<f32>(scale_factor);
+            let logical_size = physical_size.to_logical(scale_factor);
             self.size.set(logical_size.width, logical_size.height);
             self.viewport.set(0.0, 0.0, logical_size.width, logical_size.height);
             unsafe {
@@ -271,7 +272,8 @@ impl Graphics {
                 self.projection_matrix = Mat4::orthographic_rh_gl(0.0, self.size.width, 0.0, self.size.height, -1.0, 1.0);
             } else {
                 let physical_size = self.window().inner_size();
-                let logical_size = physical_size.to_logical::<f32>(self.window().scale_factor());
+                let scale_factor = self.window().scale_factor();
+                let logical_size = physical_size.to_logical(scale_factor);
                 self.size.set(logical_size.width, logical_size.height);
                 self.viewport.set(0.0, 0.0, logical_size.width, logical_size.height);
                 unsafe {

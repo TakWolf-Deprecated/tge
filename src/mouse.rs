@@ -5,10 +5,10 @@ pub use cursor::CursorIcon;
 pub use button::MouseButton;
 
 use crate::error::{GameError, GameResult};
-use crate::math::{Position, Delta};
+use crate::math::Delta;
 use crate::event::{KeyState, KeyAction};
+use crate::window::LogicalPosition;
 use winit::window::Window;
-use winit::dpi::LogicalPosition;
 use glutin::{ContextWrapper, PossiblyCurrent};
 use std::rc::Rc;
 use std::collections::HashMap;
@@ -17,7 +17,7 @@ pub struct Mouse {
     context_wrapper: Rc<ContextWrapper<PossiblyCurrent, Window>>,
     cursor_icon: CursorIcon,
     cursor_visible: bool,
-    position: Position,
+    position: LogicalPosition,
     inside_window: bool,
     wheel_scroll_delta: Delta,
     button_states: HashMap<MouseButton, KeyState>,
@@ -33,7 +33,7 @@ impl Mouse {
             context_wrapper,
             cursor_icon: mouse_config.cursor_icon,
             cursor_visible: mouse_config.cursor_visible,
-            position: Position::zero(),
+            position: LogicalPosition::zero(),
             inside_window: false,
             wheel_scroll_delta: Delta::zero(),
             button_states: HashMap::new(),
@@ -44,7 +44,7 @@ impl Mouse {
         self.context_wrapper.window()
     }
 
-    pub(crate) fn handle_move_event(&mut self, position: Position) {
+    pub(crate) fn handle_move_event(&mut self, position: LogicalPosition) {
         self.position = position;
     }
 
@@ -93,7 +93,7 @@ impl Mouse {
         self.cursor_visible = cursor_visible;
     }
 
-    pub fn position(&self) -> Option<Position> {
+    pub fn position(&self) -> Option<LogicalPosition> {
         if self.inside_window {
             Some(self.position)
         } else {
@@ -101,13 +101,13 @@ impl Mouse {
         }
     }
 
-    pub fn last_position(&self) -> Position {
+    pub fn last_position(&self) -> LogicalPosition {
         self.position
     }
 
-    pub fn set_position(&mut self, position: impl Into<Position>) -> GameResult {
+    pub fn set_position(&mut self, position: impl Into<LogicalPosition>) -> GameResult {
         let position = position.into();
-        self.window().set_cursor_position(LogicalPosition::new(position.x, position.y))
+        self.window().set_cursor_position(winit::dpi::LogicalPosition::new(position.x, position.y))
             .map_err(|error| GameError::NotSupportedError(Box::new(error)))?;
         self.position = position;
         Ok(())

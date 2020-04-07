@@ -93,7 +93,7 @@ impl Game for App {
 fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
-            .inner_size((600, 600))
+            .inner_size((600.0, 600.0))
             .resizable(false))
         .build()?
         .run_with(App::new)
