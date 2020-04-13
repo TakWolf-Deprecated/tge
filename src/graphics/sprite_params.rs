@@ -3,12 +3,12 @@ use crate::math::{Position, Point, Scale, Region, Angle};
 
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct SpriteDrawParams {
-    pub(crate) region: Option<Region>,
-    pub(crate) origin: Option<Point>,
-    pub(crate) position: Option<Position>,
-    pub(crate) rotation: Option<Angle>,
-    pub(crate) scale: Option<Scale>,
-    pub(crate) colors: Option<[Color; 4]>,
+    pub region: Option<Region>,
+    pub origin: Option<Point>,
+    pub position: Option<Position>,
+    pub rotation: Option<Angle>,
+    pub scale: Option<Scale>,
+    pub colors: Option<[Color; 4]>,
 }
 
 impl SpriteDrawParams {
