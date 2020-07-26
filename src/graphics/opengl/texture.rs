@@ -1,5 +1,5 @@
 use super::{Filter, Wrap};
-use glow::{Context, HasContext};
+use glow::{Context, HasContext, PixelUnpackData};
 use std::rc::Rc;
 
 pub type TextureId = <Context as HasContext>::Texture;
@@ -52,7 +52,7 @@ impl Texture {
 
     pub fn sub_image(&self, offset_x: u32, offset_y: u32, width: u32, height: u32, pixels: Option<&[u8]>) {
         unsafe {
-            self.gl.tex_sub_image_2d_u8_slice(
+            self.gl.tex_sub_image_2d(
                 glow::TEXTURE_2D,
                 0,
                 offset_x as i32,
@@ -61,7 +61,10 @@ impl Texture {
                 height as i32,
                 glow::RGBA,
                 glow::UNSIGNED_BYTE,
-                pixels,
+                match pixels {
+                    Some(pixels) => PixelUnpackData::Slice(pixels),
+                    None => PixelUnpackData::BufferOffset(0),
+                },
             );
         }
     }

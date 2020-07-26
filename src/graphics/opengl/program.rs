@@ -63,7 +63,7 @@ impl Program {
     pub fn set_uniform_matrix_4(&self, name: &str, mat4: &[f32; 16]) {
         unsafe {
             let location = self.gl.get_uniform_location(self.id, name);
-            self.gl.uniform_matrix_4_f32_slice(location, false, mat4);
+            self.gl.uniform_matrix_4_f32_slice(location.as_ref(), false, mat4);
         }
     }
 
