@@ -11,10 +11,10 @@ impl From<winit::event::TouchPhase> for TouchPhase {
 
     fn from(phase: winit::event::TouchPhase) -> Self {
         match phase {
-            winit::event::TouchPhase::Started => TouchPhase::Start,
-            winit::event::TouchPhase::Moved => TouchPhase::Move,
-            winit::event::TouchPhase::Ended => TouchPhase::End,
-            winit::event::TouchPhase::Cancelled => TouchPhase::Cancel,
+            winit::event::TouchPhase::Started => Self::Start,
+            winit::event::TouchPhase::Moved => Self::Move,
+            winit::event::TouchPhase::Ended => Self::End,
+            winit::event::TouchPhase::Cancelled => Self::Cancel,
         }
     }
 

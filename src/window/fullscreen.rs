@@ -12,16 +12,16 @@ impl FullscreenMode {
 
     pub(crate) fn from_raw(fullscreen: Fullscreen) -> Self {
         match fullscreen {
-            Fullscreen::Exclusive(_) => FullscreenMode::Exclusive,
-            Fullscreen::Borderless(_) => FullscreenMode::Borderless,
+            Fullscreen::Exclusive(_) => Self::Exclusive,
+            Fullscreen::Borderless(_) => Self::Borderless,
         }
     }
 
     pub(crate) fn into_raw(self, monitor: MonitorHandle) -> GameResult<Fullscreen> {
         match self {
-            FullscreenMode::Exclusive => get_preferred_video_mode(monitor)
+            Self::Exclusive => get_preferred_video_mode(monitor)
                 .map(|video_mode| Fullscreen::Exclusive(video_mode)),
-            FullscreenMode::Borderless => Ok(Fullscreen::Borderless(monitor)),
+            Self::Borderless => Ok(Fullscreen::Borderless(monitor)),
         }
     }
 

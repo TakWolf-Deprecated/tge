@@ -19,18 +19,18 @@ impl PrimitiveType {
 
     pub(crate) fn to_flag(&self) -> u32 {
         match self {
-            PrimitiveType::Points => glow::POINTS,
-            PrimitiveType::LineStrip => glow::LINE_STRIP,
-            PrimitiveType::LineLoop => glow::LINE_LOOP,
-            PrimitiveType::Lines => glow::LINES,
-            PrimitiveType::LineStripAdjacency => glow::LINE_STRIP_ADJACENCY,
-            PrimitiveType::LinesAdjacency => glow::LINES_ADJACENCY,
-            PrimitiveType::TriangleStrip => glow::TRIANGLE_STRIP,
-            PrimitiveType::TriangleFan => glow::TRIANGLE_FAN,
-            PrimitiveType::Triangles => glow::TRIANGLES,
-            PrimitiveType::TriangleStripAdjacency => glow::TRIANGLE_STRIP_ADJACENCY,
-            PrimitiveType::TrianglesAdjacency => glow::TRIANGLES_ADJACENCY,
-            PrimitiveType::Patches => glow::PATCHES,
+            Self::Points => glow::POINTS,
+            Self::LineStrip => glow::LINE_STRIP,
+            Self::LineLoop => glow::LINE_LOOP,
+            Self::Lines => glow::LINES,
+            Self::LineStripAdjacency => glow::LINE_STRIP_ADJACENCY,
+            Self::LinesAdjacency => glow::LINES_ADJACENCY,
+            Self::TriangleStrip => glow::TRIANGLE_STRIP,
+            Self::TriangleFan => glow::TRIANGLE_FAN,
+            Self::Triangles => glow::TRIANGLES,
+            Self::TriangleStripAdjacency => glow::TRIANGLE_STRIP_ADJACENCY,
+            Self::TrianglesAdjacency => glow::TRIANGLES_ADJACENCY,
+            Self::Patches => glow::PATCHES,
         }
     }
 

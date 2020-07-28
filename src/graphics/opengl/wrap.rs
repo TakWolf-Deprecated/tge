@@ -12,11 +12,11 @@ impl WrapMode {
 
     pub(crate) fn to_flag(&self) -> u32 {
         match self {
-            WrapMode::Repeat => glow::REPEAT,
-            WrapMode::MirroredRepeat => glow::MIRRORED_REPEAT,
-            WrapMode::ClampToEdge => glow::CLAMP_TO_EDGE,
-            WrapMode::MirrorClampToEdge => glow::MIRROR_CLAMP_TO_EDGE,
-            WrapMode::ClampToBorder => glow::CLAMP_TO_BORDER,
+            Self::Repeat => glow::REPEAT,
+            Self::MirroredRepeat => glow::MIRRORED_REPEAT,
+            Self::ClampToEdge => glow::CLAMP_TO_EDGE,
+            Self::MirrorClampToEdge => glow::MIRROR_CLAMP_TO_EDGE,
+            Self::ClampToBorder => glow::CLAMP_TO_BORDER,
         }
     }
 

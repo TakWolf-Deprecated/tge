@@ -12,8 +12,8 @@ impl BufferTarget {
 
     pub(crate) fn to_flag(&self) -> u32 {
         match self {
-            BufferTarget::Vertex => glow::ARRAY_BUFFER,
-            BufferTarget::Element => glow::ELEMENT_ARRAY_BUFFER,
+            Self::Vertex => glow::ARRAY_BUFFER,
+            Self::Element => glow::ELEMENT_ARRAY_BUFFER,
         }
     }
 
@@ -30,9 +30,9 @@ impl BufferUsage {
 
     pub(crate) fn to_flag(&self) -> u32 {
         match self {
-            BufferUsage::Static => glow::STATIC_DRAW,
-            BufferUsage::Dynamic => glow::DYNAMIC_DRAW,
-            BufferUsage::Stream => glow::STREAM_DRAW,
+            Self::Static => glow::STATIC_DRAW,
+            Self::Dynamic => glow::DYNAMIC_DRAW,
+            Self::Stream => glow::STREAM_DRAW,
         }
     }
 

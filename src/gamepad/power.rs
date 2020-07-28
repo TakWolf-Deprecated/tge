@@ -12,11 +12,11 @@ impl From<gilrs::PowerInfo> for PowerInfo {
 
     fn from(info: gilrs::PowerInfo) -> Self {
         match info {
-            gilrs::PowerInfo::Wired => PowerInfo::Wired,
-            gilrs::PowerInfo::Charged => PowerInfo::Charged,
-            gilrs::PowerInfo::Charging(value) => PowerInfo::Charging(value),
-            gilrs::PowerInfo::Discharging(value) => PowerInfo::Discharging(value),
-            gilrs::PowerInfo::Unknown => PowerInfo::Unknown,
+            gilrs::PowerInfo::Wired => Self::Wired,
+            gilrs::PowerInfo::Charged => Self::Charged,
+            gilrs::PowerInfo::Charging(value) => Self::Charging(value),
+            gilrs::PowerInfo::Discharging(value) => Self::Discharging(value),
+            gilrs::PowerInfo::Unknown => Self::Unknown,
         }
     }
 

@@ -28,29 +28,29 @@ impl<F: Float> Angle<F> {
 
     pub fn value(&self) -> F {
         match self {
-            Angle::Radians(value) => *value,
-            Angle::Degrees(value) => *value,
+            Self::Radians(value) => *value,
+            Self::Degrees(value) => *value,
         }
     }
 
     pub fn set_value(&mut self, new_value: F) {
         match self {
-            Angle::Radians(value) => *value = new_value,
-            Angle::Degrees(value) => *value = new_value,
+            Self::Radians(value) => *value = new_value,
+            Self::Degrees(value) => *value = new_value,
         }
     }
 
     pub fn radians_value(&self) -> F {
         match self {
-            Angle::Radians(value) => *value,
-            Angle::Degrees(value) => *value / F::straight_angle() * F::pi(),
+            Self::Radians(value) => *value,
+            Self::Degrees(value) => *value / F::straight_angle() * F::pi(),
         }
     }
 
     pub fn degrees_value(&self) -> F {
         match self {
-            Angle::Radians(value) => *value / F::pi() * F::straight_angle(),
-            Angle::Degrees(value) => *value,
+            Self::Radians(value) => *value / F::pi() * F::straight_angle(),
+            Self::Degrees(value) => *value,
         }
     }
 
@@ -70,8 +70,8 @@ impl<F: Float> Add for Angle<F> {
 
     fn add(self, other: Self) -> Self::Output {
         match self {
-            Angle::Radians(value) => Angle::Radians(value + other.radians_value()),
-            Angle::Degrees(value) => Angle::Degrees(value + other.degrees_value()),
+            Self::Radians(value) => Self::Radians(value + other.radians_value()),
+            Self::Degrees(value) => Self::Degrees(value + other.degrees_value()),
         }
     }
 
@@ -83,8 +83,8 @@ impl<F: Float> Sub for Angle<F> {
 
     fn sub(self, other: Self) -> Self::Output {
         match self {
-            Angle::Radians(value) => Angle::Radians(value - other.radians_value()),
-            Angle::Degrees(value) => Angle::Degrees(value - other.degrees_value()),
+            Self::Radians(value) => Self::Radians(value - other.radians_value()),
+            Self::Degrees(value) => Self::Degrees(value - other.degrees_value()),
         }
     }
 
@@ -94,8 +94,8 @@ impl<F: Float> AddAssign for Angle<F> {
 
     fn add_assign(&mut self, other: Self) {
         match self {
-            Angle::Radians(value) => *value += other.radians_value(),
-            Angle::Degrees(value) => *value += other.degrees_value(),
+            Self::Radians(value) => *value += other.radians_value(),
+            Self::Degrees(value) => *value += other.degrees_value(),
         }
     }
 
@@ -105,8 +105,8 @@ impl<F: Float> SubAssign for Angle<F> {
 
     fn sub_assign(&mut self, other: Self) {
         match self {
-            Angle::Radians(value) => *value -= other.radians_value(),
-            Angle::Degrees(value) => *value -= other.degrees_value(),
+            Self::Radians(value) => *value -= other.radians_value(),
+            Self::Degrees(value) => *value -= other.degrees_value(),
         }
     }
 
@@ -118,8 +118,8 @@ impl<F: Float> Mul<F> for Angle<F> {
 
     fn mul(self, rhs: F) -> Self::Output {
         match self {
-            Angle::Radians(value) => Angle::Radians(value * rhs),
-            Angle::Degrees(value) => Angle::Degrees(value * rhs),
+            Self::Radians(value) => Self::Radians(value * rhs),
+            Self::Degrees(value) => Self::Degrees(value * rhs),
         }
     }
 
@@ -131,8 +131,8 @@ impl<F: Float> Div<F> for Angle<F> {
 
     fn div(self, rhs: F) -> Self::Output {
         match self {
-            Angle::Radians(value) => Angle::Radians(value / rhs),
-            Angle::Degrees(value) => Angle::Degrees(value / rhs),
+            Self::Radians(value) => Self::Radians(value / rhs),
+            Self::Degrees(value) => Self::Degrees(value / rhs),
         }
     }
 
@@ -142,8 +142,8 @@ impl<F: Float> MulAssign<F> for Angle<F> {
 
     fn mul_assign(&mut self, rhs: F) {
         match self {
-            Angle::Radians(value) => *value *= rhs,
-            Angle::Degrees(value) => *value *= rhs,
+            Self::Radians(value) => *value *= rhs,
+            Self::Degrees(value) => *value *= rhs,
         }
     }
 
@@ -153,8 +153,8 @@ impl<F: Float> DivAssign<F> for Angle<F> {
 
     fn div_assign(&mut self, rhs: F) {
         match self {
-            Angle::Radians(value) => *value /= rhs,
-            Angle::Degrees(value) => *value /= rhs,
+            Self::Radians(value) => *value /= rhs,
+            Self::Degrees(value) => *value /= rhs,
         }
     }
 

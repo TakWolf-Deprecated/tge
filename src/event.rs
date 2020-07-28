@@ -24,8 +24,8 @@ impl From<ElementState> for KeyAction {
 
     fn from(state: ElementState) -> Self {
         match state {
-            ElementState::Pressed => KeyAction::Down,
-            ElementState::Released => KeyAction::Up,
+            ElementState::Pressed => Self::Down,
+            ElementState::Released => Self::Up,
         }
     }
 
@@ -35,8 +35,8 @@ impl Into<KeyState> for KeyAction {
 
     fn into(self) -> KeyState {
         match self {
-            KeyAction::Down => KeyState::Down,
-            KeyAction::Up => KeyState::Up,
+            Self::Down => KeyState::Down,
+            Self::Up => KeyState::Up,
         }
     }
 
