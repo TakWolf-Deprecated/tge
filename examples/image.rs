@@ -33,12 +33,12 @@ impl Game for App {
         engine.graphics().clear(Color::WHITE);
 
         engine.graphics().draw_sprite(
-            Some(&self.ferris),
+            &self.ferris,
             SpriteDrawParams::default()
                 .scale((0.5, 0.5)),
         );
         engine.graphics().draw_sprite(
-            Some(&self.ferris),
+            &self.ferris,
             SpriteDrawParams::default()
                 .position((0.0, 700.0))
                 .scale((0.5, -0.5))

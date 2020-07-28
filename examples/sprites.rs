@@ -121,7 +121,7 @@ impl Game for App {
 
         for sprite in self.sprites.iter() {
             engine.graphics().draw_sprite(
-                Some(&self.zazaka),
+                &self.zazaka,
                 SpriteDrawParams::default()
                     .origin(origin)
                     .position(sprite.position)

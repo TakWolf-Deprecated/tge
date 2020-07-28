@@ -85,7 +85,7 @@ impl Game for App {
 
         for cannon in self.cannons.iter() {
             engine.graphics().draw_sprite(
-                Some(&self.battery),
+                &self.battery,
                 SpriteDrawParams::default()
                     .origin((16.0, 16.0))
                     .position(cannon.position)

@@ -66,7 +66,7 @@ impl Game for App {
         for j in 0..8 {
             for i in 0..8 {
                 engine.graphics().draw_sprite(
-                    Some(&self.texture),
+                    &self.texture,
                     SpriteDrawParams::default()
                         .position((i as f32 * self.frame_size.width * 2.0, j as f32 * self.frame_size.height * 2.0))
                         .region(region)

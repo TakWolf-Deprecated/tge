@@ -31,7 +31,7 @@ impl App {
     fn draw_scene(&mut self, engine: &mut Engine) {
         let sky_size = self.sky.size();
         engine.graphics().draw_sprite(
-            Some(&self.sky),
+            &self.sky,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, sky_size.width as f32 * 2.0, sky_size.height as f32))
                 .position((self.background_x, 0.0)),
@@ -75,7 +75,7 @@ impl Game for App {
         }
 
         engine.graphics().draw_sprite(
-            Some(&self.canvas),
+            &self.canvas,
             SpriteDrawParams::default()
                 .position(position)
                 .scale((scale, scale)),

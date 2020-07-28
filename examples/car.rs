@@ -90,7 +90,7 @@ impl Game for App {
 
         let car_size = self.car.size();
         engine.graphics().draw_sprite(
-            Some(&self.car),
+            &self.car,
             SpriteDrawParams::default()
                 .origin((car_size.width as f32 / 2.0, car_size.height as f32 / 2.0))
                 .position(self.position)

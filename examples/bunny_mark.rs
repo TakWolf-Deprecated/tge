@@ -106,7 +106,7 @@ impl Game for App {
 
         for bunny in &self.bunnies {
             engine.graphics().draw_sprite(
-                Some(&self.wabbit),
+                &self.wabbit,
                 SpriteDrawParams::default()
                     .position(bunny.position),
             );

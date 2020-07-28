@@ -46,7 +46,7 @@ impl Game for App {
         engine.graphics().clear((0.9, 0.9, 0.9, 1.0));
 
         engine.graphics().draw_sprite(
-            Some(&self.clock_disk),
+            &self.clock_disk,
             SpriteDrawParams::default(),
         );
         engine.graphics().draw_sprite(

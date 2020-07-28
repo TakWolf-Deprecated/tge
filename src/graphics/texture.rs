@@ -70,6 +70,10 @@ impl Texture {
         Ok(Rc::new(texture))
     }
 
+    pub(crate) fn texture(&self) -> &Rc<opengl::Texture> {
+        &self.texture
+    }
+
     pub fn size(&self) -> Size<u32> {
         self.size
     }
@@ -152,25 +156,3 @@ impl Texture {
     }
 
 }
-
-pub trait TextureHolder {
-
-    fn texture(&self) -> &Rc<opengl::Texture>;
-
-    fn texture_size(&self) -> Size<u32>;
-
-}
-
-impl TextureHolder for Texture {
-
-    fn texture(&self) -> &Rc<opengl::Texture> {
-        &self.texture
-    }
-
-    fn texture_size(&self) -> Size<u32> {
-        self.size
-    }
-
-}
-
-pub const NO_TEXTURE: Option<&Texture> = None;

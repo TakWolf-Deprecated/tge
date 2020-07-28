@@ -1,4 +1,4 @@
-use super::{opengl, Filter, Wrap, Texture, TextureHolder};
+use super::{opengl, Filter, Wrap, Texture};
 use super::opengl::{Attachment, Framebuffer};
 use crate::error::{GameError, GameResult};
 use crate::math::Size;
@@ -30,6 +30,10 @@ impl Canvas {
         &self.framebuffer
     }
 
+    pub(crate) fn texture(&self) -> &Rc<opengl::Texture> {
+        self.texture.texture()
+    }
+
     pub fn size(&self) -> Size<u32> {
         self.texture.size()
     }
@@ -51,17 +55,3 @@ impl Canvas {
     }
 
 }
-
-impl TextureHolder for Canvas {
-
-    fn texture(&self) -> &Rc<opengl::Texture> {
-        self.texture.texture()
-    }
-
-    fn texture_size(&self) -> Size<u32> {
-        self.texture.size()
-    }
-
-}
-
-pub const NO_CANVAS: Option<&Canvas> = None;

@@ -48,25 +48,25 @@ impl App {
         );
 
         engine.graphics().draw_sprite(
-            Some(&self.back_trees),
+            &self.back_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x / 8.0, 0.0)),
         );
         engine.graphics().draw_sprite(
-            Some(&self.lights),
+            &self.lights,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x / 4.0, 0.0)),
         );
         engine.graphics().draw_sprite(
-            Some(&self.middle_trees),
+            &self.middle_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x / 2.0, 0.0)),
         );
         engine.graphics().draw_sprite(
-            Some(&self.front_trees),
+            &self.front_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0))
                 .position((offset.x, 0.0)),
@@ -118,7 +118,7 @@ impl Game for App {
         }
 
         engine.graphics().draw_sprite(
-            Some(&self.canvas),
+            &self.canvas,
             SpriteDrawParams::default()
                 .position(position)
                 .scale((scale, scale)),
