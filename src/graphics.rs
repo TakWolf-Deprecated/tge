@@ -59,6 +59,7 @@ pub struct Graphics {
     default_wrap: Wrap,
     default_texture: Rc<opengl::Texture>,
     canvas: Option<Rc<opengl::Framebuffer>>,
+    max_texture_size: u32,
     renderer: Renderer,
     vertices: Vec<Vertex>,
     elements: Vec<u32>,
@@ -87,6 +88,10 @@ impl Graphics {
         program.set_uniform_matrix_4("u_projection", &projection_matrix.to_cols_array());
 
         let default_texture = Texture::default(gl.clone())?;
+
+        let max_texture_size = unsafe {
+            gl.get_parameter_i32(glow::MAX_TEXTURE_SIZE) as u32
+        };
 
         let renderer = RendererBuilder::new(gl.clone())?
             .init_vertex_size(BufferUsage::Stream, graphics_config.renderer_vertex_size)
@@ -117,6 +122,7 @@ impl Graphics {
             default_wrap: graphics_config.default_wrap,
             default_texture,
             canvas: None,
+            max_texture_size,
             renderer,
             vertices,
             elements,
