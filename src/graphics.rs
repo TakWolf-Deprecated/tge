@@ -340,6 +340,7 @@ impl Graphics {
 
         let draw_params = draw_params.into();
         let transform_params = transform_params.into();
+
         let region = draw_params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
         let origin = transform_params.origin.unwrap_or_else(|| Point::zero());
         let model_matrix = transform_params.matrix();
