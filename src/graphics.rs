@@ -9,8 +9,7 @@ mod image;
 mod texture;
 mod canvas;
 mod texture_holder;
-mod transform_params;
-mod sprite_params;
+mod params;
 
 use opengl::BufferUsage;
 use renderer::{Renderer, RendererBuilder};
@@ -24,8 +23,7 @@ pub(crate) use self::image::validate_pixels;
 pub use texture::Texture;
 pub use canvas::Canvas;
 pub use texture_holder::{TextureHolder, NO_TEXTURE};
-pub use transform_params::TransformParams;
-pub use sprite_params::SpriteDrawParams;
+pub use params::{TransformParams, SpriteDrawParams};
 
 use crate::error::{GameError, GameResult};
 use crate::math::{Position, Point, Size, Region, Viewport};
