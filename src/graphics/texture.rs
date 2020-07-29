@@ -70,6 +70,30 @@ impl Texture {
         Ok(Rc::new(texture))
     }
 
+    pub(crate) fn for_font_cache(engine: &mut Engine, size: u32) -> GameResult<Self> {
+        let size = Size::new(size, size);
+        let filter = engine.graphics().default_filter();
+        let generate_mipmap = filter.mipmap.is_some();
+        let wrap = Wrap::uv(WrapMode::Repeat, WrapMode::Repeat);
+        let texture = opengl::Texture::new(engine.graphics().gl().clone())
+            .map_err(|error| GameError::InitError(error.into()))?;
+        texture.bind();
+        texture.init_image(size.width, size.height, None);
+        texture.set_filter(filter);
+        if generate_mipmap {
+            texture.generate_mipmap();
+        }
+        texture.set_wrap(wrap);
+        texture.unbind();
+        Ok(Self {
+            texture: Rc::new(texture),
+            size,
+            filter,
+            mipmap_generated: generate_mipmap,
+            wrap,
+        })
+    }
+
     pub(crate) fn texture(&self) -> &Rc<opengl::Texture> {
         &self.texture
     }
