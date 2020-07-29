@@ -149,7 +149,7 @@ impl Graphics {
     pub fn flush(&mut self) {
         if !self.vertices.is_empty() && !self.elements.is_empty() {
             self.renderer.update_vertices(0, &self.vertices);
-            self.renderer.update_elements(0, &self.elements).expect("renderer update elements error");
+            self.renderer.update_elements(0, &self.elements);
             self.draw_command.texture.bind();
             self.renderer.draw_elements(self.draw_command.primitive, self.elements.len(), 0);
             self.draw_command.texture.unbind();
@@ -311,7 +311,7 @@ impl Graphics {
         });
 
         let renderer_vertex_size = self.renderer.vertex_size();
-        let renderer_element_size = self.renderer.element_size().unwrap_or(0);
+        let renderer_element_size = self.renderer.element_size();
         if renderer_vertex_size - self.vertices.len() < vertices.len() || renderer_element_size - self.elements.len() < elements.len() {
             self.flush();
         }

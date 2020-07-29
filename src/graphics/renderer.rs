@@ -8,8 +8,8 @@ pub struct Renderer {
     vertex_array: VertexArray,
     vertex_buffer: VertexBuffer,
     vertex_size: usize,
-    element_buffer: Option<ElementBuffer>,
-    element_size: Option<usize>,
+    element_buffer: ElementBuffer,
+    element_size: usize,
 }
 
 impl Renderer {
@@ -40,44 +40,28 @@ impl Renderer {
         self.vertex_size
     }
 
-    fn element_buffer(&self) -> GameResult<&ElementBuffer> {
-        self.element_buffer.as_ref().ok_or_else(|| GameError::StateError("not setup element buffer".into()))
+    pub fn init_element_size(&mut self, usage: BufferUsage, size: usize) {
+        self.element_buffer.bind();
+        self.element_buffer.init_size(usage, size);
+        self.element_buffer.unbind();
+        self.element_size = size;
     }
 
-    pub fn init_element_size(&mut self, usage: BufferUsage, size: usize) -> GameResult {
-        let element_buffer = self.element_buffer()?;
-        element_buffer.bind();
-        element_buffer.init_size(usage, size);
-        element_buffer.unbind();
-        self.element_size = Some(size);
-        Ok(())
+    pub fn init_with_elements(&mut self, usage: BufferUsage, elements: &[u32]) {
+        self.element_buffer.bind();
+        self.element_buffer.init_with_data(usage, elements);
+        self.element_buffer.unbind();
+        self.element_size = elements.len();
     }
 
-    pub fn init_with_elements(&mut self, usage: BufferUsage, elements: &[u32]) -> GameResult {
-        let element_buffer = self.element_buffer()?;
-        element_buffer.bind();
-        element_buffer.init_with_data(usage, elements);
-        element_buffer.unbind();
-        self.element_size = Some(elements.len());
-        Ok(())
+    pub fn update_elements(&self, offset: usize, elements: &[u32]) {
+        self.element_buffer.bind();
+        self.element_buffer.sub_data(offset, elements);
+        self.element_buffer.unbind();
     }
 
-    pub fn update_elements(&self, offset: usize, elements: &[u32]) -> GameResult {
-        let element_buffer = self.element_buffer()?;
-        element_buffer.bind();
-        element_buffer.sub_data(offset, elements);
-        element_buffer.unbind();
-        Ok(())
-    }
-
-    pub fn element_size(&self) -> Option<usize> {
+    pub fn element_size(&self) -> usize {
         self.element_size
-    }
-
-    pub fn draw_arrays(&self, primitive: PrimitiveType, first: usize, count: usize) {
-        self.vertex_array.bind();
-        self.vertex_array.draw_arrays(primitive, first, count);
-        self.vertex_array.unbind();
     }
 
     pub fn draw_elements(&self, primitive: PrimitiveType, count: usize, offset: usize) {
@@ -169,13 +153,13 @@ impl RendererBuilder {
             .ok_or_else(|| GameError::InitError("must setup vertex buffer".into()))?;
         let vertex_size = self.vertex_size
             .ok_or_else(|| GameError::InitError("must setup vertex buffer".into()))?;
-        let element_buffer = self.element_buffer;
-        let element_size = self.element_size;
+        let element_buffer = self.element_buffer
+            .ok_or_else(|| GameError::InitError("must setup element buffer".into()))?;
+        let element_size = self.element_size
+            .ok_or_else(|| GameError::InitError("must setup element buffer".into()))?;
         vertex_array.unbind();
         vertex_buffer.unbind();
-        if let Some(element_buffer) = element_buffer.as_ref() {
-            element_buffer.unbind();
-        }
+        element_buffer.unbind();
         Ok(Renderer {
             vertex_array,
             vertex_buffer,
