@@ -302,29 +302,19 @@ impl Graphics {
     }
 
     fn append_vertices_and_elements(&mut self, vertices: Vec<Vertex>, elements: Option<Vec<u32>>) {
-        let mut elements = elements.unwrap_or_else(|| {
-            let mut elements = Vec::with_capacity(vertices.len());
-            for i in 0..vertices.len() as u32 {
-                elements.push(i);
-            }
-            elements
-        });
-
-        let renderer_vertex_size = self.renderer.vertex_size();
-        let renderer_element_size = self.renderer.element_size();
-        if renderer_vertex_size - self.vertices.len() < vertices.len() || renderer_element_size - self.elements.len() < elements.len() {
+        let mut elements = elements.unwrap_or_else(|| (0..vertices.len() as u32).collect());
+        if self.renderer.vertex_size() < self.vertices.len() + vertices.len() || self.renderer.element_size() < self.elements.len() + elements.len() {
             self.flush();
         }
-        assert!(renderer_vertex_size >= vertices.len(), "no enough renderer vertex size ({}): expect {}", renderer_vertex_size, vertices.len());
-        assert!(renderer_element_size >= elements.len(), "no enough renderer element size ({}): expect {}", renderer_element_size, elements.len());
-
+        assert!(self.renderer.vertex_size() >= self.vertices.len() + vertices.len(), "no enough renderer vertex size");
+        assert!(self.renderer.element_size() >= self.elements.len() + elements.len(), "no enough renderer element size");
         let append_vertex_count = vertices.len() as u32;
         let element_offset = self.vertices.len() as u32;
-        self.vertices.extend(vertices);
         for element in &mut elements {
             assert!(*element < append_vertex_count, "element must < append vertex count");
             *element += element_offset;
         }
+        self.vertices.extend(vertices);
         self.elements.extend(elements);
     }
 
