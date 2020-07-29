@@ -34,20 +34,22 @@ impl Game for App {
 
         engine.graphics().draw_sprite(
             &self.ferris,
-            SpriteDrawParams::default()
+            SpriteDrawParams::default(),
+            TransformParams::default()
                 .scale((0.5, 0.5)),
         );
         engine.graphics().draw_sprite(
             &self.ferris,
             SpriteDrawParams::default()
-                .position((0.0, 700.0))
-                .scale((0.5, -0.5))
                 .colors([
                     Color::TRANSPARENT,
                     Color::TRANSPARENT,
                     Color::WHITE,
                     Color::WHITE,
                 ]),
+            TransformParams::default()
+                .position((0.0, 700.0))
+                .scale((0.5, -0.5)),
         );
 
         Ok(())

@@ -9,6 +9,7 @@ mod image;
 mod texture;
 mod canvas;
 mod texture_holder;
+mod transform_params;
 mod sprite_params;
 
 use opengl::BufferUsage;
@@ -23,6 +24,7 @@ pub(crate) use self::image::validate_pixels;
 pub use texture::Texture;
 pub use canvas::Canvas;
 pub use texture_holder::{TextureHolder, NO_TEXTURE};
+pub use transform_params::TransformParams;
 pub use sprite_params::SpriteDrawParams;
 
 use crate::error::{GameError, GameResult};
@@ -31,7 +33,7 @@ use winit::window::Window;
 use winit::dpi::{LogicalPosition, LogicalSize, PhysicalSize};
 use glutin::{ContextWrapper, PossiblyCurrent};
 use glow::{Context, HasContext};
-use glam::{Vec3, Vec4, Quat, Mat4};
+use glam::{Vec4, Mat4};
 use std::rc::Rc;
 
 const SPRITE_VERTEX_COUNT: usize = 4;
@@ -327,26 +329,23 @@ impl Graphics {
         self.append_vertices_and_elements(vertices, elements);
     }
 
-    pub fn draw_sprite<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, params: SpriteDrawParams) {
-        let texture = texture.into();
-        let texture_size = {
+    pub fn draw_sprite<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, draw_params: impl Into<SpriteDrawParams>, transform_params: impl Into<TransformParams>) {
+        let (texture, texture_size) = {
+            let texture = texture.into();
             let texture_size = texture.texture_size();
-            Size::new(texture_size.width as f32, texture_size.height as f32)
+            (texture.texture().unwrap_or(&self.default_texture).clone(), Size::new(texture_size.width as f32, texture_size.height as f32))
         };
-        let texture = texture.texture().unwrap_or(&self.default_texture).clone();
-
         self.switch_draw_command(DrawCommand {
             texture,
             primitive: PrimitiveType::Triangles,
         });
 
-        let region = params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
-        let origin = params.origin.unwrap_or_else(|| Point::zero());
-        let position = params.position.map(|position| Vec3::new(position.x, position.y, 0.0)).unwrap_or_else(|| Vec3::zero());
-        let rotation = params.rotation.map(|angle| Quat::from_rotation_z(angle.radians_value())).unwrap_or_else(|| Quat::from_rotation_z(0.0));
-        let scale = params.scale.map(|scale| Vec3::new(scale.x, scale.y, 1.0)).unwrap_or_else(|| Vec3::one());
+        let draw_params = draw_params.into();
+        let transform_params = transform_params.into();
+        let region = draw_params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
+        let origin = transform_params.origin.unwrap_or_else(|| Point::zero());
+        let model_matrix = transform_params.matrix();
 
-        let model_matrix = Mat4::from_scale_rotation_translation(scale, rotation, position);
         let x0y0 = model_matrix * Vec4::new(-origin.x, -origin.y, 0.0, 1.0);
         let x1y0 = model_matrix * Vec4::new(-origin.x + region.width, -origin.y, 0.0, 1.0);
         let x0y1 = model_matrix * Vec4::new(-origin.x, -origin.y + region.height, 0.0, 1.0);
@@ -359,7 +358,7 @@ impl Graphics {
             region.height / texture_size.height,
         );
 
-        let colors = params.colors.unwrap_or_else(|| [Color::WHITE, Color::WHITE, Color::WHITE, Color::WHITE]);
+        let colors = draw_params.colors.unwrap_or_else(|| [Color::WHITE, Color::WHITE, Color::WHITE, Color::WHITE]);
 
         let vertices = vec![
             Vertex {

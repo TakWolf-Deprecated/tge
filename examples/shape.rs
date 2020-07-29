@@ -36,9 +36,10 @@ impl Game for App {
                 engine.graphics().draw_sprite(
                     NO_TEXTURE,
                     SpriteDrawParams::default()
-                        .position((10.0 * i, 10.0 * j))
                         .region((0.0, 0.0, 1.0, 1.0))
                         .color(Color::BLACK),
+                    TransformParams::default()
+                        .position((10.0 * i, 10.0 * j)),
                 );
             }
         }
@@ -47,7 +48,6 @@ impl Game for App {
         engine.graphics().draw_sprite(
             NO_TEXTURE,
             SpriteDrawParams::default()
-                .position((100.0, 100.0))
                 .region((0.0, 0.0, 1.0, 300.0))
                 .colors([
                     Color::RED,
@@ -55,6 +55,8 @@ impl Game for App {
                     Color::GREEN,
                     Color::GREEN,
                 ]),
+            TransformParams::default()
+                .position((100.0, 100.0)),
         );
 
         // triangle
@@ -81,7 +83,6 @@ impl Game for App {
         engine.graphics().draw_sprite(
             NO_TEXTURE,
             SpriteDrawParams::default()
-                .position((150.0, 350.0))
                 .region((0.0, 0.0, 300.0, 200.0))
                 .colors([
                     Color::YELLOW,
@@ -89,6 +90,8 @@ impl Game for App {
                     Color::GREEN,
                     Color::GREEN,
                 ]),
+            TransformParams::default()
+                .position((150.0, 350.0)),
         );
 
         Ok(())

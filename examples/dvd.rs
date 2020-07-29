@@ -67,9 +67,10 @@ impl Game for App {
         engine.graphics().draw_sprite(
             &self.dvd_logo,
             SpriteDrawParams::default()
-                .position(self.position)
-                .origin((self.size.width / 2.0, self.size.height / 2.0))
                 .color((0.5, 0.5, 1.0, 1.0)),
+            TransformParams::default()
+                .position(self.position)
+                .origin((self.size.width / 2.0, self.size.height / 2.0)),
         );
 
         Ok(())

@@ -68,8 +68,9 @@ impl Game for App {
                 engine.graphics().draw_sprite(
                     &self.texture,
                     SpriteDrawParams::default()
+                        .region(region),
+                    TransformParams::default()
                         .position((i as f32 * self.frame_size.width * 2.0, j as f32 * self.frame_size.height * 2.0))
-                        .region(region)
                         .scale((2.0, 2.0)),
                 );
             }

@@ -1,13 +1,9 @@
 use super::Color;
-use crate::math::{Position, Point, Scale, Region, Angle};
+use crate::math::Region;
 
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct SpriteDrawParams {
     pub region: Option<Region>,
-    pub origin: Option<Point>,
-    pub position: Option<Position>,
-    pub rotation: Option<Angle>,
-    pub scale: Option<Scale>,
     pub colors: Option<[Color; 4]>,
 }
 
@@ -15,26 +11,6 @@ impl SpriteDrawParams {
 
     pub fn region(mut self, region: impl Into<Region>) -> Self {
         self.region = Some(region.into());
-        self
-    }
-
-    pub fn origin(mut self, origin: impl Into<Point>) -> Self {
-        self.origin = Some(origin.into());
-        self
-    }
-
-    pub fn position(mut self, position: impl Into<Position>) -> Self {
-        self.position = Some(position.into());
-        self
-    }
-
-    pub fn rotation(mut self, angle: Angle) -> Self {
-        self.rotation = Some(angle);
-        self
-    }
-
-    pub fn scale(mut self, scale: impl Into<Scale>) -> Self {
-        self.scale = Some(scale.into());
         self
     }
 

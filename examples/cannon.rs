@@ -86,7 +86,8 @@ impl Game for App {
         for cannon in self.cannons.iter() {
             engine.graphics().draw_sprite(
                 &self.battery,
-                SpriteDrawParams::default()
+                SpriteDrawParams::default(),
+                TransformParams::default()
                     .origin((16.0, 16.0))
                     .position(cannon.position)
                     .rotation(cannon.angle),

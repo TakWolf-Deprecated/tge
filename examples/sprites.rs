@@ -123,11 +123,12 @@ impl Game for App {
             engine.graphics().draw_sprite(
                 &self.zazaka,
                 SpriteDrawParams::default()
+                    .color(sprite.color),
+                TransformParams::default()
                     .origin(origin)
                     .position(sprite.position)
                     .rotation(sprite.angle)
-                    .scale(sprite.scale)
-                    .color(sprite.color),
+                    .scale(sprite.scale),
             );
         }
 
