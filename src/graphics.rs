@@ -319,7 +319,7 @@ impl Graphics {
     }
 
     pub fn draw_mesh<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, primitive: PrimitiveType, vertices: Vec<Vertex>, elements: Option<Vec<u32>>) {
-        let texture = texture.into().texture().unwrap_or(&self.default_texture).clone();
+        let texture = texture.into().clone_texture().unwrap_or_else(|| self.default_texture.clone());
         self.switch_draw_command(DrawCommand {
             texture,
             primitive,
@@ -331,7 +331,7 @@ impl Graphics {
         let (texture, texture_size) = {
             let texture = texture.into();
             let texture_size = texture.texture_size();
-            (texture.texture().unwrap_or(&self.default_texture).clone(), Size::new(texture_size.width as f32, texture_size.height as f32))
+            (texture.clone_texture().unwrap_or_else(|| self.default_texture.clone()), Size::new(texture_size.width as f32, texture_size.height as f32))
         };
         self.switch_draw_command(DrawCommand {
             texture,
