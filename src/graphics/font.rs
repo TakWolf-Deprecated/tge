@@ -95,8 +95,12 @@ impl Font {
         *glyph_id
     }
 
-    pub(crate) fn line_metrics(&self, text_size: f32) -> LineMetrics {
-        let scale_factor = text_size / self.font.units_per_em().expect("no units per em");
+    fn scale_factor(&self, px: f32) -> f32 {
+        px / self.font.units_per_em().expect("no units per em")
+    }
+
+    pub(crate) fn line_metrics(&self, px: f32) -> LineMetrics {
+        let scale_factor = self.scale_factor(px);
         LineMetrics {
             ascent: self.font.ascent_unscaled() * scale_factor,
             descent: self.font.descent_unscaled() * scale_factor,
@@ -105,8 +109,8 @@ impl Font {
         }
     }
 
-    pub(crate) fn glyph_metrics(&self, glyph_id: GlyphId, text_size: f32) -> GlyphMetrics {
-        let scale_factor = text_size / self.font.units_per_em().expect("no units per em");
+    pub(crate) fn glyph_metrics(&self, glyph_id: GlyphId, px: f32) -> GlyphMetrics {
+        let scale_factor = self.scale_factor(px);
         GlyphMetrics {
             advance_width: self.font.h_advance_unscaled(glyph_id.0) * scale_factor,
         }
@@ -120,9 +124,9 @@ impl Font {
         self.cache.borrow().texture_size
     }
 
-    pub(crate) fn cache_glyph(&self, character: char, text_size: f32, window_scale_factor: f32) -> Result<CachedBy, CacheError> {
-        let px = (text_size * window_scale_factor).round() as u32;
-        let cache_key = CacheKey { character, px };
+    pub(crate) fn cache_glyph(&self, character: char, px: f32, window_scale_factor: f32) -> Result<CachedBy, CacheError> {
+        let px = (px * window_scale_factor).round();
+        let cache_key = CacheKey { character, px: px as u32 };
         let mut cache = self.cache.borrow_mut();
         if let Some(draw_info) = cache.draw_infos.get(&cache_key) {
             let draw_info = draw_info.map(|(px_bounds, uv)| {
@@ -137,8 +141,8 @@ impl Font {
         let outline_glyph = {
             let glyph = self.glyph_id(character);
             self.font.outline(glyph.0).map(|outline| {
-                let scale_factor = px as f32 / self.font.units_per_em().expect("no units per em");
-                OutlinedGlyph::new(glyph.0.with_scale(1.0), outline, PxScaleFactor {
+                let scale_factor = self.scale_factor(px);
+                OutlinedGlyph::new(glyph.0.with_scale(0.0), outline, PxScaleFactor {
                     horizontal: scale_factor,
                     vertical: scale_factor,
                 })
