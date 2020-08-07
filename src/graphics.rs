@@ -8,6 +8,7 @@ mod renderer;
 mod image;
 mod texture;
 mod canvas;
+mod font;
 mod texture_holder;
 mod params;
 
@@ -22,6 +23,7 @@ pub use self::image::Image;
 pub(crate) use self::image::validate_pixels;
 pub use texture::Texture;
 pub use canvas::Canvas;
+pub use font::Font;
 pub use texture_holder::{TextureHolder, NO_TEXTURE};
 pub use params::{TransformParams, SpriteDrawParams, TextHorizontalGravity, TextVerticalGravity, TextDrawParams};
 
@@ -389,6 +391,179 @@ impl Graphics {
         ];
         let elements = SPRITE_ELEMENTS.to_vec();
         self.append_vertices_and_elements(vertices, Some(elements));
+    }
+
+    pub fn draw_text(&mut self, font: &Font, text: &str, draw_params: impl Into<TextDrawParams>, transform_params: impl Into<TransformParams>) {
+        self.switch_draw_command(DrawCommand {
+            texture: font.clone_cache_texture(),
+            primitive: PrimitiveType::Triangles,
+        });
+
+        let draw_params = draw_params.into();
+        let transform_params = transform_params.into();
+
+        let text_size = draw_params.text_size.unwrap_or(14.0);
+        let line_metrics = font.line_metrics(text_size);
+
+        let char_spacing = draw_params.char_spacing.unwrap_or(0.0);
+        let line_height = draw_params.line_height.unwrap_or(line_metrics.height);
+        let line_spacing = draw_params.line_spacing.unwrap_or(line_metrics.line_gap);
+        let wrap_width = draw_params.wrap_width.unwrap_or(0.0);
+        let wrap_height = draw_params.wrap_height.unwrap_or(0.0);
+        let horizontal_gravity = draw_params.horizontal_gravity.unwrap_or(TextHorizontalGravity::default());
+        let vertical_gravity = draw_params.vertical_gravity.unwrap_or(TextVerticalGravity::default());
+
+        let window_scale_factor = {
+            if font.is_fit_hidpi() && self.canvas.is_none() {
+                self.window().scale_factor() as f32
+            } else {
+                1.0
+            }
+        };
+
+        let origin = transform_params.origin.unwrap_or_else(|| Point::zero());
+        let model_matrix = transform_params.matrix();
+
+        let color = draw_params.color.unwrap_or(Color::WHITE);
+
+        let (line_layout_infos, layout_height) = {
+            let mut line_layout_infos = Vec::new();
+            let mut glyph_positions = Vec::new();
+            let mut caret = Position::zero();
+            for character in text.chars() {
+                if character.is_control() {
+                    match character {
+                        '\n' => {
+                            line_layout_infos.push((glyph_positions, caret.x));
+                            glyph_positions = Vec::new();
+                            caret.x = 0.0;
+                            if caret.y > 0.0 {
+                                caret.y += line_spacing;
+                            }
+                            caret.y += line_height;
+                        }
+                        _ => (),
+                    }
+                } else {
+                    let glyph_id = font.glyph_id(character);
+                    let glyph_metrics = font.glyph_metrics(glyph_id, text_size);
+                    if wrap_width > 0.0 && caret.x > 0.0 && caret.x + glyph_metrics.advance_width > wrap_width {
+                        line_layout_infos.push((glyph_positions, caret.x));
+                        glyph_positions = Vec::new();
+                        caret.x = 0.0;
+                        if caret.y > 0.0 {
+                            caret.y += line_spacing;
+                        }
+                        caret.y += line_height;
+                    }
+                    glyph_positions.push((character, caret));
+                    if caret.x > 0.0 {
+                        caret.x += char_spacing;
+                    }
+                    caret.x += glyph_metrics.advance_width;
+                }
+            }
+            if !glyph_positions.is_empty() {
+                line_layout_infos.push((glyph_positions, caret.x));
+                if caret.y > 0.0 {
+                    caret.y += line_spacing;
+                }
+                caret.y += line_height;
+            }
+            (line_layout_infos, caret.y)
+        };
+
+        let offset_y = {
+            if wrap_height > 0.0 {
+                match vertical_gravity {
+                    TextVerticalGravity::Top => 0.0,
+                    TextVerticalGravity::Middle => (wrap_height - layout_height) / 2.0,
+                    TextVerticalGravity::Bottom => wrap_height - layout_height,
+                }
+            } else {
+                0.0
+            }
+        };
+        let offset_y = offset_y - origin.y;
+
+        for (glyph_positions, layout_width) in line_layout_infos {
+            let offset_x = {
+                if wrap_width > 0.0 {
+                    match horizontal_gravity {
+                        TextHorizontalGravity::Start => 0.0,
+                        TextHorizontalGravity::Center => (wrap_width - layout_width) / 2.0,
+                        TextHorizontalGravity::End => wrap_width - layout_width,
+                    }
+                } else {
+                    0.0
+                }
+            };
+            let offset_x = offset_x - origin.x;
+
+            for (character, glyph_position) in glyph_positions {
+                loop {
+                    match font.cache_glyph(character, text_size, window_scale_factor) {
+                        Ok(cached_by) => {
+                            let draw_info = match cached_by {
+                                font::CachedBy::Added(draw_info) => draw_info,
+                                font::CachedBy::Existed(draw_info) => draw_info,
+                            };
+                            if let Some(draw_info) = draw_info {
+                                let glyph_position = Position::new(
+                                    glyph_position.x + draw_info.bounds.min_x(),
+                                    glyph_position.y + line_metrics.ascent + draw_info.bounds.min_y() + (line_height - line_metrics.height) / 2.0,
+                                );
+
+                                let x0y0 = model_matrix * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y, 0.0, 1.0);
+                                let x1y0 = model_matrix * Vec4::new(offset_x + glyph_position.x + draw_info.bounds.width, offset_y + glyph_position.y, 0.0, 1.0);
+                                let x0y1 = model_matrix * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y + draw_info.bounds.height, 0.0, 1.0);
+                                let x1y1 = model_matrix * Vec4::new(offset_x + glyph_position.x + draw_info.bounds.width, offset_y + glyph_position.y + draw_info.bounds.height, 0.0, 1.0);
+
+                                let vertices = vec![
+                                    Vertex {
+                                        position: Position::new(x0y0.x(), x0y0.y()),
+                                        uv: draw_info.uv.top_left(),
+                                        color,
+                                    },
+                                    Vertex {
+                                        position: Position::new(x1y0.x(), x1y0.y()),
+                                        uv: draw_info.uv.top_right(),
+                                        color,
+                                    },
+                                    Vertex {
+                                        position: Position::new(x0y1.x(), x0y1.y()),
+                                        uv: draw_info.uv.bottom_left(),
+                                        color,
+                                    },
+                                    Vertex {
+                                        position: Position::new(x1y1.x(), x1y1.y()),
+                                        uv: draw_info.uv.bottom_right(),
+                                        color,
+                                    },
+                                ];
+                                let elements = SPRITE_ELEMENTS.to_vec();
+                                self.append_vertices_and_elements(vertices, Some(elements));
+                            }
+                            break;
+                        }
+                        Err(cache_error) => {
+                            let cache_size_maximized = font.cache_texture_size() >= self.max_texture_size;
+                            match (cache_error, cache_size_maximized) {
+                                (font::CacheError::TooLarge, true) => panic!("character is too large"),
+                                (font::CacheError::NoRoom, true) => {
+                                    self.flush();
+                                    font.clear_cache();
+                                }
+                                _ => {
+                                    self.flush();
+                                    font.resize_cache((font.cache_texture_size() * 2).min(self.max_texture_size));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }
