@@ -6,40 +6,24 @@
 
 A lightweight cross-platform 2D game framework written in pure Rust and based on OpenGL 3.3+.
 
+Inspired by [LÖVE](https://love2d.org).
+
 __Tge is currently in a very early stage of development. The API may be changed. Until the version to `0.1.0`.__
 
 ## Features
 
-* Modular API like [LÖVE](https://love2d.org).
-* Vertex and sprite rendering by hardware-accelerated.
-* Dynamic font and text rendering. (TODO)
+* 2D only.
+* Hardware-accelerated rendering base on OpenGL.
+* Dynamic font rendering with text layout.
 * Interface for handling keyboard, mouse, touch, touchpad and gamepad.
 * Audio play. (TODO)
 
 ## Non goals
 
-Tge is a lightweight 2D game framework.
-So it doesn't support:
-
-* 3D. (But can be expanded in theory.)
+* 3D.
 * Visual editor.
 
-Some features depends on the specific formats.
-They can be easily implemented.
-So tge doesn't include:
-
-* Animation engine.
-* Particle system.
-* Tile map.
-
-Some features depends on the specific programming paradigms.
-You can design them by yourself.
-So tge doesn't include:
-
-* Scene manager.
-
-Tge can easily work with other crates.
-So tge doesn't include:
+The following does not contain, but can easily work with other crates:
 
 * [Entity Component System (ECS)](https://en.wikipedia.org/wiki/Entity_component_system).
 * Physics engines and collision detection.
@@ -47,16 +31,21 @@ So tge doesn't include:
 
 ## Usage
 
-Just add the dependency line to your `Cargo.toml` file:
+Add the dependency line to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
 tge = "0.0.1"
 ```
 
-## Examples
+To release performance, also add the following configs:
 
-Here is the minimal example that will create a window:
+```toml
+[profile.dev]
+opt-level = 3
+```
+
+Then create a basic template. Here is the minimal example that will create a window:
 
 ```rust
 use tge::error::GameResult;
@@ -102,46 +91,28 @@ fn main() -> GameResult {
 }
 ```
 
-Execute `cargo run --example hello_world` to run this example.
-You can also browse the [`examples/`](examples/) directory to learn more.
+That is!
+
+You can also see the [`examples/`](examples/) directory to learn some other examples.
 
 More complete demos can be found in [tge-demos](https://github.com/TakWolf/tge-demos).
 
 ## Performance
 
-Cargo builds projects in debug mode by default.
-This may cause the program running slowly.
-
-Add following to your `Cargo.toml` file to release performance:
-
-```toml
-[profile.dev]
-opt-level = 3
-```
-
-You can also use the `--release` flag when building your project to enable release mode.
-Please note that release mode will increase build times quite significantly and remove debug info from the binary.
-
-Run the example [`bunny_mark`](examples/bunny_mark.rs) and [`sprites`](examples/sprites.rs) 
-both with and without the `--release` flag to observe the impact of compiler optimizations.
+See the example [`bunny_mark`](examples/bunny_mark.rs) and [`sprites`](examples/sprites.rs).
 
 ## TODO
 
-Working in progress:
+The following is working in progress:
+
 * blend
 * program uniform
-* font and text
-* texture to image and screenshot
+* screenshot
 * graphics transform matrix
 * virtual assets path
 * assets load async
 * audio
 * document
-
-## Others
-
-* Issue and PR are welcome.
-* Third-party extend crates are welcome, but please do not name with prefix `tge-`.
 
 ## License
 

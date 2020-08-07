@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## Unreleased
 
+* Add font and text layout support.
+
 ## 0.0.1 (2020-03-06)
 
 Initial release!
