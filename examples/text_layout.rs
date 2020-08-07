@@ -14,6 +14,7 @@ struct App {
     text_size: f32,
     horizontal_gravity: TextHorizontalGravity,
     vertical_gravity: TextVerticalGravity,
+    show_background: bool,
 }
 
 impl App {
@@ -22,10 +23,11 @@ impl App {
         let font = Font::load(engine, "assets/SourceHanSansSC/SourceHanSansSC-Regular.otf")?;
         Ok(Self {
             font,
-            text: "Use `left`, `right`, `up` and `down` button to change text layout gravity.\nAnd input something here...".to_owned(),
+            text: "⇦, ⇨, ⇧ and ⇩ to change layout gravity\n'+' and '-' to change text size\n'Num0' to change background visibility\nInput something here...".to_owned(),
             text_size: 24.0,
             horizontal_gravity: TextHorizontalGravity::default(),
             vertical_gravity: TextVerticalGravity::default(),
+            show_background: false,
         })
     }
 
@@ -65,6 +67,15 @@ impl Game for App {
                 _ => (),
             }
         }
+        if engine.keyboard().is_key_down(KeyCode::Equals) {
+            self.text_size += 1.0;
+        }
+        if engine.keyboard().is_key_down(KeyCode::Minus) {
+            self.text_size -= 1.0;
+        }
+        if engine.keyboard().is_key_down(KeyCode::Num0) {
+            self.show_background = !self.show_background;
+        }
 
         Ok(())
     }
@@ -74,20 +85,22 @@ impl Game for App {
 
         let graphics_size = engine.graphics().size();
 
-        for x in 0..(graphics_size.width / self.text_size).ceil() as i32 {
-            for y in 0..(graphics_size.height / self.text_size).ceil() as i32 {
-                engine.graphics().draw_sprite(
-                    NO_TEXTURE,
-                    SpriteDrawParams::default()
-                        .region((0.0, 0.0, self.text_size, self.text_size))
-                        .color(if (x + y) % 2 == 0 {
-                            Color::from_u32(0xffb8b8ff)
-                        } else {
-                            Color::from_u32(0xa8e6ffff)
-                        }),
-                    TransformParams::default()
-                        .position((x as f32 * self.text_size, y as f32 * self.text_size)),
-                );
+        if self.show_background {
+            for x in 0..(graphics_size.width / self.text_size).ceil() as i32 {
+                for y in 0..(graphics_size.height / self.text_size).ceil() as i32 {
+                    engine.graphics().draw_sprite(
+                        NO_TEXTURE,
+                        SpriteDrawParams::default()
+                            .region((0.0, 0.0, self.text_size, self.text_size))
+                            .color(if (x + y) % 2 == 0 {
+                                Color::from_u32(0xffb8b8ff)
+                            } else {
+                                Color::from_u32(0xa8e6ffff)
+                            }),
+                        TransformParams::default()
+                            .position((x as f32 * self.text_size, y as f32 * self.text_size)),
+                    );
+                }
             }
         }
 
