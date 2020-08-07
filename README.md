@@ -35,7 +35,7 @@ Add the dependency line to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-tge = "0.0.1"
+tge = "0.0.2"
 ```
 
 To release performance, also add the following configs:

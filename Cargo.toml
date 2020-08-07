@@ -1,6 +1,6 @@
 [package]
 name = "tge"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["TakWolf <takwolf@foxmail.com>"]
 edition = "2018"
 description = "A lightweight cross-platform 2D game framework written in pure Rust and based on OpenGL 3.3+."
