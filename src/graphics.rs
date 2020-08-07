@@ -136,8 +136,8 @@ impl Graphics {
         self.context_wrapper.resize(physical_size);
         if self.canvas.is_none() {
             let logical_size = physical_size.to_logical(scale_factor);
-            self.size.set(logical_size.width, logical_size.height);
-            self.viewport.set(0.0, 0.0, logical_size.width, logical_size.height);
+            self.size = Size::new(logical_size.width, logical_size.height);
+            self.viewport = Viewport::new(0.0, 0.0, logical_size.width, logical_size.height);
             unsafe {
                 self.gl.viewport(0, 0, physical_size.width as i32, physical_size.height as i32);
             }
@@ -265,8 +265,8 @@ impl Graphics {
                 canvas.bind();
             }
             if let Some(canvas_size) = canvas_size {
-                self.size.set(canvas_size.width as f32, canvas_size.height as f32);
-                self.viewport.set(0.0, 0.0, self.size.width, self.size.height);
+                self.size = Size::new(canvas_size.width as f32, canvas_size.height as f32);
+                self.viewport = Viewport::new(0.0, 0.0, self.size.width, self.size.height);
                 unsafe {
                     self.gl.viewport(0, 0, canvas_size.width as i32, canvas_size.height as i32);
                 }
@@ -275,8 +275,8 @@ impl Graphics {
                 let physical_size = self.window().inner_size();
                 let scale_factor = self.window().scale_factor();
                 let logical_size = physical_size.to_logical(scale_factor);
-                self.size.set(logical_size.width, logical_size.height);
-                self.viewport.set(0.0, 0.0, logical_size.width, logical_size.height);
+                self.size = Size::new(logical_size.width, logical_size.height);
+                self.viewport = Viewport::new(0.0, 0.0, logical_size.width, logical_size.height);
                 unsafe {
                     self.gl.viewport(0, 0, physical_size.width as i32, physical_size.height as i32);
                 }

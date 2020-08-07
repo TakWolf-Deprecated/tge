@@ -27,7 +27,7 @@ impl Touchpad {
     }
 
     pub(crate) fn clear_states(&mut self) {
-        self.scroll_delta.set(0.0, 0.0);
+        self.scroll_delta = Delta::new(0.0, 0.0);
     }
 
     pub fn scroll_delta(&self) -> Delta {

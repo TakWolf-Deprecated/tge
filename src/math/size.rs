@@ -17,16 +17,6 @@ impl<N: Number> Size<N> {
         Self::new(N::zero(), N::zero())
     }
 
-    pub fn set(&mut self, width: N, height: N) {
-        self.width = width;
-        self.height = height;
-    }
-
-    pub fn set_with(&mut self, other: &Self) {
-        self.width = other.width;
-        self.height = other.height;
-    }
-
 }
 
 impl<N: Number> Mul<Vector<N>> for Size<N> {

@@ -22,16 +22,6 @@ impl<N: Number> Vector<N> {
         Self::new(N::zero(), N::zero())
     }
 
-    pub fn set(&mut self, x: N, y: N) {
-        self.x = x;
-        self.y = y;
-    }
-
-    pub fn set_with(&mut self, other: &Self) {
-        self.x = other.x;
-        self.y = other.y;
-    }
-
 }
 
 impl<N: Number> Add for Vector<N> {

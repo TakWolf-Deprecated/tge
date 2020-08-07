@@ -65,7 +65,7 @@ impl Mouse {
     }
 
     pub(crate) fn clear_states(&mut self) {
-        self.wheel_scroll_delta.set(0.0, 0.0);
+        self.wheel_scroll_delta = Delta::new(0.0, 0.0);
         self.button_states.retain(|_, state| match state {
             KeyState::Down | KeyState::Hold => {
                 *state = KeyState::Hold;
