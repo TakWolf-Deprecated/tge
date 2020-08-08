@@ -12,8 +12,9 @@ __Tge is currently in a very early stage of development. The API may be changed.
 
 ## Features
 
-* 2D only.
+* 2D only and use pixel unit.
 * Hardware-accelerated rendering base on OpenGL.
+* Automatically process rendering batching.
 * Dynamic font rendering with text layout.
 * Interface for handling keyboard, mouse, touch, touchpad and gamepad.
 * Audio play. (TODO)
