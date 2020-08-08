@@ -42,8 +42,8 @@ impl Game for App {
             &self.ferris,
             SpriteDrawParams::default()
                 .colors([
-                    Color::TRANSPARENT,
-                    Color::TRANSPARENT,
+                    Color::TRANSPARENT_WHITE,
+                    Color::TRANSPARENT_BLACK,
                     Color::WHITE,
                     Color::WHITE,
                 ]),
@@ -61,7 +61,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((800.0, 600.0)))
+            .inner_size((600.0, 700.0)))
         .build()?
         .run_with(App::new)
 }
