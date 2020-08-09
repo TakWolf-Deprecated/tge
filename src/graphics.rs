@@ -408,8 +408,8 @@ impl Graphics {
         let char_spacing = draw_params.char_spacing.unwrap_or(0.0);
         let line_height = draw_params.line_height.unwrap_or(line_metrics.height);
         let line_spacing = draw_params.line_spacing.unwrap_or(line_metrics.line_gap);
-        let wrap_width = draw_params.wrap_width.unwrap_or(0.0);
-        let wrap_height = draw_params.wrap_height.unwrap_or(0.0);
+        let wrap_width = draw_params.wrap_width.unwrap_or(0.0).max(0.0);
+        let wrap_height = draw_params.wrap_height.unwrap_or(0.0).max(0.0);
         let horizontal_gravity = draw_params.horizontal_gravity.unwrap_or(TextHorizontalGravity::default());
         let vertical_gravity = draw_params.vertical_gravity.unwrap_or(TextVerticalGravity::default());
 
@@ -473,32 +473,18 @@ impl Graphics {
             (line_layout_infos, caret.y)
         };
 
-        let offset_y = {
-            if wrap_height > 0.0 {
-                match vertical_gravity {
-                    TextVerticalGravity::Top => 0.0,
-                    TextVerticalGravity::Middle => (wrap_height - layout_height) / 2.0,
-                    TextVerticalGravity::Bottom => wrap_height - layout_height,
-                }
-            } else {
-                0.0
-            }
-        };
-        let offset_y = offset_y - origin.y;
+        let offset_y = match vertical_gravity {
+            TextVerticalGravity::Top => 0.0,
+            TextVerticalGravity::Middle => (wrap_height - layout_height) / 2.0,
+            TextVerticalGravity::Bottom => wrap_height - layout_height,
+        } - origin.y;
 
         for (glyph_positions, layout_width) in line_layout_infos {
-            let offset_x = {
-                if wrap_width > 0.0 {
-                    match horizontal_gravity {
-                        TextHorizontalGravity::Start => 0.0,
-                        TextHorizontalGravity::Center => (wrap_width - layout_width) / 2.0,
-                        TextHorizontalGravity::End => wrap_width - layout_width,
-                    }
-                } else {
-                    0.0
-                }
-            };
-            let offset_x = offset_x - origin.x;
+            let offset_x = match horizontal_gravity {
+                TextHorizontalGravity::Start => 0.0,
+                TextHorizontalGravity::Center => (wrap_width - layout_width) / 2.0,
+                TextHorizontalGravity::End => wrap_width - layout_width,
+            } - origin.x;
 
             for (character, glyph_position) in glyph_positions {
                 loop {
