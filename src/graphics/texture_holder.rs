@@ -2,7 +2,7 @@ use super::{opengl, Texture, Canvas, Font};
 use crate::math::Size;
 use std::rc::Rc;
 
-#[derive(Clone)]
+#[derive(Copy, Clone)]
 pub enum TextureHolder<'a> {
     Texture(&'a Texture),
     Canvas(&'a Canvas),
