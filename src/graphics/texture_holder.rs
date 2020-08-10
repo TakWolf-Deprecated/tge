@@ -58,5 +58,3 @@ impl<'a> From<&'a Font> for TextureHolder<'a> {
     }
 
 }
-
-pub const NO_TEXTURE: TextureHolder = TextureHolder::None;

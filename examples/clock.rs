@@ -51,7 +51,7 @@ impl Game for App {
             TransformParams::default(),
         );
         engine.graphics().draw_sprite(
-            NO_TEXTURE,
+            TextureHolder::None,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 30.0, 200.0))
                 .color((0.2, 0.2, 1.0, 1.0)),
@@ -61,7 +61,7 @@ impl Game for App {
                 .rotation(self.hour_angle),
         );
         engine.graphics().draw_sprite(
-            NO_TEXTURE,
+            TextureHolder::None,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 20.0, 240.0))
                 .color((0.2, 1.0, 0.2, 1.0)),
@@ -71,7 +71,7 @@ impl Game for App {
                 .rotation(self.minute_angle),
         );
         engine.graphics().draw_sprite(
-            NO_TEXTURE,
+            TextureHolder::None,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 10.0, 270.0))
                 .color((1.0, 0.2, 0.2, 1.0)),
@@ -81,7 +81,7 @@ impl Game for App {
                 .rotation(self.second_angle),
         );
         engine.graphics().draw_sprite(
-            NO_TEXTURE,
+            TextureHolder::None,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 6.0, 6.0))
                 .color(Color::BLACK),

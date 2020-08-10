@@ -24,7 +24,7 @@ pub(crate) use self::image::validate_pixels;
 pub use texture::Texture;
 pub use canvas::Canvas;
 pub use font::Font;
-pub use texture_holder::{TextureHolder, NO_TEXTURE};
+pub use texture_holder::TextureHolder;
 pub use params::{TransformParams, SpriteDrawParams, TextHorizontalGravity, TextVerticalGravity, TextDrawParams};
 
 use crate::error::{GameError, GameResult};
