@@ -17,6 +17,10 @@ impl<N: Number> Size<N> {
         Self::new(N::zero(), N::zero())
     }
 
+    pub fn none() -> Option<Self> {
+        None
+    }
+
 }
 
 impl<N: Number> Mul<Vector<N>> for Size<N> {

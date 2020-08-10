@@ -32,6 +32,10 @@ impl<N: Number> Region<N> {
         Self::new(N::zero(), N::zero(), N::zero(), N::zero())
     }
 
+    pub fn none() -> Option<Self> {
+        None
+    }
+
     pub fn position(&self) -> Position<N> {
         Position::new(self.x, self.y)
     }

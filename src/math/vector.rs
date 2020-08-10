@@ -22,6 +22,10 @@ impl<N: Number> Vector<N> {
         Self::new(N::zero(), N::zero())
     }
 
+    pub fn none() -> Option<Self> {
+        None
+    }
+
 }
 
 impl<N: Number> Add for Vector<N> {
