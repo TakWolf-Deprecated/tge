@@ -1,8 +1,4 @@
-use tge::error::GameResult;
-use tge::engine::{Engine, EngineBuilder};
-use tge::window::WindowConfig;
-use tge::graphics::Color;
-use tge::game::Game;
+use tge::prelude::*;
 
 struct App {}
 

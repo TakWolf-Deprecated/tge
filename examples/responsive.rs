@@ -1,9 +1,4 @@
-use tge::error::GameResult;
-use tge::math::{Position, Size};
-use tge::engine::{Engine, EngineBuilder};
-use tge::window::WindowConfig;
-use tge::graphics::*;
-use tge::game::Game;
+use tge::prelude::*;
 
 const TITLE: &str = "Responsive";
 

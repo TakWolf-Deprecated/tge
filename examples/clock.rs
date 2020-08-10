@@ -1,9 +1,4 @@
-use tge::error::GameResult;
-use tge::math::Angle;
-use tge::engine::{Engine, EngineBuilder};
-use tge::window::WindowConfig;
-use tge::graphics::*;
-use tge::game::Game;
+use tge::prelude::*;
 use chrono::{Local, Timelike};
 
 struct App {

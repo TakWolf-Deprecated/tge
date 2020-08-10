@@ -1,9 +1,4 @@
-use tge::error::GameResult;
-use tge::math::{Size, Region};
-use tge::engine::{Engine, EngineBuilder};
-use tge::window::WindowConfig;
-use tge::graphics::*;
-use tge::game::Game;
+use tge::prelude::*;
 use std::time::Duration;
 
 const TITLE: &str = "Animation";

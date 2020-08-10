@@ -13,3 +13,4 @@ pub mod touchpad;
 pub mod gamepad;
 pub mod audio;
 pub mod game;
+pub mod prelude;

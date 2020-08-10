@@ -1,10 +1,4 @@
-use tge::error::GameResult;
-use tge::engine::{Engine, EngineBuilder};
-use tge::event::{KeyAction, Event};
-use tge::window::WindowConfig;
-use tge::graphics::*;
-use tge::keyboard::KeyCode;
-use tge::game::Game;
+use tge::prelude::*;
 
 const TITLE: &str = "Text Layout";
 

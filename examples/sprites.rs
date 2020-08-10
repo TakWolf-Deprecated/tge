@@ -1,10 +1,4 @@
-use tge::error::GameResult;
-use tge::math::{Vector, Position, Point, Scale, Size, Angle};
-use tge::engine::{Engine, EngineBuilder};
-use tge::window::WindowConfig;
-use tge::graphics::*;
-use tge::mouse::MouseButton;
-use tge::game::Game;
+use tge::prelude::*;
 use rand::Rng;
 use rand::rngs::ThreadRng;
 

@@ -49,11 +49,7 @@ opt-level = 3
 Then create a basic template. Here is the minimal example that will create a window:
 
 ```rust
-use tge::error::GameResult;
-use tge::engine::{Engine, EngineBuilder};
-use tge::window::WindowConfig;
-use tge::graphics::Color;
-use tge::game::Game;
+use tge::prelude::*;
 
 struct App {}
 
@@ -85,7 +81,7 @@ fn main() -> GameResult {
     let mut engine = EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title("My Game")
-            .inner_size((800, 600)))
+            .inner_size((800.0, 600.0)))
         .build()?;
     let mut app = App::new(&mut engine)?;
     engine.run(&mut app)
