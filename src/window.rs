@@ -288,8 +288,8 @@ impl WindowConfig {
         self
     }
 
-    pub fn icon(mut self, path: impl Into<String>) -> Self {
-        self.icon = Some(path.into());
+    pub fn icon(mut self, path: Option<impl Into<String>>) -> Self {
+        self.icon = path.map(|path| path.into());
         self
     }
 
@@ -298,13 +298,13 @@ impl WindowConfig {
         self
     }
 
-    pub fn min_inner_size(mut self, size: impl Into<LogicalSize>) -> Self {
-        self.min_inner_size = Some(size.into());
+    pub fn min_inner_size(mut self, size: Option<impl Into<LogicalSize>>) -> Self {
+        self.min_inner_size = size.map(|size| size.into());
         self
     }
 
-    pub fn max_inner_size(mut self, size: impl Into<LogicalSize>) -> Self {
-        self.max_inner_size = Some(size.into());
+    pub fn max_inner_size(mut self, size: Option<impl Into<LogicalSize>>) -> Self {
+        self.max_inner_size = size.map(|size| size.into());
         self
     }
 
