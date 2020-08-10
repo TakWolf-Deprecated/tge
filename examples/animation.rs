@@ -82,12 +82,6 @@ fn main() -> GameResult {
             .title(TITLE)
             .inner_size((16.0 * 16.0, 16.0 * 16.0))
             .resizable(false))
-        .graphics_config(GraphicsConfig::new()
-            .default_filter(Filter::new(
-                FilterMode::Nearest,
-                FilterMode::Nearest,
-                None,
-            )))
         .build()?
         .run_with(App::new)
 }

@@ -41,7 +41,7 @@ impl Filter {
 impl Default for Filter {
 
     fn default() -> Self {
-        Self::new(FilterMode::Nearest, FilterMode::Linear, Some(FilterMode::Linear))
+        Self::new(FilterMode::Nearest, FilterMode::Nearest, None)
     }
 
 }
