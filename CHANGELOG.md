@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## Unreleased
 
+* Rewrite draw mesh.
 * Add prelude.
 * Fix text layout wrap calculation.
 
