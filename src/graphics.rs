@@ -335,19 +335,19 @@ impl Graphics {
     }
 
     pub fn draw_sprite<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, draw_params: impl Into<SpriteDrawParams>, transform_params: impl Into<TransformParams>) {
-        let (texture, texture_size) = {
-            let texture = texture.into();
-            let texture_size = texture.texture_size();
-            (texture.clone_texture().unwrap_or_else(|| self.default_texture.clone()), Size::new(texture_size.width as f32, texture_size.height as f32))
-        };
-        self.switch_draw_command(DrawCommand {
-            texture,
-            primitive: PrimitiveType::Triangles,
-        });
-
+        let texture = texture.into();
         let draw_params = draw_params.into();
         let transform_params = transform_params.into();
 
+        self.switch_draw_command(DrawCommand {
+            texture: texture.clone_texture().unwrap_or_else(|| self.default_texture.clone()),
+            primitive: PrimitiveType::Triangles,
+        });
+
+        let texture_size = {
+            let texture_size = texture.texture_size();
+            Size::new(texture_size.width as f32, texture_size.height as f32)
+        };
         let region = draw_params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
         let origin = transform_params.origin.unwrap_or_else(|| Point::zero());
         let model_matrix = transform_params.matrix();
@@ -393,13 +393,13 @@ impl Graphics {
     }
 
     pub fn draw_text(&mut self, font: &Font, text: &str, draw_params: impl Into<TextDrawParams>, transform_params: impl Into<TransformParams>) {
+        let draw_params = draw_params.into();
+        let transform_params = transform_params.into();
+
         self.switch_draw_command(DrawCommand {
             texture: font.clone_cache_texture(),
             primitive: PrimitiveType::Triangles,
         });
-
-        let draw_params = draw_params.into();
-        let transform_params = transform_params.into();
 
         let text_size = draw_params.text_size.unwrap_or(14.0);
         let line_metrics = font.line_metrics(text_size);
