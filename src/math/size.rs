@@ -99,7 +99,7 @@ mod tests {
     use crate::math::Vector;
 
     #[test]
-    fn operator() {
+    fn test_operator() {
         let mut size = Size::<f32>::new(10.0, 20.0);
         size = size * Vector::<f32>::new(2.0, 2.0);
         assert_eq!(size, Size::<f32>::new(20.0, 40.0));

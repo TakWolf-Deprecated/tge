@@ -159,7 +159,7 @@ mod tests {
     use super::Angle;
 
     #[test]
-    fn create() {
+    fn test_create() {
         assert_eq!(Angle::<f32>::radians(std::f32::consts::PI * 2.0), Angle::<f32>::n_pi(2.0));
         assert_eq!(Angle::<f32>::n_pi(1.0), Angle::<f32>::degrees(180.0));
         assert_eq!(Angle::<f32>::n_pi(2.0).value(), std::f32::consts::PI * 2.0);
@@ -170,7 +170,7 @@ mod tests {
     }
 
     #[test]
-    fn convert() {
+    fn test_convert() {
         assert_eq!(Angle::<f32>::n_pi(1.0).to_degrees().value(), 180.0f32);
         assert_eq!(Angle::<f32>::degrees(90.0).to_radians().value(), std::f32::consts::PI * 0.5);
         assert_eq!(Angle::<f32>::n_pi(2.0).to_degrees().value(), Angle::<f32>::n_pi(2.0).degrees_value());
@@ -178,7 +178,7 @@ mod tests {
     }
 
     #[test]
-    fn operator() {
+    fn test_operator() {
         assert_eq!(Angle::<f32>::n_pi(1.0) + Angle::<f32>::n_pi(1.0), Angle::<f32>::n_pi(2.0));
         assert_eq!(Angle::<f32>::degrees(90.0) + Angle::<f32>::degrees(90.0), Angle::<f32>::degrees(180.0));
         assert_eq!(Angle::<f32>::n_pi(1.0) + Angle::<f32>::degrees(180.0), Angle::<f32>::n_pi(2.0));
@@ -226,7 +226,7 @@ mod tests {
     }
 
     #[test]
-    fn compare() {
+    fn test_compare() {
         assert!(Angle::<f32>::n_pi(1.5) > Angle::<f32>::n_pi(0.5));
         assert!(Angle::<f32>::n_pi(1.0) < Angle::<f32>::n_pi(2.0));
         assert!(Angle::<f32>::degrees(90.0) > Angle::<f32>::degrees(45.0));

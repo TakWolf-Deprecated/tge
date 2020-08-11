@@ -73,7 +73,7 @@ mod tests {
     use super::Vector;
 
     #[test]
-    fn operator() {
+    fn test_operator() {
         let mut vec = Vector::<f32>::new(100.0, 50.0);
         vec = vec + Vector::<f32>::new(40.0, 20.0);
         assert_eq!(vec, Vector::<f32>::new(140.0, 70.0));

@@ -105,7 +105,7 @@ mod tests {
     use super::Color;
 
     #[test]
-    fn convert() {
+    fn test_convert() {
         assert_eq!(Color::new(1.0, 0.0, 0.0, 0.0), Color::from_u8(255, 0, 0, 0));
         assert_eq!(Color::new(0.0, 1.0, 0.0, 0.0), Color::from_u8(0, 255, 0, 0));
         assert_eq!(Color::new(0.0, 0.0, 1.0, 0.0), Color::from_u8(0, 0, 255, 0));

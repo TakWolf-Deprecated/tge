@@ -174,7 +174,7 @@ mod tests {
     use crate::math::{Position, Size};
 
     #[test]
-    fn create() {
+    fn test_create() {
         let region = Region::<f32>::new(10.0, 20.0, 100.0, 150.0);
         assert_eq!(region, Region::<f32>::position_size(Position::<f32>::new(10.0, 20.0), Size::<f32>::new(100.0, 150.0)));
         assert_eq!(region, Region::<f32>::min_max(Position::<f32>::new(10.0, 20.0), Position::<f32>::new(110.0, 170.0)));
