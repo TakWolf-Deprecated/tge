@@ -40,7 +40,7 @@ pub enum CacheError {
     NoRoom,
 }
 
-#[derive(Hash, Eq, PartialEq)]
+#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
 struct CacheKey {
     character: char,
     px: u32,
