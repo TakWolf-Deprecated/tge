@@ -1,9 +1,11 @@
-mod transform;
+mod mesh;
 mod sprite;
 mod text;
+mod transform;
 
-use super::Color;
+use super::{PrimitiveType, Color, Vertex};
 
-pub use transform::TransformParams;
+pub use mesh::MeshDrawParams;
 pub use sprite::SpriteDrawParams;
 pub use text::{TextHorizontalGravity, TextVerticalGravity, TextDrawParams};
+pub use transform::TransformParams;

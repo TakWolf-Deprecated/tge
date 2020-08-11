@@ -25,7 +25,7 @@ pub use texture::Texture;
 pub use canvas::Canvas;
 pub use font::Font;
 pub use texture_holder::TextureHolder;
-pub use params::{TransformParams, SpriteDrawParams, TextHorizontalGravity, TextVerticalGravity, TextDrawParams};
+pub use params::{MeshDrawParams, SpriteDrawParams, TextHorizontalGravity, TextVerticalGravity, TextDrawParams, TransformParams};
 
 use crate::error::{GameError, GameResult};
 use crate::math::{Position, Point, Size, Region, Viewport};
