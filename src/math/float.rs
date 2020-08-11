@@ -3,7 +3,9 @@ use super::Number;
 pub trait Float: Number {
     fn pi() -> Self;
 
-    fn straight_angle() -> Self;
+    fn to_degrees(self) -> Self;
+
+    fn to_radians(self) -> Self;
 }
 
 impl Float for f32 {
@@ -11,8 +13,12 @@ impl Float for f32 {
         std::f32::consts::PI
     }
 
-    fn straight_angle() -> Self {
-        180.0
+    fn to_degrees(self) -> Self {
+        self.to_degrees()
+    }
+
+    fn to_radians(self) -> Self {
+        self.to_radians()
     }
 }
 
@@ -21,7 +27,11 @@ impl Float for f64 {
         std::f64::consts::PI
     }
 
-    fn straight_angle() -> Self {
-        180.0
+    fn to_degrees(self) -> Self {
+        self.to_degrees()
+    }
+
+    fn to_radians(self) -> Self {
+        self.to_radians()
     }
 }

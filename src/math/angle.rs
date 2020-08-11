@@ -42,23 +42,23 @@ impl<F: Float> Angle<F> {
     pub fn radians_value(&self) -> F {
         match self {
             Self::Radians(value) => *value,
-            Self::Degrees(value) => *value / F::straight_angle() * F::pi(),
+            Self::Degrees(value) => value.to_radians(),
         }
     }
 
     pub fn degrees_value(&self) -> F {
         match self {
-            Self::Radians(value) => *value / F::pi() * F::straight_angle(),
+            Self::Radians(value) => value.to_degrees(),
             Self::Degrees(value) => *value,
         }
     }
 
-    pub fn to_radians(&self) -> Self {
-        Angle::Radians(self.radians_value())
-    }
-
     pub fn to_degrees(&self) -> Self {
         Angle::Degrees(self.degrees_value())
+    }
+
+    pub fn to_radians(&self) -> Self {
+        Angle::Radians(self.radians_value())
     }
 }
 
