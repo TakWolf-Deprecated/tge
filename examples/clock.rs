@@ -9,7 +9,6 @@ struct App {
 }
 
 impl App {
-
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let clock_disk = Texture::load(engine, "assets/clock-disk.png")?;
         Ok(Self {
@@ -19,11 +18,9 @@ impl App {
             second_angle: Angle::zero(),
         })
     }
-
 }
 
 impl Game for App {
-
     fn update(&mut self, engine: &mut Engine) -> GameResult {
         let now_time = Local::now().time();
 
@@ -87,7 +84,6 @@ impl Game for App {
 
         Ok(())
     }
-
 }
 
 fn main() -> GameResult {

@@ -8,11 +8,9 @@ pub enum TextHorizontalGravity {
 }
 
 impl Default for TextHorizontalGravity {
-
     fn default() -> Self {
         Self::Start
     }
-
 }
 
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
@@ -23,11 +21,9 @@ pub enum TextVerticalGravity {
 }
 
 impl Default for TextVerticalGravity {
-
     fn default() -> Self {
         Self::Top
     }
-
 }
 
 #[derive(Debug, Default, Clone, PartialEq)]
@@ -44,7 +40,6 @@ pub struct TextDrawParams {
 }
 
 impl TextDrawParams {
-
     pub fn text_size(mut self, size: f32) -> Self {
         self.text_size = Some(size);
         self
@@ -89,5 +84,4 @@ impl TextDrawParams {
         self.color = Some(color.into());
         self
     }
-
 }

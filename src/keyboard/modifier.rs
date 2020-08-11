@@ -8,7 +8,6 @@ pub struct ModifiersState {
 }
 
 impl From<winit::event::ModifiersState> for ModifiersState {
-
     fn from(state: winit::event::ModifiersState) -> Self {
         Self {
             shift: state.shift(),
@@ -17,5 +16,4 @@ impl From<winit::event::ModifiersState> for ModifiersState {
             logo: state.logo(),
         }
     }
-
 }

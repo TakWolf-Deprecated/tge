@@ -16,7 +16,6 @@ pub enum PrimitiveType {
 }
 
 impl PrimitiveType {
-
     pub(crate) fn to_flag(&self) -> u32 {
         match self {
             Self::Points => glow::POINTS,
@@ -33,5 +32,4 @@ impl PrimitiveType {
             Self::Patches => glow::PATCHES,
         }
     }
-
 }

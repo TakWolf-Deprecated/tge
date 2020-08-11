@@ -13,7 +13,6 @@ struct App {
 }
 
 impl App {
-
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let battery = Texture::load(engine, "assets/battery.png")?;
         let cannons = vec![
@@ -55,11 +54,9 @@ impl App {
             cannons,
         })
     }
-
 }
 
 impl Game for App {
-
     fn update(&mut self, engine: &mut Engine) -> GameResult {
         let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
@@ -91,7 +88,6 @@ impl Game for App {
 
         Ok(())
     }
-
 }
 
 fn main() -> GameResult {

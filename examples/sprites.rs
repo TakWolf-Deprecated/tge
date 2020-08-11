@@ -15,7 +15,6 @@ struct Sprite {
 }
 
 impl Sprite {
-
     fn new(rand: &mut ThreadRng, graphics_size: &Size) -> Self {
         let x = rand.gen_range(0.0, graphics_size.width);
         let y = rand.gen_range(0.0, graphics_size.height);
@@ -37,7 +36,6 @@ impl Sprite {
             color: Color::new(red, green, blue, alpha),
         }
     }
-
 }
 
 struct App {
@@ -47,7 +45,6 @@ struct App {
 }
 
 impl App {
-
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let zazaka = Texture::load(engine, "assets/zazaka.png")?;
         let mut rand = rand::thread_rng();
@@ -62,11 +59,9 @@ impl App {
             sprites,
         })
     }
-
 }
 
 impl Game for App {
-
     fn update(&mut self, engine: &mut Engine) -> GameResult {
         let title = format!("{}: {} - FPS: {}", TITLE, self.sprites.len(), engine.timer().real_time_fps().round());
         engine.window().set_title(title);
@@ -128,7 +123,6 @@ impl Game for App {
 
         Ok(())
     }
-
 }
 
 fn main() -> GameResult {

@@ -10,7 +10,6 @@ pub enum CursorIcon {
     Wait,
     Help,
     Progress,
-
     NotAllowed,
     ContextMenu,
     Cell,
@@ -23,7 +22,6 @@ pub enum CursorIcon {
     AllScroll,
     ZoomIn,
     ZoomOut,
-
     EResize,
     NResize,
     NeResize,
@@ -41,15 +39,12 @@ pub enum CursorIcon {
 }
 
 impl Default for CursorIcon {
-    
     fn default() -> Self {
         CursorIcon::Default
     }
-    
 }
 
 impl Into<winit::window::CursorIcon> for CursorIcon {
-    
     fn into(self) -> winit::window::CursorIcon {
         match self {
             Self::Default => winit::window::CursorIcon::Default,
@@ -89,5 +84,4 @@ impl Into<winit::window::CursorIcon> for CursorIcon {
             Self::RowResize => winit::window::CursorIcon::RowResize,
         }
     }
-    
 }

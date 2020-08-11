@@ -10,7 +10,6 @@ pub struct Framebuffer {
 }
 
 impl Framebuffer {
-
     pub fn new(gl: Rc<Context>) -> Result<Self, String> {
         let id = unsafe {
             gl.create_framebuffer()?
@@ -63,23 +62,18 @@ impl Framebuffer {
             _ => Err(format!("framebuffer error with status: {}", status)),
         }
     }
-
 }
 
 impl Drop for Framebuffer {
-
     fn drop(&mut self) {
         unsafe {
             self.gl.delete_framebuffer(self.id);
         }
     }
-
 }
 
 impl PartialEq for Framebuffer {
-
     fn eq(&self, other: &Self) -> bool {
         self.id == other.id
     }
-
 }

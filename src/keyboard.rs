@@ -14,7 +14,6 @@ pub struct Keyboard {
 }
 
 impl Keyboard {
-
     pub(crate) fn new(_: KeyboardConfig) -> GameResult<Self> {
         Ok(Self {
             key_states: HashMap::new(),
@@ -80,16 +79,13 @@ impl Keyboard {
     pub fn modifiers_state(&self) -> ModifiersState {
         self.modifiers_state
     }
-
 }
 
 #[derive(Debug, Clone)]
 pub struct KeyboardConfig {}
 
 impl KeyboardConfig {
-
     pub fn new() -> Self {
         Self {}
     }
-
 }

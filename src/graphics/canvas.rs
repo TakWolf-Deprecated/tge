@@ -11,7 +11,6 @@ pub struct Canvas {
 }
 
 impl Canvas {
-
     pub fn new(engine: &mut Engine, size: impl Into<Size<u32>>) -> GameResult<Self> {
         let framebuffer = Framebuffer::new(engine.graphics().gl().clone())
             .map_err(|error| GameError::InitError(error.into()))?;
@@ -53,5 +52,4 @@ impl Canvas {
     pub fn set_wrap(&mut self, wrap: Wrap) {
         self.texture.set_wrap(wrap)
     }
-
 }

@@ -9,7 +9,6 @@ pub struct Program {
 }
 
 impl Program {
-
     pub fn new(gl: Rc<Context>, vertex_shader_source: &str, fragment_shader_source: &str) -> Result<Self, String> {
         let id = unsafe {
             let vertex_shader_id = gl.create_shader(glow::VERTEX_SHADER)?;
@@ -66,23 +65,18 @@ impl Program {
             self.gl.uniform_matrix_4_f32_slice(location.as_ref(), false, mat4);
         }
     }
-
 }
 
 impl Drop for Program {
-
     fn drop(&mut self) {
         unsafe {
             self.gl.delete_program(self.id);
         }
     }
-
 }
 
 impl PartialEq for Program {
-
     fn eq(&self, other: &Self) -> bool {
         self.id == other.id
     }
-
 }

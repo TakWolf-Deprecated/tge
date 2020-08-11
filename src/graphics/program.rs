@@ -13,7 +13,6 @@ pub struct Program {
 }
 
 impl Program {
-
     pub fn new(engine: &mut Engine, vertex_shader_source: &str, fragment_shader_source: &str) -> GameResult<Self> {
         let program = opengl::Program::new(
             engine.graphics().gl().clone(),
@@ -41,5 +40,4 @@ impl Program {
     pub(crate) fn program(&self) -> &Rc<opengl::Program> {
         &self.program
     }
-
 }

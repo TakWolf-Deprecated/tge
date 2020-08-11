@@ -10,7 +10,6 @@ pub struct TransformParams {
 }
 
 impl TransformParams {
-
     pub fn origin(mut self, origin: impl Into<Point>) -> Self {
         self.origin = Some(origin.into());
         self
@@ -37,5 +36,4 @@ impl TransformParams {
         let scale = self.scale.map(|scale| Vec3::new(scale.x, scale.y, 1.0)).unwrap_or_else(|| Vec3::one());
         Mat4::from_scale_rotation_translation(scale, rotation, position)
     }
-
 }

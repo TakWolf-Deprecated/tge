@@ -25,7 +25,6 @@ pub struct Gamepad {
 }
 
 impl Gamepad {
-
     pub(crate) fn new(gamepad_config: GamepadConfig) -> GameResult<Self> {
         let gilrs = GilrsBuilder::new()
             .set_axis_to_btn(gamepad_config.axis_to_button_down_value, gamepad_config.axis_to_button_up_value)
@@ -138,7 +137,6 @@ impl Gamepad {
             .map(|state| state.borrow().axis_value(axis))
             .unwrap_or(0.0)
     }
-
 }
 
 #[derive(Debug, Clone)]
@@ -148,7 +146,6 @@ pub struct GamepadConfig {
 }
 
 impl GamepadConfig {
-
     pub fn new() -> Self {
         Self {
             axis_to_button_down_value: 0.75,
@@ -165,5 +162,4 @@ impl GamepadConfig {
         self.axis_to_button_up_value = value;
         self
     }
-
 }

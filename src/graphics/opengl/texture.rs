@@ -10,7 +10,6 @@ pub struct Texture {
 }
 
 impl Texture {
-
     pub fn new(gl: Rc<Context>) -> Result<Self, String> {
         let id = unsafe {
             gl.create_texture()?
@@ -88,23 +87,18 @@ impl Texture {
             self.gl.tex_parameter_i32(glow::TEXTURE_2D, glow::TEXTURE_WRAP_T, wrap.vertical.to_flag() as i32);
         }
     }
-
 }
 
 impl Drop for Texture {
-
     fn drop(&mut self) {
         unsafe {
             self.gl.delete_texture(self.id);
         }
     }
-
 }
 
 impl PartialEq for Texture {
-
     fn eq(&self, other: &Self) -> bool {
         self.id == other.id
     }
-
 }

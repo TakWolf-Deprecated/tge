@@ -8,7 +8,6 @@ pub struct Timer {
 }
 
 impl Timer {
-
     pub(crate) fn new(timer_config: TimerConfig) -> GameResult<Self> {
         Ok(Self {
             fps: timer_config.fps,
@@ -55,7 +54,6 @@ impl Timer {
     pub fn delta_time(&self) -> Duration {
         self.delta_time
     }
-
 }
 
 #[derive(Debug, Clone)]
@@ -64,7 +62,6 @@ pub struct TimerConfig {
 }
 
 impl TimerConfig {
-
     pub fn new() -> Self {
         Self { fps: 60.0 }
     }
@@ -74,7 +71,6 @@ impl TimerConfig {
         self.fps = fps;
         self
     }
-
 }
 
 fn assert_fps(fps: f32) {

@@ -8,7 +8,6 @@ pub enum MouseButton {
 }
 
 impl From<winit::event::MouseButton> for MouseButton {
-
     fn from(button: winit::event::MouseButton) -> Self {
         match button {
             winit::event::MouseButton::Left => Self::Left,
@@ -17,5 +16,4 @@ impl From<winit::event::MouseButton> for MouseButton {
             winit::event::MouseButton::Other(button_id) => Self::Other(button_id as u32),
         }
     }
-
 }

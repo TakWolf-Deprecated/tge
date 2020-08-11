@@ -3,16 +3,13 @@ use tge::prelude::*;
 struct App {}
 
 impl App {
-
     fn new(_: &mut Engine) -> GameResult<Self> {
         // load assets
         Ok(Self {})
     }
-
 }
 
 impl Game for App {
-
     fn update(&mut self, _: &mut Engine) -> GameResult {
         // handle logic
         Ok(())
@@ -23,7 +20,6 @@ impl Game for App {
         // draw sprites
         Ok(())
     }
-
 }
 
 fn main() -> GameResult {

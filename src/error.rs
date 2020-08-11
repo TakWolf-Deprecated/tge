@@ -11,7 +11,6 @@ pub enum GameError {
 }
 
 impl Error for GameError {
-
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         let source = match self {
             Self::IoError(source) => source,
@@ -22,11 +21,9 @@ impl Error for GameError {
         };
         Some(source.as_ref())
     }
-
 }
 
 impl fmt::Display for GameError {
-
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::IoError(source) => write!(fmt, "GameError::IoError: {}", source),
@@ -36,7 +33,6 @@ impl fmt::Display for GameError {
             Self::NotSupportedError(source) => write!(fmt, "GameError::NotSupportedError: {}", source),
         }
     }
-
 }
 
 pub type GameResult<T = ()> = Result<T, GameError>;

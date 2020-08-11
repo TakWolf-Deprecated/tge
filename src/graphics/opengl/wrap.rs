@@ -9,7 +9,6 @@ pub enum WrapMode {
 }
 
 impl WrapMode {
-
     pub(crate) fn to_flag(&self) -> u32 {
         match self {
             Self::Repeat => glow::REPEAT,
@@ -19,15 +18,12 @@ impl WrapMode {
             Self::ClampToBorder => glow::CLAMP_TO_BORDER,
         }
     }
-
 }
 
 impl Default for WrapMode {
-
     fn default() -> Self {
         WrapMode::Repeat
     }
-
 }
 
 #[derive(Debug, Default, Copy, Clone, Hash, Eq, PartialEq)]
@@ -38,7 +34,6 @@ pub struct Wrap {
 }
 
 impl Wrap {
-
     pub fn new(horizontal: WrapMode, vertical: WrapMode, depth: WrapMode) -> Self {
         Self { horizontal, vertical, depth }
     }
@@ -46,5 +41,4 @@ impl Wrap {
     pub fn uv(horizontal: WrapMode, vertical: WrapMode) -> Self {
         Self::new(horizontal, vertical, WrapMode::default())
     }
-
 }

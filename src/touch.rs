@@ -11,7 +11,6 @@ pub struct Touch {
 }
 
 impl Touch {
-
     pub(crate) fn new(_: TouchConfig) -> GameResult<Self> {
         Ok(Self {
             positions: HashMap::new(),
@@ -39,16 +38,13 @@ impl Touch {
     pub fn position(&self, id: u64) -> Option<LogicalPosition> {
         self.positions.get(&id).map(|position| *position)
     }
-
 }
 
 #[derive(Debug, Clone)]
 pub struct TouchConfig {}
 
 impl TouchConfig {
-
     pub fn new() -> Self {
         Self {}
     }
-
 }

@@ -10,7 +10,6 @@ pub struct VertexArray {
 }
 
 impl VertexArray {
-
     pub fn new(gl: Rc<Context>) -> Result<Self, String> {
         let id = unsafe {
             gl.create_vertex_array()?
@@ -45,23 +44,18 @@ impl VertexArray {
             self.gl.draw_elements(primitive.to_flag(), count as i32, glow::UNSIGNED_INT, offset as i32);
         }
     }
-
 }
 
 impl Drop for VertexArray {
-
     fn drop(&mut self) {
         unsafe {
             self.gl.delete_vertex_array(self.id);
         }
     }
-
 }
 
 impl PartialEq for VertexArray {
-
     fn eq(&self, other: &Self) -> bool {
         self.id == other.id
     }
-
 }

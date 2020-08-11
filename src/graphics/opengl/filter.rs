@@ -13,7 +13,6 @@ pub struct Filter {
 }
 
 impl Filter {
-
     pub fn new(min: FilterMode, mag: FilterMode, mipmap: Option<FilterMode>) -> Self {
         Self { min, mag, mipmap }
     }
@@ -35,13 +34,10 @@ impl Filter {
             FilterMode::Linear => glow::LINEAR,
         }
     }
-
 }
 
 impl Default for Filter {
-
     fn default() -> Self {
         Self::new(FilterMode::Nearest, FilterMode::Nearest, None)
     }
-
 }

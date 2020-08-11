@@ -8,7 +8,6 @@ pub struct Touchpad {
 }
 
 impl Touchpad {
-
     pub(crate) fn new(_: TouchpadConfig) -> GameResult<Self> {
         Ok(Self {
             scroll_delta: Delta::zero(),
@@ -41,16 +40,13 @@ impl Touchpad {
     pub fn click_stage(&self) -> i64 {
         self.click_stage
     }
-
 }
 
 #[derive(Debug, Clone)]
 pub struct TouchpadConfig {}
 
 impl TouchpadConfig {
-
     pub fn new() -> Self {
         Self {}
     }
-
 }

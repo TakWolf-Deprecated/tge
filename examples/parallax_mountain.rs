@@ -15,7 +15,6 @@ struct App {
 }
 
 impl App {
-
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let view_size = Size::<f32>::new(272.0, 160.0);
         let scene_size = Size::new(1000.0, 160.0);
@@ -79,11 +78,9 @@ impl App {
                 .position((offset.x, 0.0)),
         );
     }
-
 }
 
 impl Game for App {
-
     fn update(&mut self, engine: &mut Engine) -> GameResult {
         let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
@@ -134,7 +131,6 @@ impl Game for App {
 
         Ok(())
     }
-
 }
 
 fn main() -> GameResult {

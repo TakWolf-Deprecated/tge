@@ -11,7 +11,6 @@ pub struct Region<N: Number = f32> {
 pub type Viewport<N = f32> = Region<N>;
 
 impl<N: Number> Region<N> {
-
     pub fn new(x: N, y: N, width: N, height: N) -> Self {
         Self { x, y, width, height }
     }
@@ -155,28 +154,22 @@ impl<N: Number> Region<N> {
     pub fn bottom_right(&self) -> Position<N> {
         Position::new(self.x + self.width, self.y + self.height)
     }
-
 }
 
 impl<N: Number> From<(N, N, N, N)> for Region<N> {
-
     fn from((x, y, width, height): (N, N, N, N)) -> Self {
         Self::new(x, y, width, height)
     }
-
 }
 
 impl<N: Number> Into<(N, N, N, N)> for Region<N> {
-
     fn into(self) -> (N, N, N, N) {
         (self.x, self.y, self.width, self.height)
     }
-
 }
 
 #[cfg(test)]
 mod tests {
-
     use super::Region;
     use crate::math::{Position, Size};
 
@@ -207,5 +200,4 @@ mod tests {
         assert_eq!(region.min(), region.top_left());
         assert_eq!(region.max(), region.bottom_right());
     }
-
 }

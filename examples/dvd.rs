@@ -14,7 +14,6 @@ struct App {
 }
 
 impl App {
-
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let dvd_logo = Texture::load(engine, "assets/dvd-logo.png")?;
         let size = {
@@ -42,11 +41,9 @@ impl App {
         let blue = self.rand.gen::<f32>() * 0.6 + 0.4;
         self.color = Color::new(red, green, blue, 1.0);
     }
-
 }
 
 impl Game for App {
-
     fn update(&mut self, engine: &mut Engine) -> GameResult {
         let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
@@ -89,7 +86,6 @@ impl Game for App {
 
         Ok(())
     }
-
 }
 
 fn main() -> GameResult {

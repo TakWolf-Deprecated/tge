@@ -8,7 +8,6 @@ pub struct Color {
 }
 
 impl Color {
-
     pub const WHITE: Self = Self::new(1.0, 1.0, 1.0, 1.0);
     pub const BLACK: Self = Self::new(0.0, 0.0, 0.0, 1.0);
     pub const TRANSPARENT_WHITE: Self = Self::new(1.0, 1.0, 1.0, 0.0);
@@ -63,60 +62,46 @@ impl Color {
         let alpha = self.alpha_as_u8() as u32;
         red | green | blue | alpha
     }
-
 }
 
 impl From<(f32, f32, f32, f32)> for Color {
-
     fn from((red, green, blue, alpha): (f32, f32, f32, f32)) -> Self {
         Self::new(red, green, blue, alpha)
     }
-
 }
 
 impl Into<(f32, f32, f32, f32)> for Color {
-
     fn into(self) -> (f32, f32, f32, f32) {
         (self.red, self.green, self.blue, self.alpha)
     }
-
 }
 
 impl From<(u8, u8, u8, u8)> for Color {
-
     fn from((red, green, blue, alpha): (u8, u8, u8, u8)) -> Self {
         Self::from_u8(red, green, blue, alpha)
     }
-
 }
 
 impl Into<(u8, u8, u8, u8)> for Color {
-
     fn into(self) -> (u8, u8, u8, u8) {
         (self.red_as_u8(), self.green_as_u8(), self.blue_as_u8(), self.alpha_as_u8())
     }
-
 }
 
 impl From<u32> for Color {
-
     fn from(color: u32) -> Self {
         Self::from_u32(color)
     }
-
 }
 
 impl Into<u32> for Color {
-
     fn into(self) -> u32 {
         self.as_u32()
     }
-
 }
 
 #[cfg(test)]
 mod tests {
-
     use super::Color;
 
     #[test]
@@ -130,5 +115,4 @@ mod tests {
         assert_eq!(Color::from_u8(color.red_as_u8(), color.green_as_u8(), color.blue_as_u8(), color.alpha_as_u8()), color);
         assert_eq!(Color::from_u32(color.as_u32()), color);
     }
-
 }

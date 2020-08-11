@@ -13,7 +13,6 @@ pub struct GamepadDevice {
 }
 
 impl GamepadDevice {
-
     pub(crate) fn new(gilrs: Rc<RefCell<Gilrs>>, id: GamepadId, state: Rc<RefCell<GamepadState>>) -> Self {
         let name = gilrs.borrow().gamepad(id).name().to_owned();
         Self { gilrs, id, name, state }
@@ -62,13 +61,10 @@ impl GamepadDevice {
     pub fn axis_value(&self, axis: GamepadAxis) -> f32 {
         self.state.borrow().axis_value(axis)
     }
-
 }
 
 impl PartialEq for GamepadDevice {
-
     fn eq(&self, other: &Self) -> bool {
         self.id == other.id
     }
-
 }

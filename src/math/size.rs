@@ -8,7 +8,6 @@ pub struct Size<N: Number = f32> {
 }
 
 impl<N: Number> Size<N> {
-
     pub fn new(width: N, height: N) -> Self {
         Self { width, height }
     }
@@ -20,104 +19,82 @@ impl<N: Number> Size<N> {
     pub fn none() -> Option<Self> {
         None
     }
-
 }
 
 impl<N: Number> Mul<Vector<N>> for Size<N> {
-
     type Output = Self;
 
     fn mul(self, vec: Vector<N>) -> Self::Output {
         Self::new(self.width * vec.x, self.height * vec.y)
     }
-
 }
 
 impl<N: Number> Div<Vector<N>> for Size<N> {
-
     type Output = Self;
 
     fn div(self, vec: Vector<N>) -> Self::Output {
         Self::new(self.width / vec.x, self.height / vec.y)
     }
-
 }
 
 impl<N: Number> MulAssign<Vector<N>> for Size<N> {
-
     fn mul_assign(&mut self, vec: Vector<N>) {
         self.width *= vec.x;
         self.height *= vec.y;
     }
-
 }
 
 impl<N: Number> DivAssign<Vector<N>> for Size<N> {
-
     fn div_assign(&mut self, vec: Vector<N>) {
         self.width /= vec.x;
         self.height /= vec.y;
     }
-
 }
 
 impl<N: Number> Mul<N> for Size<N> {
-
     type Output = Self;
 
     fn mul(self, value: N) -> Self::Output {
         Self::new(self.width * value, self.height * value)
     }
-
 }
 
 impl<N: Number> Div<N> for Size<N> {
-
     type Output = Self;
 
     fn div(self, value: N) -> Self::Output {
         Self::new(self.width / value, self.height / value)
     }
-
 }
 
 impl<N: Number> MulAssign<N> for Size<N> {
-
     fn mul_assign(&mut self, value: N) {
         self.width *= value;
         self.height *= value;
     }
-
 }
 
 impl<N: Number> DivAssign<N> for Size<N> {
-
     fn div_assign(&mut self, value: N) {
         self.width /= value;
         self.height /= value;
     }
-
 }
 
 impl<N: Number> From<(N, N)> for Size<N> {
-
     fn from((width, height): (N, N)) -> Self {
         Self::new(width, height)
     }
-
 }
 
 impl<N: Number> Into<(N, N)> for Size<N> {
-
     fn into(self) -> (N, N) {
         (self.width, self.height)
     }
-
 }
 
 #[cfg(test)]
 mod tests {
-
     use super::Size;
     use crate::math::Vector;
 
@@ -141,5 +118,4 @@ mod tests {
         size /= 10.0f32;
         assert_eq!(size, Size::<f32>::new(1.0, 4.0));
     }
-
 }

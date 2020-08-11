@@ -14,7 +14,6 @@ struct Bunny {
 }
 
 impl Bunny {
-
     fn new(rand: &mut ThreadRng) -> Self {
         let speed_x = rand.gen::<f32>() * 5.0;
         let speed_y = rand.gen::<f32>() * 5.0 - 2.5;
@@ -23,7 +22,6 @@ impl Bunny {
             speed: Vector::new(speed_x, speed_y),
         }
     }
-
 }
 
 struct App {
@@ -33,7 +31,6 @@ struct App {
 }
 
 impl App {
-
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let wabbit = Texture::load(engine, "assets/wabbit_alpha.png")?;
         let mut rand = rand::thread_rng();
@@ -47,11 +44,9 @@ impl App {
             bunnies,
         })
     }
-
 }
 
 impl Game for App {
-
     fn update(&mut self, engine: &mut Engine) -> GameResult {
         let title = format!("{}: {} - FPS: {}", TITLE, self.bunnies.len(), engine.timer().real_time_fps().round());
         engine.window().set_title(title);
@@ -109,7 +104,6 @@ impl Game for App {
 
         Ok(())
     }
-
 }
 
 fn main() -> GameResult {

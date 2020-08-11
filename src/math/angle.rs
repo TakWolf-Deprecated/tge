@@ -9,7 +9,6 @@ pub enum Angle<F: Float = f32> {
 }
 
 impl<F: Float> Angle<F> {
-
     pub fn radians(value: F) -> Self {
         Angle::Radians(value)
     }
@@ -61,11 +60,9 @@ impl<F: Float> Angle<F> {
     pub fn to_degrees(&self) -> Self {
         Angle::Degrees(self.degrees_value())
     }
-
 }
 
 impl<F: Float> Add for Angle<F> {
-
     type Output = Self;
 
     fn add(self, other: Self) -> Self::Output {
@@ -74,11 +71,9 @@ impl<F: Float> Add for Angle<F> {
             Self::Degrees(value) => Self::Degrees(value + other.degrees_value()),
         }
     }
-
 }
 
 impl<F: Float> Sub for Angle<F> {
-
     type Output = Self;
 
     fn sub(self, other: Self) -> Self::Output {
@@ -87,33 +82,27 @@ impl<F: Float> Sub for Angle<F> {
             Self::Degrees(value) => Self::Degrees(value - other.degrees_value()),
         }
     }
-
 }
 
 impl<F: Float> AddAssign for Angle<F> {
-
     fn add_assign(&mut self, other: Self) {
         match self {
             Self::Radians(value) => *value += other.radians_value(),
             Self::Degrees(value) => *value += other.degrees_value(),
         }
     }
-
 }
 
 impl<F: Float> SubAssign for Angle<F> {
-
     fn sub_assign(&mut self, other: Self) {
         match self {
             Self::Radians(value) => *value -= other.radians_value(),
             Self::Degrees(value) => *value -= other.degrees_value(),
         }
     }
-
 }
 
 impl<F: Float> Mul<F> for Angle<F> {
-
     type Output = Self;
 
     fn mul(self, rhs: F) -> Self::Output {
@@ -122,11 +111,9 @@ impl<F: Float> Mul<F> for Angle<F> {
             Self::Degrees(value) => Self::Degrees(value * rhs),
         }
     }
-
 }
 
 impl<F: Float> Div<F> for Angle<F> {
-
     type Output = Self;
 
     fn div(self, rhs: F) -> Self::Output {
@@ -135,50 +122,40 @@ impl<F: Float> Div<F> for Angle<F> {
             Self::Degrees(value) => Self::Degrees(value / rhs),
         }
     }
-
 }
 
 impl<F: Float> MulAssign<F> for Angle<F> {
-
     fn mul_assign(&mut self, rhs: F) {
         match self {
             Self::Radians(value) => *value *= rhs,
             Self::Degrees(value) => *value *= rhs,
         }
     }
-
 }
 
 impl<F: Float> DivAssign<F> for Angle<F> {
-
     fn div_assign(&mut self, rhs: F) {
         match self {
             Self::Radians(value) => *value /= rhs,
             Self::Degrees(value) => *value /= rhs,
         }
     }
-
 }
 
 impl<F: Float> PartialEq for Angle<F> {
-
     fn eq(&self, other: &Self) -> bool {
         self.radians_value() == other.radians_value()
     }
-
 }
 
 impl<F: Float> PartialOrd for Angle<F> {
-
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.radians_value().partial_cmp(&other.radians_value())
     }
-
 }
 
 #[cfg(test)]
 mod tests {
-
     use super::Angle;
 
     #[test]
@@ -257,5 +234,4 @@ mod tests {
         assert!(Angle::<f32>::n_pi(2.0) > Angle::<f32>::degrees(300.0));
         assert!(Angle::<f32>::n_pi(0.5) < Angle::<f32>::degrees(135.0));
     }
-
 }

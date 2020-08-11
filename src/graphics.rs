@@ -69,7 +69,6 @@ pub struct Graphics {
 }
 
 impl Graphics {
-
     pub(crate) fn new(graphics_config: GraphicsConfig, context_wrapper: Rc<ContextWrapper<PossiblyCurrent, Window>>) -> GameResult<Self> {
         let gl = Context::from_loader_function(|symbol| context_wrapper.get_proc_address(symbol).cast());
         let gl = Rc::new(gl);
@@ -551,7 +550,6 @@ impl Graphics {
             }
         }
     }
-
 }
 
 #[derive(Debug, Clone)]
@@ -563,7 +561,6 @@ pub struct GraphicsConfig {
 }
 
 impl GraphicsConfig {
-
     pub fn new() -> Self {
         Self {
             default_filter: Filter::default(),
@@ -598,5 +595,4 @@ impl GraphicsConfig {
         self.renderer_element_size = SPRITE_ELEMENT_COUNT * size;
         self
     }
-
 }

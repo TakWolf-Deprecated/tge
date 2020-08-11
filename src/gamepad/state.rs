@@ -10,7 +10,6 @@ pub struct GamepadState {
 }
 
 impl GamepadState {
-
     pub fn new() -> Self {
         Self {
             connected: false,
@@ -81,5 +80,4 @@ impl GamepadState {
     pub fn axis_value(&self, axis: GamepadAxis) -> f32 {
         *self.axis_values.get(&axis).unwrap_or(&0.0)
     }
-
 }

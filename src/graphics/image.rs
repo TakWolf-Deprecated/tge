@@ -10,7 +10,6 @@ pub struct Image {
 }
 
 impl Image {
-
     pub fn new(size: impl Into<Size<u32>>, pixels: Vec<u8>) -> GameResult<Self> {
         let size = size.into();
         validate_pixels(size, &pixels)?;
@@ -42,7 +41,6 @@ impl Image {
     pub fn into_pixels(self) -> Vec<u8> {
         self.pixels
     }
-
 }
 
 pub fn validate_pixels(size: Size<u32>, pixels: &[u8]) -> GameResult {

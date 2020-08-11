@@ -15,7 +15,6 @@ pub struct Texture {
 }
 
 impl Texture {
-
     pub fn new(engine: &mut Engine, size: impl Into<Size<u32>>, pixels: Option<&[u8]>) -> GameResult<Self> {
         let size = size.into();
         if let Some(pixels) = pixels {
@@ -178,5 +177,4 @@ impl Texture {
         self.texture.unbind();
         Ok(())
     }
-
 }

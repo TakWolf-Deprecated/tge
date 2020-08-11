@@ -21,25 +21,21 @@ pub enum KeyAction {
 }
 
 impl From<ElementState> for KeyAction {
-
     fn from(state: ElementState) -> Self {
         match state {
             ElementState::Pressed => Self::Down,
             ElementState::Released => Self::Up,
         }
     }
-
 }
 
 impl Into<KeyState> for KeyAction {
-
     fn into(self) -> KeyState {
         match self {
             Self::Down => KeyState::Down,
             Self::Up => KeyState::Up,
         }
     }
-
 }
 
 #[derive(Debug, Clone, PartialEq)]

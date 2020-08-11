@@ -11,7 +11,6 @@ pub enum TextureHolder<'a> {
 }
 
 impl TextureHolder<'_> {
-
     pub(crate) fn clone_texture(&self) -> Option<Rc<opengl::Texture>> {
         match self {
             Self::Texture(texture) => Some(texture.texture().clone()),
@@ -32,29 +31,22 @@ impl TextureHolder<'_> {
             Self::None => Size::zero(),
         }
     }
-
 }
 
 impl<'a> From<&'a Texture> for TextureHolder<'a> {
-
     fn from(texture: &'a Texture) -> Self {
         Self::Texture(texture)
     }
-
 }
 
 impl<'a> From<&'a Canvas> for TextureHolder<'a> {
-
     fn from(canvas: &'a Canvas) -> Self {
         Self::Canvas(canvas)
     }
-
 }
 
 impl<'a> From<&'a Font> for TextureHolder<'a> {
-
     fn from(font: &'a Font) -> Self {
         Self::Font(font)
     }
-
 }

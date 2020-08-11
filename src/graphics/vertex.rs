@@ -17,7 +17,6 @@ pub struct Vertex {
 }
 
 impl Vertex {
-
     pub fn new(position: impl Into<Position>, uv: impl Into<Vector>, color: impl Into<Color>) -> Self {
         Self {
             position: position.into(),
@@ -25,5 +24,4 @@ impl Vertex {
             color: color.into(),
         }
     }
-
 }

@@ -12,7 +12,6 @@ struct App {
 }
 
 impl App {
-
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let font = Font::load(engine, "assets/SourceHanSansSC/SourceHanSansSC-Regular.otf")?;
         Ok(Self {
@@ -24,11 +23,9 @@ impl App {
             show_background: false,
         })
     }
-
 }
 
 impl Game for App {
-
     fn update(&mut self, engine: &mut Engine) -> GameResult {
         let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
@@ -138,7 +135,6 @@ impl Game for App {
         }
         Ok(false)
     }
-
 }
 
 fn main() -> GameResult {

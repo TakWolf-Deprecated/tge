@@ -8,7 +8,6 @@ pub struct SpriteDrawParams {
 }
 
 impl SpriteDrawParams {
-
     pub fn region(mut self, region: impl Into<Region>) -> Self {
         self.region = Some(region.into());
         self
@@ -24,5 +23,4 @@ impl SpriteDrawParams {
         self.colors = Some([color, color, color, color]);
         self
     }
-
 }

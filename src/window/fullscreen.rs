@@ -9,7 +9,6 @@ pub enum FullscreenMode {
 }
 
 impl FullscreenMode {
-
     pub(crate) fn from_raw(fullscreen: Fullscreen) -> Self {
         match fullscreen {
             Fullscreen::Exclusive(_) => Self::Exclusive,
@@ -24,7 +23,6 @@ impl FullscreenMode {
             Self::Borderless => Ok(Fullscreen::Borderless(monitor)),
         }
     }
-
 }
 
 fn get_preferred_video_mode(monitor: MonitorHandle) -> GameResult<VideoMode> {

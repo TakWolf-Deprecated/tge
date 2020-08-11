@@ -9,14 +9,12 @@ pub enum BufferTarget {
 }
 
 impl BufferTarget {
-
     pub(crate) fn to_flag(&self) -> u32 {
         match self {
             Self::Vertex => glow::ARRAY_BUFFER,
             Self::Element => glow::ELEMENT_ARRAY_BUFFER,
         }
     }
-
 }
 
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
@@ -27,7 +25,6 @@ pub enum BufferUsage {
 }
 
 impl BufferUsage {
-
     pub(crate) fn to_flag(&self) -> u32 {
         match self {
             Self::Static => glow::STATIC_DRAW,
@@ -35,7 +32,6 @@ impl BufferUsage {
             Self::Stream => glow::STREAM_DRAW,
         }
     }
-
 }
 
 pub type BufferId = <Context as HasContext>::Buffer;
@@ -49,7 +45,6 @@ pub struct Buffer<T> {
 }
 
 impl<T> Buffer<T> {
-
     pub fn new(gl: Rc<Context>, target: BufferTarget) -> Result<Self, String> {
         let id = unsafe {
             gl.create_buffer()?
@@ -117,31 +112,25 @@ impl<T> Buffer<T> {
             );
         }
     }
-
 }
 
 impl<T> Drop for Buffer<T> {
-
     fn drop(&mut self) {
         unsafe {
             self.gl.delete_buffer(self.id);
         }
     }
-
 }
 
 impl<T> PartialEq for Buffer<T> {
-
     fn eq(&self, other: &Self) -> bool {
         self.id == other.id
     }
-
 }
 
 pub type VertexBuffer = Buffer<f32>;
 
 impl VertexBuffer {
-
     pub fn new_vertex(gl: Rc<Context>) -> Result<Self, String> {
         Self::new(gl, BufferTarget::Vertex)
     }
@@ -159,15 +148,12 @@ impl VertexBuffer {
             self.gl.enable_vertex_attrib_array(index as u32);
         }
     }
-
 }
 
 pub type ElementBuffer = Buffer<u32>;
 
 impl ElementBuffer {
-
     pub fn new_element(gl: Rc<Context>) -> Result<Self, String> {
         Self::new(gl, BufferTarget::Element)
     }
-
 }

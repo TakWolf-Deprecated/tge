@@ -26,7 +26,6 @@ pub struct Window {
 }
 
 impl Window {
-
     pub(crate) fn new(window_config: WindowConfig, event_loop: &EventLoop<()>, filesystem: &Filesystem) -> GameResult<Self> {
         let mut window_builder = WindowBuilder::new()
             .with_title(&window_config.title)
@@ -243,7 +242,6 @@ impl Window {
     pub fn is_focused(&self) -> bool {
         self.focused
     }
-
 }
 
 #[derive(Debug, Clone)]
@@ -264,7 +262,6 @@ pub struct WindowConfig {
 }
 
 impl WindowConfig {
-
     pub fn new() -> Self {
         Self {
             title: "tge".to_owned(),
@@ -347,5 +344,4 @@ impl WindowConfig {
         self.vsync = vsync;
         self
     }
-
 }

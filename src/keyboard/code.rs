@@ -3,7 +3,6 @@ use winit::event::{VirtualKeyCode, ScanCode};
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
 pub enum KeyCode {
     Esc,
-
     Num1,
     Num2,
     Num3,
@@ -14,7 +13,6 @@ pub enum KeyCode {
     Num8,
     Num9,
     Num0,
-
     A,
     B,
     C,
@@ -41,7 +39,6 @@ pub enum KeyCode {
     X,
     Y,
     Z,
-
     F1,
     F2,
     F3,
@@ -66,12 +63,10 @@ pub enum KeyCode {
     F22,
     F23,
     F24,
-
     PrintScreen,
     ScrollLock,
     /// Pause or Break
     Pause,
-
     /// ` or ~
     Grave,
     /// - or _
@@ -94,7 +89,6 @@ pub enum KeyCode {
     Period,
     /// / or ?
     Slash,
-
     Tab,
     CapsLock,
     LShift,
@@ -115,19 +109,16 @@ pub enum KeyCode {
     Enter,
     Space,
     Menu,
-
     Insert,
     Delete,
     Home,
     End,
     PageUp,
     PageDown,
-
     Up,
     Down,
     Left,
     Right,
-
     NumLock,
     NumpadSlash,
     NumpadMultiply,
@@ -145,12 +136,10 @@ pub enum KeyCode {
     Numpad7,
     Numpad8,
     Numpad9,
-
     Other(u32),
 }
 
 impl From<(Option<VirtualKeyCode>, ScanCode)> for KeyCode {
-
     fn from((key_code, scan_code): (Option<VirtualKeyCode>, ScanCode)) -> Self {
         match key_code {
             Some(key_code) => {
@@ -321,5 +310,4 @@ impl From<(Option<VirtualKeyCode>, ScanCode)> for KeyCode {
             None => Self::Other(scan_code),
         }
     }
-
 }

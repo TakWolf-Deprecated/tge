@@ -40,7 +40,6 @@ pub struct Engine {
 }
 
 impl Engine {
-
     pub fn filesystem(&mut self) -> &mut Filesystem {
         &mut self.filesystem
     }
@@ -313,7 +312,6 @@ impl Engine {
         let mut game = init(self)?;
         self.run(&mut game)
     }
-
 }
 
 #[derive(Debug, Clone)]
@@ -331,7 +329,6 @@ pub struct EngineBuilder {
 }
 
 impl EngineBuilder {
-
     pub fn new() -> Self {
         Self {
             filesystem_config: None,
@@ -437,5 +434,4 @@ impl EngineBuilder {
             state: State::Ready,
         })
     }
-
 }

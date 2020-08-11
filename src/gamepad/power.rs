@@ -9,7 +9,6 @@ pub enum PowerInfo {
 }
 
 impl From<gilrs::PowerInfo> for PowerInfo {
-
     fn from(info: gilrs::PowerInfo) -> Self {
         match info {
             gilrs::PowerInfo::Wired => Self::Wired,
@@ -19,5 +18,4 @@ impl From<gilrs::PowerInfo> for PowerInfo {
             gilrs::PowerInfo::Unknown => Self::Unknown,
         }
     }
-
 }

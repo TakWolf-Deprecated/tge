@@ -8,7 +8,6 @@ pub enum Attachment {
 }
 
 impl Attachment {
-
     pub(crate) fn to_flag(&self) -> u32 {
         match self {
             Self::Color(i) => glow::COLOR_ATTACHMENT0 + *i,
@@ -17,5 +16,4 @@ impl Attachment {
             Self::DepthStencil => glow::DEPTH_STENCIL_ATTACHMENT,
         }
     }
-
 }

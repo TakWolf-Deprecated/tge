@@ -13,7 +13,6 @@ pub struct Renderer {
 }
 
 impl Renderer {
-
     pub fn init_vertex_size(&mut self, usage: BufferUsage, size: usize) {
         self.vertex_buffer.bind();
         self.vertex_buffer.init_size(usage, vertex::ATTRIBUTE_STRIDE * size);
@@ -69,7 +68,6 @@ impl Renderer {
         self.vertex_array.draw_elements(primitive, count, offset);
         self.vertex_array.unbind();
     }
-
 }
 
 pub struct RendererBuilder {
@@ -82,7 +80,6 @@ pub struct RendererBuilder {
 }
 
 impl RendererBuilder {
-
     pub fn new(gl: Rc<Context>) -> GameResult<Self> {
         let vertex_array = VertexArray::new(gl.clone())
             .map_err(|error| GameError::InitError(error.into()))?;
@@ -168,7 +165,6 @@ impl RendererBuilder {
             element_size,
         })
     }
-
 }
 
 fn init_vertex_attribute_pointer(vertex_buffer: &VertexBuffer) {

@@ -61,7 +61,6 @@ pub struct Font {
 }
 
 impl Font {
-
     pub(crate) fn new(engine: &mut Engine, bytes: Vec<u8>, cache_texture_size: u32) -> GameResult<Self> {
         let font = FontVec::try_from_vec(bytes)
             .map_err(|error| GameError::InitError(error.into()))?;
@@ -241,5 +240,4 @@ impl Font {
     pub fn set_fit_hidpi(&mut self, fit_hidpi: bool) {
         self.fit_hidpi = fit_hidpi;
     }
-
 }

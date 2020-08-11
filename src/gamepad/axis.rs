@@ -14,7 +14,6 @@ pub enum GamepadAxis {
 }
 
 impl From<Axis> for GamepadAxis {
-
     fn from(axis: Axis) -> Self {
         match axis {
             Axis::LeftStickX => Self::LeftStickX,
@@ -28,5 +27,4 @@ impl From<Axis> for GamepadAxis {
             Axis::Unknown => Self::Other(0),
         }
     }
-
 }

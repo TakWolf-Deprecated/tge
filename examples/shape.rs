@@ -5,15 +5,12 @@ const TITLE: &str = "Shape";
 struct App {}
 
 impl App {
-
     fn new(_: &mut Engine) -> GameResult<Self> {
         Ok(Self {})
     }
-
 }
 
 impl Game for App {
-
     fn update(&mut self, engine: &mut Engine) -> GameResult {
         let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
@@ -91,7 +88,6 @@ impl Game for App {
 
         Ok(())
     }
-
 }
 
 fn main() -> GameResult {

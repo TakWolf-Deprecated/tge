@@ -4,31 +4,25 @@ use gilrs::Button;
 pub enum GamepadButton {
     LeftStick,
     RightStick,
-
     DPadUp,
     DPadDown,
     DPadLeft,
     DPadRight,
-
     North,
     South,
     West,
     East,
-
     LeftTrigger,
     LeftTrigger2,
     RightTrigger,
     RightTrigger2,
-
     Start,
     Select,
     Home,
-
     Other(u32),
 }
 
 impl GamepadButton {
-
     pub fn is_stick(&self) -> bool {
         match self {
             Self::LeftStick | Self::RightStick => true,
@@ -63,11 +57,9 @@ impl GamepadButton {
             _ => false,
         }
     }
-
 }
 
 impl From<Button> for GamepadButton {
-
     fn from(button: Button) -> Self {
         match button {
             Button::South => Self::South,
@@ -92,5 +84,4 @@ impl From<Button> for GamepadButton {
             Button::Unknown => Self::Other(0),
         }
     }
-
 }

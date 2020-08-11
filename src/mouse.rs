@@ -24,7 +24,6 @@ pub struct Mouse {
 }
 
 impl Mouse {
-
     pub(crate) fn new(mouse_config: MouseConfig, context_wrapper: Rc<ContextWrapper<PossiblyCurrent, Window>>) -> GameResult<Self> {
         let window = context_wrapper.window();
         window.set_cursor_icon(mouse_config.cursor_icon.into());
@@ -141,7 +140,6 @@ impl Mouse {
             _ => false,
         }
     }
-
 }
 
 #[derive(Debug, Clone)]
@@ -151,7 +149,6 @@ pub struct MouseConfig {
 }
 
 impl MouseConfig {
-
     pub fn new() -> Self {
         Self {
             cursor_icon: CursorIcon::default(),
@@ -168,5 +165,4 @@ impl MouseConfig {
         self.cursor_visible = cursor_visible;
         self
     }
-
 }

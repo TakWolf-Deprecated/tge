@@ -8,7 +8,6 @@ pub enum TouchPhase {
 }
 
 impl From<winit::event::TouchPhase> for TouchPhase {
-
     fn from(phase: winit::event::TouchPhase) -> Self {
         match phase {
             winit::event::TouchPhase::Started => Self::Start,
@@ -17,5 +16,4 @@ impl From<winit::event::TouchPhase> for TouchPhase {
             winit::event::TouchPhase::Cancelled => Self::Cancel,
         }
     }
-
 }
