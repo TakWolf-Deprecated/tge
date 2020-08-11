@@ -325,12 +325,28 @@ impl Graphics {
         self.elements.extend(elements);
     }
 
-    pub fn draw_mesh<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, primitive: PrimitiveType, vertices: Vec<Vertex>, elements: Option<Vec<u32>>) {
-        let texture = texture.into().clone_texture().unwrap_or_else(|| self.default_texture.clone());
+    pub fn draw_mesh<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, draw_params: impl Into<MeshDrawParams>, transform_params: impl Into<TransformParams>) {
+        let texture = texture.into();
+        let draw_params = draw_params.into();
+        let transform_params = transform_params.into();
+
         self.switch_draw_command(DrawCommand {
-            texture,
-            primitive,
+            texture: texture.clone_texture().unwrap_or_else(|| self.default_texture.clone()),
+            primitive: draw_params.primitive.unwrap_or(PrimitiveType::Triangles),
         });
+
+        let origin = transform_params.origin.unwrap_or_else(|| Point::zero());
+        let model_matrix = transform_params.matrix();
+
+        let vertices = draw_params.vertices.map(|mut vertices| {
+            for vertex in &mut vertices {
+                let position = model_matrix * Vec4::new(-origin.x + vertex.position.x, -origin.y + vertex.position.y, 0.0, 1.0);
+                vertex.position.x = position.x();
+                vertex.position.y = position.y();
+            }
+            vertices
+        }).unwrap_or_else(|| Vec::new());
+        let elements = draw_params.elements;
         self.append_vertices_and_elements(vertices, elements);
     }
 
