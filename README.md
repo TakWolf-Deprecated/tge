@@ -26,7 +26,7 @@ __Tge is currently in a very early stage of development. The API may be changed.
 
 The following does not contain, but can easily work with other crates:
 
-* [Entity Component System (ECS)](https://en.wikipedia.org/wiki/Entity_component_system).
+* Entity Component System (ECS).
 * Physics engines and collision detection.
 * Network.
 
@@ -86,9 +86,7 @@ fn main() -> GameResult {
 
 That is!
 
-You can also see the [`examples/`](examples/) directory to learn some other examples.
-
-More complete demos can be found in [tge-demos](https://github.com/TakWolf/tge-demos).
+You can also see the [`examples/`](examples/) directory to learn other examples.
 
 ## Performance
 
