@@ -412,7 +412,7 @@ impl Graphics {
         let horizontal_gravity = draw_params.horizontal_gravity.unwrap_or(TextHorizontalGravity::default());
         let vertical_gravity = draw_params.vertical_gravity.unwrap_or(TextVerticalGravity::default());
 
-        let window_scale_factor = {
+        let graphics_scale_factor = {
             if font.is_fit_hidpi() && self.canvas.is_none() {
                 self.window().scale_factor() as f32
             } else {
@@ -487,7 +487,7 @@ impl Graphics {
 
             for (character, glyph_position) in glyph_positions {
                 loop {
-                    match font.cache_glyph(character, text_size, window_scale_factor) {
+                    match font.cache_glyph(character, text_size, graphics_scale_factor) {
                         Ok(cached_by) => {
                             let draw_info = match cached_by {
                                 font::CachedBy::Added(draw_info) => draw_info,

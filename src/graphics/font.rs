@@ -123,15 +123,15 @@ impl Font {
         self.cache.borrow().texture_size
     }
 
-    pub(crate) fn cache_glyph(&self, character: char, px: f32, window_scale_factor: f32) -> Result<CachedBy, CacheError> {
-        let px = (px * window_scale_factor).round();
+    pub(crate) fn cache_glyph(&self, character: char, px: f32, graphics_scale_factor: f32) -> Result<CachedBy, CacheError> {
+        let px = (px * graphics_scale_factor).round();
         let cache_key = CacheKey { character, px: px as u32 };
         let mut cache = self.cache.borrow_mut();
         if let Some(draw_info) = cache.draw_infos.get(&cache_key) {
             let draw_info = draw_info.map(|(px_bounds, uv)| {
                 let bounds = Region::min_max(
-                    Position::new(px_bounds.min.x / window_scale_factor, px_bounds.min.y / window_scale_factor),
-                    Position::new(px_bounds.max.x / window_scale_factor, px_bounds.max.y / window_scale_factor),
+                    Position::new(px_bounds.min.x / graphics_scale_factor, px_bounds.min.y / graphics_scale_factor),
+                    Position::new(px_bounds.max.x / graphics_scale_factor, px_bounds.max.y / graphics_scale_factor),
                 );
                 GlyphDrawInfo { bounds, uv }
             });
@@ -195,8 +195,8 @@ impl Font {
                 cache.draw_infos.insert(cache_key, Some((px_bounds, uv)));
                 let draw_info = {
                     let bounds = Region::min_max(
-                        Position::new(px_bounds.min.x / window_scale_factor, px_bounds.min.y / window_scale_factor),
-                        Position::new(px_bounds.max.x / window_scale_factor, px_bounds.max.y / window_scale_factor),
+                        Position::new(px_bounds.min.x / graphics_scale_factor, px_bounds.min.y / graphics_scale_factor),
+                        Position::new(px_bounds.max.x / graphics_scale_factor, px_bounds.max.y / graphics_scale_factor),
                     );
                     GlyphDrawInfo { bounds, uv }
                 };
