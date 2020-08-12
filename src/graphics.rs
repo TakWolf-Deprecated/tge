@@ -131,14 +131,6 @@ impl Graphics {
         })
     }
 
-    fn window(&self) -> &Window {
-        self.context_wrapper.window()
-    }
-
-    pub(crate) fn gl(&self) -> &Rc<Context> {
-        &self.gl
-    }
-
     pub(crate) fn resize(&mut self, physical_size: PhysicalSize<u32>, scale_factor: f64) {
         self.context_wrapper.resize(physical_size);
         if self.canvas.is_none() {
@@ -177,6 +169,14 @@ impl Graphics {
             self.gl.bind_vertex_array(None);
             self.gl.use_program(None);
         }
+    }
+
+    fn window(&self) -> &Window {
+        self.context_wrapper.window()
+    }
+
+    pub(crate) fn gl(&self) -> &Rc<Context> {
+        &self.gl
     }
 
     pub fn size(&self) -> Size {
