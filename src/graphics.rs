@@ -28,7 +28,7 @@ pub use texture_holder::TextureHolder;
 pub use params::{MeshDrawParams, SpriteDrawParams, TextHorizontalGravity, TextVerticalGravity, TextDrawParams};
 
 use crate::error::{GameError, GameResult};
-use crate::math::{Position, Point, Size, Region, Viewport, Transform};
+use crate::math::{Position, Size, Region, Viewport, Transform};
 use winit::window::Window;
 use winit::dpi::{LogicalPosition, LogicalSize, PhysicalSize};
 use glutin::{ContextWrapper, PossiblyCurrent};
@@ -335,7 +335,7 @@ impl Graphics {
             primitive: params.primitive.unwrap_or(PrimitiveType::Triangles),
         });
 
-        let origin = transform.origin.unwrap_or_else(|| Point::zero());
+        let origin = transform.origin.unwrap_or_else(|| Position::zero());
         let model_matrix = transform.matrix();
 
         let vertices = params.vertices.map(|mut vertices| {
@@ -365,7 +365,7 @@ impl Graphics {
             Size::new(texture_size.width as f32, texture_size.height as f32)
         };
         let region = params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
-        let origin = transform.origin.unwrap_or_else(|| Point::zero());
+        let origin = transform.origin.unwrap_or_else(|| Position::zero());
         let model_matrix = transform.matrix();
 
         let x0y0 = model_matrix * Vec4::new(-origin.x, -origin.y, 0.0, 1.0);
@@ -436,7 +436,7 @@ impl Graphics {
             }
         };
 
-        let origin = transform.origin.unwrap_or_else(|| Point::zero());
+        let origin = transform.origin.unwrap_or_else(|| Position::zero());
         let model_matrix = transform.matrix();
 
         let color = params.color.unwrap_or(Color::WHITE);

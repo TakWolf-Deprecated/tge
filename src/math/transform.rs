@@ -1,16 +1,16 @@
-use super::{Position, Point, Scale, Angle};
+use super::{Position, Scale, Angle};
 use glam::{Vec3, Quat, Mat4};
 
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct Transform {
-    pub origin: Option<Point>,
+    pub origin: Option<Position>,
     pub position: Option<Position>,
     pub rotation: Option<Angle>,
     pub scale: Option<Scale>,
 }
 
 impl Transform {
-    pub fn origin(mut self, origin: impl Into<Point>) -> Self {
+    pub fn origin(mut self, origin: impl Into<Position>) -> Self {
         self.origin = Some(origin.into());
         self
     }

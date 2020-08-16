@@ -105,7 +105,7 @@ impl Game for App {
 
         let origin = {
             let size = self.zazaka.size();
-            Point::new(size.width as f32 / 2.0, size.height as f32 / 2.0)
+            Position::new(size.width as f32 / 2.0, size.height as f32 / 2.0)
         };
 
         for sprite in self.sprites.iter() {
