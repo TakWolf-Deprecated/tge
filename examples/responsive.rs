@@ -28,7 +28,7 @@ impl App {
             &self.sky,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, sky_size.width as f32 * 2.0, sky_size.height as f32)),
-            TransformParams::default()
+            Transform::default()
                 .position((self.background_x, 0.0)),
         );
     }
@@ -70,7 +70,7 @@ impl Game for App {
         engine.graphics().draw_sprite(
             &self.canvas,
             None,
-            TransformParams::default()
+            Transform::default()
                 .position(position)
                 .scale((scale, scale)),
         );

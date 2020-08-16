@@ -45,28 +45,28 @@ impl App {
             &self.back_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
-            TransformParams::default()
+            Transform::default()
                 .position((offset.x / 8.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             &self.lights,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
-            TransformParams::default()
+            Transform::default()
                 .position((offset.x / 4.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             &self.middle_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
-            TransformParams::default()
+            Transform::default()
                 .position((offset.x / 2.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             &self.front_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
-            TransformParams::default()
+            Transform::default()
                 .position((offset.x, 0.0)),
         );
     }
@@ -116,7 +116,7 @@ impl Game for App {
         engine.graphics().draw_sprite(
             &self.canvas,
             None,
-            TransformParams::default()
+            Transform::default()
                 .position(position)
                 .scale((scale, scale)),
         );

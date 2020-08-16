@@ -1,15 +1,15 @@
-use crate::math::{Position, Point, Scale, Angle};
+use super::{Position, Point, Scale, Angle};
 use glam::{Vec3, Quat, Mat4};
 
 #[derive(Debug, Default, Clone, PartialEq)]
-pub struct TransformParams {
+pub struct Transform {
     pub origin: Option<Point>,
     pub position: Option<Position>,
     pub rotation: Option<Angle>,
     pub scale: Option<Scale>,
 }
 
-impl TransformParams {
+impl Transform {
     pub fn origin(mut self, origin: impl Into<Point>) -> Self {
         self.origin = Some(origin.into());
         self

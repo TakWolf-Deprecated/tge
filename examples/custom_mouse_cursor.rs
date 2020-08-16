@@ -29,7 +29,7 @@ impl Game for App {
             engine.graphics().draw_sprite(
                 &self.cursor,
                 None,
-                TransformParams::default()
+                Transform::default()
                     .position(position),
             );
         }

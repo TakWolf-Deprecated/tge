@@ -83,7 +83,7 @@ impl Game for App {
         engine.graphics().draw_sprite(
             &self.car,
             None,
-            TransformParams::default()
+            Transform::default()
                 .origin((car_size.width as f32 / 2.0, car_size.height as f32 / 2.0))
                 .position(self.position)
                 .rotation(self.angle)

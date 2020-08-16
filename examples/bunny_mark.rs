@@ -97,7 +97,7 @@ impl Game for App {
             engine.graphics().draw_sprite(
                 &self.wabbit,
                 None,
-                TransformParams::default()
+                Transform::default()
                     .position(bunny.position),
             );
         }

@@ -25,10 +25,10 @@ pub use texture::Texture;
 pub use canvas::Canvas;
 pub use font::Font;
 pub use texture_holder::TextureHolder;
-pub use params::{MeshDrawParams, SpriteDrawParams, TextHorizontalGravity, TextVerticalGravity, TextDrawParams, TransformParams};
+pub use params::{MeshDrawParams, SpriteDrawParams, TextHorizontalGravity, TextVerticalGravity, TextDrawParams};
 
 use crate::error::{GameError, GameResult};
-use crate::math::{Position, Point, Size, Region, Viewport};
+use crate::math::{Position, Point, Size, Region, Viewport, Transform};
 use winit::window::Window;
 use winit::dpi::{LogicalPosition, LogicalSize, PhysicalSize};
 use glutin::{ContextWrapper, PossiblyCurrent};
@@ -325,20 +325,20 @@ impl Graphics {
         self.elements.extend(elements);
     }
 
-    pub fn draw_mesh<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, draw_params: impl Into<Option<MeshDrawParams>>, transform_params: impl Into<Option<TransformParams>>) {
+    pub fn draw_mesh<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, params: impl Into<Option<MeshDrawParams>>, transform: impl Into<Option<Transform>>) {
         let texture = texture.into();
-        let draw_params = draw_params.into().unwrap_or_default();
-        let transform_params = transform_params.into().unwrap_or_default();
+        let params = params.into().unwrap_or_default();
+        let transform = transform.into().unwrap_or_default();
 
         self.switch_draw_command(DrawCommand {
             texture: texture.clone_texture().unwrap_or_else(|| self.default_texture.clone()),
-            primitive: draw_params.primitive.unwrap_or(PrimitiveType::Triangles),
+            primitive: params.primitive.unwrap_or(PrimitiveType::Triangles),
         });
 
-        let origin = transform_params.origin.unwrap_or_else(|| Point::zero());
-        let model_matrix = transform_params.matrix();
+        let origin = transform.origin.unwrap_or_else(|| Point::zero());
+        let model_matrix = transform.matrix();
 
-        let vertices = draw_params.vertices.map(|mut vertices| {
+        let vertices = params.vertices.map(|mut vertices| {
             for vertex in &mut vertices {
                 let position = model_matrix * Vec4::new(-origin.x + vertex.position.x, -origin.y + vertex.position.y, 0.0, 1.0);
                 vertex.position.x = position.x();
@@ -346,14 +346,14 @@ impl Graphics {
             }
             vertices
         }).unwrap_or_else(|| Vec::new());
-        let elements = draw_params.elements;
+        let elements = params.elements;
         self.append_vertices_and_elements(vertices, elements);
     }
 
-    pub fn draw_sprite<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, draw_params: impl Into<Option<SpriteDrawParams>>, transform_params: impl Into<Option<TransformParams>>) {
+    pub fn draw_sprite<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, params: impl Into<Option<SpriteDrawParams>>, transform: impl Into<Option<Transform>>) {
         let texture = texture.into();
-        let draw_params = draw_params.into().unwrap_or_default();
-        let transform_params = transform_params.into().unwrap_or_default();
+        let params = params.into().unwrap_or_default();
+        let transform = transform.into().unwrap_or_default();
 
         self.switch_draw_command(DrawCommand {
             texture: texture.clone_texture().unwrap_or_else(|| self.default_texture.clone()),
@@ -364,9 +364,9 @@ impl Graphics {
             let texture_size = texture.texture_size();
             Size::new(texture_size.width as f32, texture_size.height as f32)
         };
-        let region = draw_params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
-        let origin = transform_params.origin.unwrap_or_else(|| Point::zero());
-        let model_matrix = transform_params.matrix();
+        let region = params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
+        let origin = transform.origin.unwrap_or_else(|| Point::zero());
+        let model_matrix = transform.matrix();
 
         let x0y0 = model_matrix * Vec4::new(-origin.x, -origin.y, 0.0, 1.0);
         let x1y0 = model_matrix * Vec4::new(-origin.x + region.width, -origin.y, 0.0, 1.0);
@@ -380,7 +380,7 @@ impl Graphics {
             region.height / texture_size.height,
         );
 
-        let colors = draw_params.colors.unwrap_or_else(|| [Color::WHITE, Color::WHITE, Color::WHITE, Color::WHITE]);
+        let colors = params.colors.unwrap_or_else(|| [Color::WHITE, Color::WHITE, Color::WHITE, Color::WHITE]);
 
         let vertices = vec![
             Vertex {
@@ -408,25 +408,25 @@ impl Graphics {
         self.append_vertices_and_elements(vertices, Some(elements));
     }
 
-    pub fn draw_text(&mut self, font: &Font, text: &str, draw_params: impl Into<Option<TextDrawParams>>, transform_params: impl Into<Option<TransformParams>>) {
-        let draw_params = draw_params.into().unwrap_or_default();
-        let transform_params = transform_params.into().unwrap_or_default();
+    pub fn draw_text(&mut self, font: &Font, text: &str, params: impl Into<Option<TextDrawParams>>, transform: impl Into<Option<Transform>>) {
+        let params = params.into().unwrap_or_default();
+        let transform = transform.into().unwrap_or_default();
 
         self.switch_draw_command(DrawCommand {
             texture: font.clone_cache_texture(),
             primitive: PrimitiveType::Triangles,
         });
 
-        let text_size = draw_params.text_size.unwrap_or(14.0);
+        let text_size = params.text_size.unwrap_or(14.0);
         let line_metrics = font.line_metrics(text_size);
 
-        let char_spacing = draw_params.char_spacing.unwrap_or(0.0);
-        let line_height = draw_params.line_height.unwrap_or(line_metrics.height);
-        let line_spacing = draw_params.line_spacing.unwrap_or(line_metrics.line_gap);
-        let wrap_width = draw_params.wrap_width.unwrap_or(0.0).max(0.0);
-        let wrap_height = draw_params.wrap_height.unwrap_or(0.0).max(0.0);
-        let horizontal_gravity = draw_params.horizontal_gravity.unwrap_or(TextHorizontalGravity::default());
-        let vertical_gravity = draw_params.vertical_gravity.unwrap_or(TextVerticalGravity::default());
+        let char_spacing = params.char_spacing.unwrap_or(0.0);
+        let line_height = params.line_height.unwrap_or(line_metrics.height);
+        let line_spacing = params.line_spacing.unwrap_or(line_metrics.line_gap);
+        let wrap_width = params.wrap_width.unwrap_or(0.0).max(0.0);
+        let wrap_height = params.wrap_height.unwrap_or(0.0).max(0.0);
+        let horizontal_gravity = params.horizontal_gravity.unwrap_or(TextHorizontalGravity::default());
+        let vertical_gravity = params.vertical_gravity.unwrap_or(TextVerticalGravity::default());
 
         let graphics_scale_factor = {
             if font.is_fit_hidpi() && self.canvas.is_none() {
@@ -436,10 +436,10 @@ impl Graphics {
             }
         };
 
-        let origin = transform_params.origin.unwrap_or_else(|| Point::zero());
-        let model_matrix = transform_params.matrix();
+        let origin = transform.origin.unwrap_or_else(|| Point::zero());
+        let model_matrix = transform.matrix();
 
-        let color = draw_params.color.unwrap_or(Color::WHITE);
+        let color = params.color.unwrap_or(Color::WHITE);
 
         let (line_layout_infos, layout_height) = {
             let mut line_layout_infos = Vec::new();

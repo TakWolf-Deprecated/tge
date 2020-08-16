@@ -79,7 +79,7 @@ impl Game for App {
             &self.dvd_logo,
             SpriteDrawParams::default()
                 .color(self.color),
-            TransformParams::default()
+            Transform::default()
                 .origin((self.size.width / 2.0, self.size.height / 2.0))
                 .position(self.position),
         );

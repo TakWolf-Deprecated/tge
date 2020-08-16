@@ -1,10 +1,10 @@
 pub use crate::error::{GameError, GameResult};
-pub use crate::math::{Vector, Position, Point, Scale, Delta, Size, Region, Viewport, Angle};
+pub use crate::math::{Vector, Position, Point, Scale, Delta, Size, Region, Viewport, Angle, Transform};
 pub use crate::engine::{Engine, EngineBuilder};
 pub use crate::event::{KeyAction, Event};
 pub use crate::filesystem::{Filesystem, FilesystemConfig};
 pub use crate::window::{Window, WindowConfig, Icon, LogicalPosition, PhysicalPosition, LogicalSize, PhysicalSize, FullscreenMode};
-pub use crate::graphics::{Graphics, GraphicsConfig, PrimitiveType, FilterMode, Filter, WrapMode, Wrap, Program, Color, Vertex, Image, Texture, Canvas, Font, TextureHolder, MeshDrawParams, SpriteDrawParams, TextHorizontalGravity, TextVerticalGravity, TextDrawParams, TransformParams};
+pub use crate::graphics::{Graphics, GraphicsConfig, PrimitiveType, FilterMode, Filter, WrapMode, Wrap, Program, Color, Vertex, Image, Texture, Canvas, Font, TextureHolder, MeshDrawParams, SpriteDrawParams, TextHorizontalGravity, TextVerticalGravity, TextDrawParams};
 pub use crate::timer::{Timer, TimerConfig};
 pub use crate::keyboard::{Keyboard, KeyboardConfig, KeyCode, ModifiersState};
 pub use crate::mouse::{Mouse, MouseConfig, CursorIcon, MouseButton};

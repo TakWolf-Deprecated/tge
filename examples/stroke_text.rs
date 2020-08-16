@@ -58,7 +58,7 @@ impl Game for App {
             TextDrawParams::default()
                 .text_size(self.text_size)
                 .color(self.stroke_color),
-            TransformParams::default()
+            Transform::default()
                 .origin(self.origin)
                 .position((self.position.x - 1.0, self.position.y))
                 .rotation(self.rotation)
@@ -70,7 +70,7 @@ impl Game for App {
             TextDrawParams::default()
                 .text_size(self.text_size)
                 .color(self.stroke_color),
-            TransformParams::default()
+            Transform::default()
                 .origin(self.origin)
                 .position((self.position.x - 1.0, self.position.y - 1.0))
                 .rotation(self.rotation)
@@ -82,7 +82,7 @@ impl Game for App {
             TextDrawParams::default()
                 .text_size(self.text_size)
                 .color(self.stroke_color),
-            TransformParams::default()
+            Transform::default()
                 .origin(self.origin)
                 .position((self.position.x, self.position.y - 1.0))
                 .rotation(self.rotation)
@@ -94,7 +94,7 @@ impl Game for App {
             TextDrawParams::default()
                 .text_size(self.text_size)
                 .color(self.stroke_color),
-            TransformParams::default()
+            Transform::default()
                 .origin(self.origin)
                 .position((self.position.x + 1.0, self.position.y - 1.0))
                 .rotation(self.rotation)
@@ -106,7 +106,7 @@ impl Game for App {
             TextDrawParams::default()
                 .text_size(self.text_size)
                 .color(self.stroke_color),
-            TransformParams::default()
+            Transform::default()
                 .origin(self.origin)
                 .position((self.position.x + 1.0, self.position.y))
                 .rotation(self.rotation)
@@ -118,7 +118,7 @@ impl Game for App {
             TextDrawParams::default()
                 .text_size(self.text_size)
                 .color(self.stroke_color),
-            TransformParams::default()
+            Transform::default()
                 .origin(self.origin)
                 .position((self.position.x + 1.0, self.position.y + 1.0))
                 .rotation(self.rotation)
@@ -130,7 +130,7 @@ impl Game for App {
             TextDrawParams::default()
                 .text_size(self.text_size)
                 .color(self.stroke_color),
-            TransformParams::default()
+            Transform::default()
                 .origin(self.origin)
                 .position((self.position.x, self.position.y + 1.0))
                 .rotation(self.rotation)
@@ -142,7 +142,7 @@ impl Game for App {
             TextDrawParams::default()
                 .text_size(self.text_size)
                 .color(self.stroke_color),
-            TransformParams::default()
+            Transform::default()
                 .origin(self.origin)
                 .position((self.position.x - 1.0, self.position.y + 1.0))
                 .rotation(self.rotation)
@@ -154,7 +154,7 @@ impl Game for App {
             TextDrawParams::default()
                 .text_size(self.text_size)
                 .color(self.color),
-            TransformParams::default()
+            Transform::default()
                 .origin(self.origin)
                 .position(self.position)
                 .rotation(self.rotation)

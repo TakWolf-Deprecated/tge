@@ -79,7 +79,7 @@ impl Game for App {
             engine.graphics().draw_sprite(
                 &self.battery,
                 None,
-                TransformParams::default()
+                Transform::default()
                     .origin((16.0, 16.0))
                     .position(cannon.position)
                     .rotation(cannon.angle),

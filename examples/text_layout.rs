@@ -88,7 +88,7 @@ impl Game for App {
                             } else {
                                 Color::from_u32(0xa8e6ffff)
                             }),
-                        TransformParams::default()
+                        Transform::default()
                             .position((x as f32 * self.text_size, y as f32 * self.text_size)),
                     );
                 }

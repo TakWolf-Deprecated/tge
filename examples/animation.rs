@@ -61,7 +61,7 @@ impl Game for App {
                     &self.texture,
                     SpriteDrawParams::default()
                         .region(region),
-                    TransformParams::default()
+                    Transform::default()
                         .position((i as f32 * self.frame_size.width * 2.0, j as f32 * self.frame_size.height * 2.0))
                         .scale((2.0, 2.0)),
                 );

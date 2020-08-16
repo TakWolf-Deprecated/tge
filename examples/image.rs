@@ -28,7 +28,7 @@ impl Game for App {
         engine.graphics().draw_sprite(
             &self.ferris,
             None,
-            TransformParams::default()
+            Transform::default()
                 .scale((0.5, 0.5)),
         );
         engine.graphics().draw_sprite(
@@ -40,7 +40,7 @@ impl Game for App {
                     Color::WHITE,
                     Color::WHITE,
                 ]),
-            TransformParams::default()
+            Transform::default()
                 .position((0.0, 700.0))
                 .scale((0.5, -0.5)),
         );

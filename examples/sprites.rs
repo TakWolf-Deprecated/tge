@@ -113,7 +113,7 @@ impl Game for App {
                 &self.zazaka,
                 SpriteDrawParams::default()
                     .color(sprite.color),
-                TransformParams::default()
+                Transform::default()
                     .origin(origin)
                     .position(sprite.position)
                     .rotation(sprite.angle)

@@ -51,7 +51,7 @@ impl Game for App {
                         color: Color::BLUE,
                     },
                 ]),
-            TransformParams::default()
+            Transform::default()
                 .origin((200.0, 0.0))
                 .position((400.0, 300.0))
                 .rotation(self.rotation)

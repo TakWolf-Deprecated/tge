@@ -47,7 +47,7 @@ impl Game for App {
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 30.0, 200.0))
                 .color((0.2, 0.2, 1.0, 1.0)),
-            TransformParams::default()
+            Transform::default()
                 .origin((15.0, 190.0))
                 .position((300.0, 300.0))
                 .rotation(self.hour_angle),
@@ -57,7 +57,7 @@ impl Game for App {
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 20.0, 240.0))
                 .color((0.2, 1.0, 0.2, 1.0)),
-            TransformParams::default()
+            Transform::default()
                 .origin((10.0, 220.0))
                 .position((300.0, 300.0))
                 .rotation(self.minute_angle),
@@ -67,7 +67,7 @@ impl Game for App {
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 10.0, 270.0))
                 .color((1.0, 0.2, 0.2, 1.0)),
-            TransformParams::default()
+            Transform::default()
                 .origin((5.0, 240.0))
                 .position((300.0, 300.0))
                 .rotation(self.second_angle),
@@ -77,7 +77,7 @@ impl Game for App {
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 6.0, 6.0))
                 .color(Color::BLACK),
-            TransformParams::default()
+            Transform::default()
                 .origin((3.0, 3.0))
                 .position((300.0, 300.0)),
         );
