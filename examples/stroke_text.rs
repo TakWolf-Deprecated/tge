@@ -7,7 +7,7 @@ struct App {
     text: String,
     text_size: f32,
     position: Position,
-    rotation: Angle,
+    angle: Angle,
     color: Color,
     stroke_color: Color,
 }
@@ -18,7 +18,7 @@ impl App {
         let text = "Hello, world!".to_owned();
         let text_size = 60.0;
         let position = Position::new(400.0, 300.0);
-        let rotation = Angle::zero();
+        let angle = Angle::zero();
         let color = Color::RED;
         let stroke_color = Color::WHITE;
         Ok(Self {
@@ -26,7 +26,7 @@ impl App {
             text,
             text_size,
             position,
-            rotation,
+            angle,
             color,
             stroke_color,
         })
@@ -38,7 +38,7 @@ impl Game for App {
         let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
 
-        self.rotation += Angle::radians(engine.timer().delta_time().as_secs_f32() / 2.0);
+        self.angle += Angle::radians(engine.timer().delta_time().as_secs_f32() / 2.0);
 
         Ok(())
     }
@@ -56,7 +56,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x - 1.0, self.position.y))
-                .rotation(self.rotation),
+                .rotation(self.angle),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -68,7 +68,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x - 1.0, self.position.y - 1.0))
-                .rotation(self.rotation),
+                .rotation(self.angle),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -80,7 +80,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x, self.position.y - 1.0))
-                .rotation(self.rotation),
+                .rotation(self.angle),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -92,7 +92,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x + 1.0, self.position.y - 1.0))
-                .rotation(self.rotation),
+                .rotation(self.angle),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -104,7 +104,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x + 1.0, self.position.y))
-                .rotation(self.rotation),
+                .rotation(self.angle),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -116,7 +116,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x + 1.0, self.position.y + 1.0))
-                .rotation(self.rotation),
+                .rotation(self.angle),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -128,7 +128,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x, self.position.y + 1.0))
-                .rotation(self.rotation),
+                .rotation(self.angle),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -140,7 +140,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x - 1.0, self.position.y + 1.0))
-                .rotation(self.rotation),
+                .rotation(self.angle),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -152,7 +152,7 @@ impl Game for App {
                 .color(self.color),
             Transform::default()
                 .position(self.position)
-                .rotation(self.rotation),
+                .rotation(self.angle),
         );
 
         Ok(())

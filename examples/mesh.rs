@@ -4,7 +4,7 @@ const TITLE: &str = "Mesh";
 
 struct App {
     texture: Texture,
-    rotation: Angle,
+    angle: Angle,
 }
 
 impl App {
@@ -12,7 +12,7 @@ impl App {
         let texture = Texture::load(engine, "assets/sky.png")?;
         Ok(Self {
             texture,
-            rotation: Angle::zero(),
+            angle: Angle::zero(),
         })
     }
 }
@@ -22,7 +22,7 @@ impl Game for App {
         let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
 
-        self.rotation += Angle::radians(engine.timer().delta_time().as_secs_f32() / 2.0);
+        self.angle += Angle::radians(engine.timer().delta_time().as_secs_f32() / 2.0);
 
         Ok(())
     }
@@ -54,7 +54,7 @@ impl Game for App {
             Transform::default()
                 .origin((200.0, 0.0))
                 .position((400.0, 300.0))
-                .rotation(self.rotation)
+                .rotation(self.angle)
                 .scale((1.2, 0.5)),
         );
 
