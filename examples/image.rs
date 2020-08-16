@@ -27,7 +27,7 @@ impl Game for App {
 
         engine.graphics().draw_sprite(
             &self.ferris,
-            SpriteDrawParams::default(),
+            None,
             TransformParams::default()
                 .scale((0.5, 0.5)),
         );

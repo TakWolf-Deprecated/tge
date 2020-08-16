@@ -39,8 +39,8 @@ impl Game for App {
 
         engine.graphics().draw_sprite(
             &self.clock_disk,
-            SpriteDrawParams::default(),
-            TransformParams::default(),
+            None,
+            None,
         );
         engine.graphics().draw_sprite(
             TextureHolder::None,

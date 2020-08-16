@@ -325,10 +325,10 @@ impl Graphics {
         self.elements.extend(elements);
     }
 
-    pub fn draw_mesh<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, draw_params: impl Into<MeshDrawParams>, transform_params: impl Into<TransformParams>) {
+    pub fn draw_mesh<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, draw_params: impl Into<Option<MeshDrawParams>>, transform_params: impl Into<Option<TransformParams>>) {
         let texture = texture.into();
-        let draw_params = draw_params.into();
-        let transform_params = transform_params.into();
+        let draw_params = draw_params.into().unwrap_or_default();
+        let transform_params = transform_params.into().unwrap_or_default();
 
         self.switch_draw_command(DrawCommand {
             texture: texture.clone_texture().unwrap_or_else(|| self.default_texture.clone()),
@@ -350,10 +350,10 @@ impl Graphics {
         self.append_vertices_and_elements(vertices, elements);
     }
 
-    pub fn draw_sprite<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, draw_params: impl Into<SpriteDrawParams>, transform_params: impl Into<TransformParams>) {
+    pub fn draw_sprite<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, draw_params: impl Into<Option<SpriteDrawParams>>, transform_params: impl Into<Option<TransformParams>>) {
         let texture = texture.into();
-        let draw_params = draw_params.into();
-        let transform_params = transform_params.into();
+        let draw_params = draw_params.into().unwrap_or_default();
+        let transform_params = transform_params.into().unwrap_or_default();
 
         self.switch_draw_command(DrawCommand {
             texture: texture.clone_texture().unwrap_or_else(|| self.default_texture.clone()),
@@ -408,9 +408,9 @@ impl Graphics {
         self.append_vertices_and_elements(vertices, Some(elements));
     }
 
-    pub fn draw_text(&mut self, font: &Font, text: &str, draw_params: impl Into<TextDrawParams>, transform_params: impl Into<TransformParams>) {
-        let draw_params = draw_params.into();
-        let transform_params = transform_params.into();
+    pub fn draw_text(&mut self, font: &Font, text: &str, draw_params: impl Into<Option<TextDrawParams>>, transform_params: impl Into<Option<TransformParams>>) {
+        let draw_params = draw_params.into().unwrap_or_default();
+        let transform_params = transform_params.into().unwrap_or_default();
 
         self.switch_draw_command(DrawCommand {
             texture: font.clone_cache_texture(),

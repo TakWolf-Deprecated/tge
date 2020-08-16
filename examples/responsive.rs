@@ -69,7 +69,7 @@ impl Game for App {
 
         engine.graphics().draw_sprite(
             &self.canvas,
-            SpriteDrawParams::default(),
+            None,
             TransformParams::default()
                 .position(position)
                 .scale((scale, scale)),

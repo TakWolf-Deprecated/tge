@@ -105,7 +105,7 @@ impl Game for App {
                 .horizontal_gravity(self.horizontal_gravity)
                 .vertical_gravity(self.vertical_gravity)
                 .color(Color::BLACK),
-            TransformParams::default(),
+            None,
         );
 
         Ok(())

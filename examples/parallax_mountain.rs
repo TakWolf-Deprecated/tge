@@ -46,8 +46,8 @@ impl App {
 
         engine.graphics().draw_sprite(
             &self.background,
-            SpriteDrawParams::default(),
-            TransformParams::default(),
+            None,
+            None,
         );
         engine.graphics().draw_sprite(
             &self.mountain_far,
@@ -123,7 +123,7 @@ impl Game for App {
 
         engine.graphics().draw_sprite(
             &self.canvas,
-            SpriteDrawParams::default(),
+            None,
             TransformParams::default()
                 .position(position)
                 .scale((scale, scale)),

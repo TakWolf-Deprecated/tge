@@ -28,7 +28,7 @@ impl Game for App {
         if let Some(position) = engine.mouse().position() {
             engine.graphics().draw_sprite(
                 &self.cursor,
-                SpriteDrawParams::default(),
+                None,
                 TransformParams::default()
                     .position(position),
             );
