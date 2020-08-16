@@ -1,8 +1,8 @@
 use crate::error::GameResult;
-use crate::math::Delta;
+use crate::math::Vector;
 
 pub struct Touchpad {
-    scroll_delta: Delta,
+    scroll_delta: Vector,
     pressure: f32,
     click_stage: i64,
 }
@@ -10,13 +10,13 @@ pub struct Touchpad {
 impl Touchpad {
     pub(crate) fn new(_: TouchpadConfig) -> GameResult<Self> {
         Ok(Self {
-            scroll_delta: Delta::zero(),
+            scroll_delta: Vector::zero(),
             pressure: 0.0,
             click_stage: 0,
         })
     }
 
-    pub(crate) fn handle_scroll_event(&mut self, delta: Delta) {
+    pub(crate) fn handle_scroll_event(&mut self, delta: Vector) {
         self.scroll_delta += delta;
     }
 
@@ -26,10 +26,10 @@ impl Touchpad {
     }
 
     pub(crate) fn clear_states(&mut self) {
-        self.scroll_delta = Delta::zero();
+        self.scroll_delta = Vector::zero();
     }
 
-    pub fn scroll_delta(&self) -> Delta {
+    pub fn scroll_delta(&self) -> Vector {
         self.scroll_delta
     }
 

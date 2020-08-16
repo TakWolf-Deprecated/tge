@@ -9,7 +9,7 @@ mod transform;
 use number::Number;
 use float::Float;
 
-pub use vector::{Vector, Position, Delta};
+pub use vector::{Vector, Position};
 pub use size::Size;
 pub use region::{Region, Viewport};
 pub use angle::Angle;

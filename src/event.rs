@@ -1,4 +1,4 @@
-use crate::math::Delta;
+use crate::math::Vector;
 use crate::window::{LogicalPosition, LogicalSize};
 use crate::keyboard::{KeyCode, ModifiersState};
 use crate::mouse::MouseButton;
@@ -56,7 +56,7 @@ pub enum Event {
     MouseMove(LogicalPosition),
     MouseEnterWindow,
     MouseLeaveWindow,
-    MouseWheelScroll(Delta),
+    MouseWheelScroll(Vector),
     MouseInput {
         button: MouseButton,
         action: KeyAction,
@@ -67,7 +67,7 @@ pub enum Event {
         position: LogicalPosition,
     },
     TouchpadScroll {
-        delta: Delta,
+        delta: Vector,
         phase: TouchPhase,
     },
     TouchpadPress {

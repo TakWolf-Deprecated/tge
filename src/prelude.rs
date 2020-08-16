@@ -1,5 +1,5 @@
 pub use crate::error::{GameError, GameResult};
-pub use crate::math::{Vector, Position, Delta, Size, Region, Viewport, Angle, Transform};
+pub use crate::math::{Vector, Position, Size, Region, Viewport, Angle, Transform};
 pub use crate::engine::{Engine, EngineBuilder};
 pub use crate::event::{KeyAction, Event};
 pub use crate::filesystem::{Filesystem, FilesystemConfig};

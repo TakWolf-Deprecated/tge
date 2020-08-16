@@ -1,5 +1,5 @@
 use crate::error::{GameError, GameResult};
-use crate::math::Delta;
+use crate::math::Vector;
 use crate::event::{Event, KeyAction};
 use crate::filesystem::{Filesystem, FilesystemConfig};
 use crate::window::{Window, WindowConfig, LogicalPosition, LogicalSize};
@@ -163,12 +163,12 @@ impl Engine {
                         WindowEvent::MouseWheel { delta, phase, .. } => {
                             match delta {
                                 MouseScrollDelta::LineDelta(delta_x, delta_y) => {
-                                    let delta = Delta::new(delta_x, delta_y);
+                                    let delta = Vector::new(delta_x, delta_y);
                                     self.mouse.handle_wheel_scroll_event(delta);
                                     game.event(self, Event::MouseWheelScroll(delta))?;
                                 }
                                 MouseScrollDelta::PixelDelta(logical_position) => {
-                                    let delta = Delta::new(logical_position.x as f32, logical_position.y as f32);
+                                    let delta = Vector::new(logical_position.x as f32, logical_position.y as f32);
                                     self.touchpad.handle_scroll_event(delta);
                                     game.event(self, Event::TouchpadScroll { delta, phase: phase.into() })?;
                                 }

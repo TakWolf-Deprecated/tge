@@ -5,7 +5,7 @@ pub use cursor::CursorIcon;
 pub use button::MouseButton;
 
 use crate::error::{GameError, GameResult};
-use crate::math::Delta;
+use crate::math::Vector;
 use crate::event::{KeyState, KeyAction};
 use crate::window::LogicalPosition;
 use winit::window::Window;
@@ -19,7 +19,7 @@ pub struct Mouse {
     cursor_visible: bool,
     position: LogicalPosition,
     inside_window: bool,
-    wheel_scroll_delta: Delta,
+    wheel_scroll_delta: Vector,
     button_states: HashMap<MouseButton, KeyState>,
 }
 
@@ -34,7 +34,7 @@ impl Mouse {
             cursor_visible: mouse_config.cursor_visible,
             position: LogicalPosition::zero(),
             inside_window: false,
-            wheel_scroll_delta: Delta::zero(),
+            wheel_scroll_delta: Vector::zero(),
             button_states: HashMap::new(),
         })
     }
@@ -55,7 +55,7 @@ impl Mouse {
         self.inside_window = false;
     }
 
-    pub(crate) fn handle_wheel_scroll_event(&mut self, delta: Delta) {
+    pub(crate) fn handle_wheel_scroll_event(&mut self, delta: Vector) {
         self.wheel_scroll_delta += delta;
     }
 
@@ -64,7 +64,7 @@ impl Mouse {
     }
 
     pub(crate) fn clear_states(&mut self) {
-        self.wheel_scroll_delta = Delta::zero();
+        self.wheel_scroll_delta = Vector::zero();
         self.button_states.retain(|_, state| match state {
             KeyState::Down | KeyState::Hold => {
                 *state = KeyState::Hold;
@@ -116,7 +116,7 @@ impl Mouse {
         self.inside_window
     }
 
-    pub fn wheel_scroll_delta(&self) -> Delta {
+    pub fn wheel_scroll_delta(&self) -> Vector {
         self.wheel_scroll_delta
     }
 
