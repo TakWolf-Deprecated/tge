@@ -6,10 +6,8 @@ struct App {
     font: Font,
     text: String,
     text_size: f32,
-    origin: Position,
     position: Position,
     rotation: Angle,
-    scale: Vector,
     color: Color,
     stroke_color: Color,
 }
@@ -18,21 +16,17 @@ impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let font = Font::load(engine, "assets/Roboto/Roboto-Regular.ttf")?;
         let text = "Hello, world!".to_owned();
-        let text_size = 40.0;
-        let origin = Position::new(80.0, 30.0);
-        let position = Position::new(300.0, 300.0);
+        let text_size = 60.0;
+        let position = Position::new(400.0, 300.0);
         let rotation = Angle::zero();
-        let scale = Vector::new(2.0, 2.0);
         let color = Color::RED;
         let stroke_color = Color::WHITE;
         Ok(Self {
             font,
             text,
             text_size,
-            origin,
             position,
             rotation,
-            scale,
             color,
             stroke_color,
         })
@@ -57,108 +51,108 @@ impl Game for App {
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
+                .horizontal_gravity(TextHorizontalGravity::Center)
+                .vertical_gravity(TextVerticalGravity::Middle)
                 .color(self.stroke_color),
             Transform::default()
-                .origin(self.origin)
                 .position((self.position.x - 1.0, self.position.y))
-                .rotation(self.rotation)
-                .scale(self.scale),
+                .rotation(self.rotation),
         );
         engine.graphics().draw_text(
             &self.font,
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
+                .horizontal_gravity(TextHorizontalGravity::Center)
+                .vertical_gravity(TextVerticalGravity::Middle)
                 .color(self.stroke_color),
             Transform::default()
-                .origin(self.origin)
                 .position((self.position.x - 1.0, self.position.y - 1.0))
-                .rotation(self.rotation)
-                .scale(self.scale),
+                .rotation(self.rotation),
         );
         engine.graphics().draw_text(
             &self.font,
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
+                .horizontal_gravity(TextHorizontalGravity::Center)
+                .vertical_gravity(TextVerticalGravity::Middle)
                 .color(self.stroke_color),
             Transform::default()
-                .origin(self.origin)
                 .position((self.position.x, self.position.y - 1.0))
-                .rotation(self.rotation)
-                .scale(self.scale),
+                .rotation(self.rotation),
         );
         engine.graphics().draw_text(
             &self.font,
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
+                .horizontal_gravity(TextHorizontalGravity::Center)
+                .vertical_gravity(TextVerticalGravity::Middle)
                 .color(self.stroke_color),
             Transform::default()
-                .origin(self.origin)
                 .position((self.position.x + 1.0, self.position.y - 1.0))
-                .rotation(self.rotation)
-                .scale(self.scale),
+                .rotation(self.rotation),
         );
         engine.graphics().draw_text(
             &self.font,
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
+                .horizontal_gravity(TextHorizontalGravity::Center)
+                .vertical_gravity(TextVerticalGravity::Middle)
                 .color(self.stroke_color),
             Transform::default()
-                .origin(self.origin)
                 .position((self.position.x + 1.0, self.position.y))
-                .rotation(self.rotation)
-                .scale(self.scale),
+                .rotation(self.rotation),
         );
         engine.graphics().draw_text(
             &self.font,
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
+                .horizontal_gravity(TextHorizontalGravity::Center)
+                .vertical_gravity(TextVerticalGravity::Middle)
                 .color(self.stroke_color),
             Transform::default()
-                .origin(self.origin)
                 .position((self.position.x + 1.0, self.position.y + 1.0))
-                .rotation(self.rotation)
-                .scale(self.scale),
+                .rotation(self.rotation),
         );
         engine.graphics().draw_text(
             &self.font,
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
+                .horizontal_gravity(TextHorizontalGravity::Center)
+                .vertical_gravity(TextVerticalGravity::Middle)
                 .color(self.stroke_color),
             Transform::default()
-                .origin(self.origin)
                 .position((self.position.x, self.position.y + 1.0))
-                .rotation(self.rotation)
-                .scale(self.scale),
+                .rotation(self.rotation),
         );
         engine.graphics().draw_text(
             &self.font,
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
+                .horizontal_gravity(TextHorizontalGravity::Center)
+                .vertical_gravity(TextVerticalGravity::Middle)
                 .color(self.stroke_color),
             Transform::default()
-                .origin(self.origin)
                 .position((self.position.x - 1.0, self.position.y + 1.0))
-                .rotation(self.rotation)
-                .scale(self.scale),
+                .rotation(self.rotation),
         );
         engine.graphics().draw_text(
             &self.font,
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
+                .horizontal_gravity(TextHorizontalGravity::Center)
+                .vertical_gravity(TextVerticalGravity::Middle)
                 .color(self.color),
             Transform::default()
-                .origin(self.origin)
                 .position(self.position)
-                .rotation(self.rotation)
-                .scale(self.scale),
+                .rotation(self.rotation),
         );
 
         Ok(())
