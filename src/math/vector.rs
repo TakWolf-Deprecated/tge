@@ -8,7 +8,6 @@ pub struct Vector<N: Number = f32> {
 }
 
 pub type Position<N = f32> = Vector<N>;
-pub type Scale<N = f32> = Vector<N>;
 pub type Delta<N = f32> = Vector<N>;
 
 impl<N: Number> Vector<N> {

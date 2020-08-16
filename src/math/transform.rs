@@ -1,4 +1,4 @@
-use super::{Position, Scale, Angle};
+use super::{Vector, Position, Angle};
 use glam::{Vec3, Quat, Mat4};
 
 #[derive(Debug, Default, Clone, PartialEq)]
@@ -6,7 +6,7 @@ pub struct Transform {
     pub origin: Option<Position>,
     pub position: Option<Position>,
     pub rotation: Option<Angle>,
-    pub scale: Option<Scale>,
+    pub scale: Option<Vector>,
 }
 
 impl Transform {
@@ -25,7 +25,7 @@ impl Transform {
         self
     }
 
-    pub fn scale(mut self, scale: impl Into<Scale>) -> Self {
+    pub fn scale(mut self, scale: impl Into<Vector>) -> Self {
         self.scale = Some(scale.into());
         self
     }

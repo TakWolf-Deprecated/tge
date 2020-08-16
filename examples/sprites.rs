@@ -10,7 +10,7 @@ struct Sprite {
     speed: Vector,
     angle: Angle,
     angle_speed: Angle,
-    scale: Scale,
+    scale: Vector,
     color: Color,
 }
 
@@ -32,7 +32,7 @@ impl Sprite {
             speed: Vector::new(speed_x, speed_y),
             angle: Angle::radians(angle),
             angle_speed: Angle::radians(angle_speed),
-            scale: Scale::new(scale, scale),
+            scale: Vector::new(scale, scale),
             color: Color::new(red, green, blue, alpha),
         }
     }
