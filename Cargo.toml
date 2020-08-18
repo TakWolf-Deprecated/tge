@@ -23,7 +23,7 @@ gilrs = "0.7.4"
 
 [dev-dependencies]
 rand = "0.7.3"
-chrono = "0.4.13"
+chrono = "0.4.15"
 
 [profile.dev]
 opt-level = 3
