@@ -80,8 +80,8 @@ impl Game for App {
             SpriteDrawParams::default()
                 .color(self.color),
             TransformParams::default()
-                .position(self.position)
-                .origin((self.size.width / 2.0, self.size.height / 2.0)),
+                .origin((self.size.width / 2.0, self.size.height / 2.0))
+                .position(self.position),
         );
 
         Ok(())
