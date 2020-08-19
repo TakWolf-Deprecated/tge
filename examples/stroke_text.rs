@@ -51,8 +51,8 @@ impl Game for App {
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
-                .horizontal_gravity(TextHorizontalGravity::Center)
-                .vertical_gravity(TextVerticalGravity::Middle)
+                .horizontal_gravity(TextLayoutGravity::Center)
+                .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x - 1.0, self.position.y))
@@ -63,8 +63,8 @@ impl Game for App {
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
-                .horizontal_gravity(TextHorizontalGravity::Center)
-                .vertical_gravity(TextVerticalGravity::Middle)
+                .horizontal_gravity(TextLayoutGravity::Center)
+                .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x - 1.0, self.position.y - 1.0))
@@ -75,8 +75,8 @@ impl Game for App {
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
-                .horizontal_gravity(TextHorizontalGravity::Center)
-                .vertical_gravity(TextVerticalGravity::Middle)
+                .horizontal_gravity(TextLayoutGravity::Center)
+                .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x, self.position.y - 1.0))
@@ -87,8 +87,8 @@ impl Game for App {
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
-                .horizontal_gravity(TextHorizontalGravity::Center)
-                .vertical_gravity(TextVerticalGravity::Middle)
+                .horizontal_gravity(TextLayoutGravity::Center)
+                .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x + 1.0, self.position.y - 1.0))
@@ -99,8 +99,8 @@ impl Game for App {
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
-                .horizontal_gravity(TextHorizontalGravity::Center)
-                .vertical_gravity(TextVerticalGravity::Middle)
+                .horizontal_gravity(TextLayoutGravity::Center)
+                .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x + 1.0, self.position.y))
@@ -111,8 +111,8 @@ impl Game for App {
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
-                .horizontal_gravity(TextHorizontalGravity::Center)
-                .vertical_gravity(TextVerticalGravity::Middle)
+                .horizontal_gravity(TextLayoutGravity::Center)
+                .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x + 1.0, self.position.y + 1.0))
@@ -123,8 +123,8 @@ impl Game for App {
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
-                .horizontal_gravity(TextHorizontalGravity::Center)
-                .vertical_gravity(TextVerticalGravity::Middle)
+                .horizontal_gravity(TextLayoutGravity::Center)
+                .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x, self.position.y + 1.0))
@@ -135,8 +135,8 @@ impl Game for App {
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
-                .horizontal_gravity(TextHorizontalGravity::Center)
-                .vertical_gravity(TextVerticalGravity::Middle)
+                .horizontal_gravity(TextLayoutGravity::Center)
+                .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
                 .position((self.position.x - 1.0, self.position.y + 1.0))
@@ -147,8 +147,8 @@ impl Game for App {
             &self.text,
             TextDrawParams::default()
                 .text_size(self.text_size)
-                .horizontal_gravity(TextHorizontalGravity::Center)
-                .vertical_gravity(TextVerticalGravity::Middle)
+                .horizontal_gravity(TextLayoutGravity::Center)
+                .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.color),
             Transform::default()
                 .position(self.position)

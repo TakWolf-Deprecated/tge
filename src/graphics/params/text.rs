@@ -2,28 +2,15 @@ use super::Color;
 use crate::math::Position;
 
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
-pub enum TextHorizontalGravity {
+pub enum TextLayoutGravity {
     Start,
     Center,
     End,
 }
 
-impl Default for TextHorizontalGravity {
+impl Default for TextLayoutGravity {
     fn default() -> Self {
         Self::Start
-    }
-}
-
-#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
-pub enum TextVerticalGravity {
-    Top,
-    Middle,
-    Bottom,
-}
-
-impl Default for TextVerticalGravity {
-    fn default() -> Self {
-        Self::Top
     }
 }
 
@@ -35,8 +22,8 @@ pub struct TextDrawParams {
     pub line_spacing: Option<f32>,
     pub wrap_width: Option<f32>,
     pub wrap_height: Option<f32>,
-    pub horizontal_gravity: Option<TextHorizontalGravity>,
-    pub vertical_gravity: Option<TextVerticalGravity>,
+    pub horizontal_gravity: Option<TextLayoutGravity>,
+    pub vertical_gravity: Option<TextLayoutGravity>,
     pub origin: Option<Position>,
     pub color: Option<Color>,
 }
@@ -72,12 +59,12 @@ impl TextDrawParams {
         self
     }
 
-    pub fn horizontal_gravity(mut self, gravity: TextHorizontalGravity) -> Self {
+    pub fn horizontal_gravity(mut self, gravity: TextLayoutGravity) -> Self {
         self.horizontal_gravity = Some(gravity);
         self
     }
 
-    pub fn vertical_gravity(mut self, gravity: TextVerticalGravity) -> Self {
+    pub fn vertical_gravity(mut self, gravity: TextLayoutGravity) -> Self {
         self.vertical_gravity = Some(gravity);
         self
     }

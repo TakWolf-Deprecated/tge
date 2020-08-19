@@ -25,7 +25,7 @@ pub use texture::Texture;
 pub use canvas::Canvas;
 pub use font::Font;
 pub use texture_holder::TextureHolder;
-pub use params::{MeshDrawParams, SpriteDrawParams, TextHorizontalGravity, TextVerticalGravity, TextDrawParams};
+pub use params::{MeshDrawParams, SpriteDrawParams, TextLayoutGravity, TextDrawParams};
 
 use crate::error::{GameError, GameResult};
 use crate::math::{Position, Size, Region, Viewport, Transform};
@@ -425,8 +425,8 @@ impl Graphics {
         let line_spacing = params.line_spacing.unwrap_or(line_metrics.line_gap);
         let wrap_width = params.wrap_width.unwrap_or(0.0).max(0.0);
         let wrap_height = params.wrap_height.unwrap_or(0.0).max(0.0);
-        let horizontal_gravity = params.horizontal_gravity.unwrap_or(TextHorizontalGravity::default());
-        let vertical_gravity = params.vertical_gravity.unwrap_or(TextVerticalGravity::default());
+        let horizontal_gravity = params.horizontal_gravity.unwrap_or(TextLayoutGravity::default());
+        let vertical_gravity = params.vertical_gravity.unwrap_or(TextLayoutGravity::default());
 
         let graphics_scale_factor = {
             if font.is_fit_hidpi() && self.canvas.is_none() {
@@ -489,16 +489,16 @@ impl Graphics {
         };
 
         let offset_y = match vertical_gravity {
-            TextVerticalGravity::Top => 0.0,
-            TextVerticalGravity::Middle => (wrap_height - layout_height) / 2.0,
-            TextVerticalGravity::Bottom => wrap_height - layout_height,
+            TextLayoutGravity::Start => 0.0,
+            TextLayoutGravity::Center => (wrap_height - layout_height) / 2.0,
+            TextLayoutGravity::End => wrap_height - layout_height,
         } - origin.y;
 
         for (glyph_positions, layout_width) in line_layout_infos {
             let offset_x = match horizontal_gravity {
-                TextHorizontalGravity::Start => 0.0,
-                TextHorizontalGravity::Center => (wrap_width - layout_width) / 2.0,
-                TextHorizontalGravity::End => wrap_width - layout_width,
+                TextLayoutGravity::Start => 0.0,
+                TextLayoutGravity::Center => (wrap_width - layout_width) / 2.0,
+                TextLayoutGravity::End => wrap_width - layout_width,
             } - origin.x;
 
             for (character, glyph_position) in glyph_positions {

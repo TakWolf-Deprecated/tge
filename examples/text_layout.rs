@@ -6,8 +6,8 @@ struct App {
     font: Font,
     text: String,
     text_size: f32,
-    horizontal_gravity: TextHorizontalGravity,
-    vertical_gravity: TextVerticalGravity,
+    horizontal_gravity: TextLayoutGravity,
+    vertical_gravity: TextLayoutGravity,
     show_background: bool,
 }
 
@@ -18,8 +18,8 @@ impl App {
             font,
             text: "⇦, ⇨, ⇧ and ⇩ to change layout gravity\n'+' and '-' to change text size\n'Num0' to change background visibility\nInput something here...".to_owned(),
             text_size: 24.0,
-            horizontal_gravity: TextHorizontalGravity::default(),
-            vertical_gravity: TextVerticalGravity::default(),
+            horizontal_gravity: TextLayoutGravity::default(),
+            vertical_gravity: TextLayoutGravity::default(),
             show_background: false,
         })
     }
@@ -32,29 +32,29 @@ impl Game for App {
 
         if engine.keyboard().is_key_down(KeyCode::Left) {
             match self.horizontal_gravity {
-                TextHorizontalGravity::Center => self.horizontal_gravity = TextHorizontalGravity::Start,
-                TextHorizontalGravity::End => self.horizontal_gravity = TextHorizontalGravity::Center,
+                TextLayoutGravity::Center => self.horizontal_gravity = TextLayoutGravity::Start,
+                TextLayoutGravity::End => self.horizontal_gravity = TextLayoutGravity::Center,
                 _ => (),
             }
         }
         if engine.keyboard().is_key_down(KeyCode::Right) {
             match self.horizontal_gravity {
-                TextHorizontalGravity::Center => self.horizontal_gravity = TextHorizontalGravity::End,
-                TextHorizontalGravity::Start => self.horizontal_gravity = TextHorizontalGravity::Center,
+                TextLayoutGravity::Center => self.horizontal_gravity = TextLayoutGravity::End,
+                TextLayoutGravity::Start => self.horizontal_gravity = TextLayoutGravity::Center,
                 _ => (),
             }
         }
         if engine.keyboard().is_key_down(KeyCode::Up) {
             match self.vertical_gravity {
-                TextVerticalGravity::Middle => self.vertical_gravity = TextVerticalGravity::Top,
-                TextVerticalGravity::Bottom => self.vertical_gravity = TextVerticalGravity::Middle,
+                TextLayoutGravity::Center => self.vertical_gravity = TextLayoutGravity::Start,
+                TextLayoutGravity::End => self.vertical_gravity = TextLayoutGravity::Center,
                 _ => (),
             }
         }
         if engine.keyboard().is_key_down(KeyCode::Down) {
             match self.vertical_gravity {
-                TextVerticalGravity::Middle => self.vertical_gravity = TextVerticalGravity::Bottom,
-                TextVerticalGravity::Top => self.vertical_gravity = TextVerticalGravity::Middle,
+                TextLayoutGravity::Center => self.vertical_gravity = TextLayoutGravity::End,
+                TextLayoutGravity::Start => self.vertical_gravity = TextLayoutGravity::Center,
                 _ => (),
             }
         }
