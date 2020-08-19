@@ -28,6 +28,10 @@ impl Transform {
         Self(Mat4::from_scale(Vec3::new(vector.x, vector.y, 1.0)) * self.0)
     }
 
+    pub fn inverse(&self) -> Self {
+        Self(self.0.inverse())
+    }
+
     pub fn apply(&self, transform: impl Into<Transform>) -> Self {
         let transform = transform.into();
         Self(transform.0 * self.0)
