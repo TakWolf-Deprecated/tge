@@ -99,7 +99,6 @@ The following is working in progress:
 * blend
 * program uniform
 * screenshot
-* graphics transform matrix
 * virtual assets path
 * assets load async
 * audio
