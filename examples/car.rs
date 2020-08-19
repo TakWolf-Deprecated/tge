@@ -24,20 +24,6 @@ impl Car {
     }
 
     fn update(&mut self, engine: &mut Engine) {
-        if engine.keyboard().is_key_hold(KeyCode::Up) || engine.keyboard().is_key_hold(KeyCode::W) {
-            if self.speed < self.max_speed {
-                self.speed += self.speed_acceleration
-            } else if self.speed > self.max_speed {
-                self.speed = self.max_speed;
-            }
-        }
-        if engine.keyboard().is_key_hold(KeyCode::Down) || engine.keyboard().is_key_hold(KeyCode::S) {
-            if self.speed > -self.max_speed {
-                self.speed -= self.speed_acceleration
-            } else if self.speed < -self.max_speed {
-                self.speed = -self.max_speed;
-            }
-        }
         if self.speed > 0.0 {
             self.speed -= self.friction_acceleration;
             if self.speed < 0.0 {
@@ -47,6 +33,22 @@ impl Car {
             self.speed += self.friction_acceleration;
             if self.speed > 0.0 {
                 self.speed = 0.0;
+            }
+        }
+        if engine.keyboard().is_key_hold(KeyCode::Up) || engine.keyboard().is_key_hold(KeyCode::W) {
+            if self.speed < self.max_speed {
+                self.speed += self.speed_acceleration
+            }
+            if self.speed > self.max_speed {
+                self.speed = self.max_speed;
+            }
+        }
+        if engine.keyboard().is_key_hold(KeyCode::Down) || engine.keyboard().is_key_hold(KeyCode::S) {
+            if self.speed > -self.max_speed {
+                self.speed -= self.speed_acceleration
+            }
+            if self.speed < -self.max_speed {
+                self.speed = -self.max_speed;
             }
         }
         if self.speed != 0.0 {
