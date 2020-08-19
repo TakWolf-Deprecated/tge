@@ -112,9 +112,9 @@ impl Game for App {
             engine.graphics().draw_sprite(
                 &self.zazaka,
                 SpriteDrawParams::default()
+                    .origin(origin)
                     .color(sprite.color),
                 Transform::default()
-                    .origin(origin)
                     .position(sprite.position)
                     .rotation(sprite.angle)
                     .scale(sprite.scale),

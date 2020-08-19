@@ -335,14 +335,14 @@ impl Graphics {
             primitive: params.primitive.unwrap_or(PrimitiveType::Triangles),
         });
 
-        let origin = transform.origin.unwrap_or_else(|| Position::zero());
         let model_matrix = transform.matrix();
 
         let vertices = params.vertices.map(|mut vertices| {
             for vertex in &mut vertices {
-                let position = model_matrix * Vec4::new(-origin.x + vertex.position.x, -origin.y + vertex.position.y, 0.0, 1.0);
-                vertex.position.x = position.x();
-                vertex.position.y = position.y();
+                vertex.position = {
+                    let position = model_matrix * Vec4::new(vertex.position.x, vertex.position.y, 0.0, 1.0);
+                    Position::new(position.x(), position.y())
+                };
             }
             vertices
         }).unwrap_or_else(|| Vec::new());
@@ -365,7 +365,7 @@ impl Graphics {
             Size::new(texture_size.width as f32, texture_size.height as f32)
         };
         let region = params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
-        let origin = transform.origin.unwrap_or_else(|| Position::zero());
+        let origin = params.origin.unwrap_or_else(|| Position::zero());
         let model_matrix = transform.matrix();
 
         let x0y0 = model_matrix * Vec4::new(-origin.x, -origin.y, 0.0, 1.0);
@@ -436,7 +436,7 @@ impl Graphics {
             }
         };
 
-        let origin = transform.origin.unwrap_or_else(|| Position::zero());
+        let origin = params.origin.unwrap_or_else(|| Position::zero());
         let model_matrix = transform.matrix();
 
         let color = params.color.unwrap_or(Color::WHITE);

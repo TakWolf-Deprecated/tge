@@ -3,18 +3,12 @@ use glam::{Vec3, Quat, Mat4};
 
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct Transform {
-    pub origin: Option<Position>,
     pub position: Option<Position>,
     pub rotation: Option<Angle>,
     pub scale: Option<Vector>,
 }
 
 impl Transform {
-    pub fn origin(mut self, origin: impl Into<Position>) -> Self {
-        self.origin = Some(origin.into());
-        self
-    }
-
     pub fn position(mut self, position: impl Into<Position>) -> Self {
         self.position = Some(position.into());
         self

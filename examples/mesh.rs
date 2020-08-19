@@ -36,23 +36,22 @@ impl Game for App {
                 .primitive(PrimitiveType::Triangles)
                 .vertices(vec![
                     Vertex {
-                        position: Position::new(0.0, 0.0),
+                        position: Position::new(-100.0, 0.0),
                         uv: Vector::new(0.0, 0.0),
                         color: Color::WHITE,
                     },
                     Vertex {
-                        position: Position::new(0.0, 200.0),
+                        position: Position::new(-100.0, 200.0),
                         uv: Vector::new(0.0, 1.0),
                         color: Color::GREEN,
                     },
                     Vertex {
-                        position: Position::new(200.0, 0.0),
+                        position: Position::new(100.0, 0.0),
                         uv: Vector::new(1.0, 0.0),
                         color: Color::BLUE,
                     },
                 ]),
             Transform::default()
-                .origin((200.0, 0.0))
                 .position((400.0, 300.0))
                 .rotation(self.angle)
                 .scale((1.2, 0.5)),

@@ -1,4 +1,5 @@
 use super::Color;
+use crate::math::Position;
 
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
 pub enum TextHorizontalGravity {
@@ -36,6 +37,7 @@ pub struct TextDrawParams {
     pub wrap_height: Option<f32>,
     pub horizontal_gravity: Option<TextHorizontalGravity>,
     pub vertical_gravity: Option<TextVerticalGravity>,
+    pub origin: Option<Position>,
     pub color: Option<Color>,
 }
 
@@ -77,6 +79,11 @@ impl TextDrawParams {
 
     pub fn vertical_gravity(mut self, gravity: TextVerticalGravity) -> Self {
         self.vertical_gravity = Some(gravity);
+        self
+    }
+
+    pub fn origin(mut self, origin: impl Into<Position>) -> Self {
+        self.origin = Some(origin.into());
         self
     }
 

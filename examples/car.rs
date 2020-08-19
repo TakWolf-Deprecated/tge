@@ -82,9 +82,9 @@ impl Game for App {
         let car_size = self.car.size();
         engine.graphics().draw_sprite(
             &self.car,
-            None,
+            SpriteDrawParams::default()
+                .origin((car_size.width as f32 / 2.0, car_size.height as f32 / 2.0)),
             Transform::default()
-                .origin((car_size.width as f32 / 2.0, car_size.height as f32 / 2.0))
                 .position(self.position)
                 .rotation(self.angle)
                 .scale((0.16, 0.16)),
