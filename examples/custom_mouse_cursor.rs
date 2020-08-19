@@ -30,7 +30,7 @@ impl Game for App {
                 &self.cursor,
                 None,
                 Transform::default()
-                    .position(position),
+                    .translate(position),
             );
         }
 

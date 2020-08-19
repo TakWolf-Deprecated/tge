@@ -29,7 +29,7 @@ impl App {
             SpriteDrawParams::default()
                 .region((0.0, 0.0, sky_size.width as f32 * 2.0, sky_size.height as f32)),
             Transform::default()
-                .position((self.background_x, 0.0)),
+                .translate((self.background_x, 0.0)),
         );
     }
 }
@@ -71,8 +71,8 @@ impl Game for App {
             &self.canvas,
             None,
             Transform::default()
-                .position(position)
-                .scale((scale, scale)),
+                .scale((scale, scale))
+                .translate(position),
         );
 
         Ok(())

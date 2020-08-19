@@ -85,9 +85,9 @@ impl Game for App {
             SpriteDrawParams::default()
                 .origin((car_size.width as f32 / 2.0, car_size.height as f32 / 2.0)),
             Transform::default()
-                .position(self.position)
-                .rotation(self.angle)
-                .scale((0.16, 0.16)),
+                .scale((0.16, 0.16))
+                .rotate(self.angle)
+                .translate(self.position),
         );
 
         Ok(())

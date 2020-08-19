@@ -54,28 +54,28 @@ impl App {
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
-                .position((offset.x / 64.0, 0.0)),
+                .translate((offset.x / 64.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             &self.mountains,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
-                .position((offset.x / 32.0, 0.0)),
+                .translate((offset.x / 32.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             &self.trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
-                .position((offset.x / 2.0, 0.0)),
+                .translate((offset.x / 2.0, 0.0)),
         );
         engine.graphics().draw_sprite(
             &self.foreground_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
-                .position((offset.x, 0.0)),
+                .translate((offset.x, 0.0)),
         );
     }
 }
@@ -125,8 +125,8 @@ impl Game for App {
             &self.canvas,
             None,
             Transform::default()
-                .position(position)
-                .scale((scale, scale)),
+                .scale((scale, scale))
+                .translate(position),
         );
 
         Ok(())

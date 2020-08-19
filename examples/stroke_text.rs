@@ -55,8 +55,8 @@ impl Game for App {
                 .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
-                .position((self.position.x - 1.0, self.position.y))
-                .rotation(self.angle),
+                .rotate(self.angle)
+                .translate((self.position.x - 1.0, self.position.y)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -67,8 +67,8 @@ impl Game for App {
                 .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
-                .position((self.position.x - 1.0, self.position.y - 1.0))
-                .rotation(self.angle),
+                .rotate(self.angle)
+                .translate((self.position.x - 1.0, self.position.y - 1.0)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -79,8 +79,8 @@ impl Game for App {
                 .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
-                .position((self.position.x, self.position.y - 1.0))
-                .rotation(self.angle),
+                .rotate(self.angle)
+                .translate((self.position.x, self.position.y - 1.0)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -91,8 +91,8 @@ impl Game for App {
                 .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
-                .position((self.position.x + 1.0, self.position.y - 1.0))
-                .rotation(self.angle),
+                .rotate(self.angle)
+                .translate((self.position.x + 1.0, self.position.y - 1.0)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -103,8 +103,8 @@ impl Game for App {
                 .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
-                .position((self.position.x + 1.0, self.position.y))
-                .rotation(self.angle),
+                .rotate(self.angle)
+                .translate((self.position.x + 1.0, self.position.y)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -115,8 +115,8 @@ impl Game for App {
                 .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
-                .position((self.position.x + 1.0, self.position.y + 1.0))
-                .rotation(self.angle),
+                .rotate(self.angle)
+                .translate((self.position.x + 1.0, self.position.y + 1.0)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -127,8 +127,8 @@ impl Game for App {
                 .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
-                .position((self.position.x, self.position.y + 1.0))
-                .rotation(self.angle),
+                .rotate(self.angle)
+                .translate((self.position.x, self.position.y + 1.0)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -139,8 +139,8 @@ impl Game for App {
                 .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.stroke_color),
             Transform::default()
-                .position((self.position.x - 1.0, self.position.y + 1.0))
-                .rotation(self.angle),
+                .rotate(self.angle)
+                .translate((self.position.x - 1.0, self.position.y + 1.0)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -151,8 +151,8 @@ impl Game for App {
                 .vertical_gravity(TextLayoutGravity::Center)
                 .color(self.color),
             Transform::default()
-                .position(self.position)
-                .rotation(self.angle),
+                .rotate(self.angle)
+                .translate(self.position),
         );
 
         Ok(())

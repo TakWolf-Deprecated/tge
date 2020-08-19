@@ -81,7 +81,7 @@ impl Game for App {
                 .origin((self.size.width / 2.0, self.size.height / 2.0))
                 .color(self.color),
             Transform::default()
-                .position(self.position),
+                .translate(self.position),
         );
 
         Ok(())

@@ -62,8 +62,8 @@ impl Game for App {
                     SpriteDrawParams::default()
                         .region(region),
                     Transform::default()
-                        .position((i as f32 * self.frame_size.width * 2.0, j as f32 * self.frame_size.height * 2.0))
-                        .scale((2.0, 2.0)),
+                        .scale((2.0, 2.0))
+                        .translate((i as f32 * self.frame_size.width * 2.0, j as f32 * self.frame_size.height * 2.0)),
                 );
             }
         }

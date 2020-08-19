@@ -81,8 +81,8 @@ impl Game for App {
                 SpriteDrawParams::default()
                     .origin((16.0, 16.0)),
                 Transform::default()
-                    .position(cannon.position)
-                    .rotation(cannon.angle),
+                    .rotate(cannon.angle)
+                    .translate(cannon.position),
             );
         }
 

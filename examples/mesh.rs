@@ -52,9 +52,9 @@ impl Game for App {
                     },
                 ]),
             Transform::default()
-                .position((400.0, 300.0))
-                .rotation(self.angle)
-                .scale((1.2, 0.5)),
+                .scale((1.2, 0.5))
+                .rotate(self.angle)
+                .translate((400.0, 300.0)),
         );
 
         Ok(())

@@ -41,8 +41,8 @@ impl Game for App {
                     Color::WHITE,
                 ]),
             Transform::default()
-                .position((0.0, 700.0))
-                .scale((0.5, -0.5)),
+                .scale((0.5, -0.5))
+                .translate((0.0, 700.0)),
         );
 
         Ok(())

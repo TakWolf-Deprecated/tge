@@ -115,9 +115,9 @@ impl Game for App {
                     .origin(origin)
                     .color(sprite.color),
                 Transform::default()
-                    .position(sprite.position)
-                    .rotation(sprite.angle)
-                    .scale(sprite.scale),
+                    .scale(sprite.scale)
+                    .rotate(sprite.angle)
+                    .translate(sprite.position),
             );
         }
 

@@ -49,8 +49,8 @@ impl Game for App {
                 .origin((15.0, 190.0))
                 .color((0.2, 0.2, 1.0, 1.0)),
             Transform::default()
-                .position((300.0, 300.0))
-                .rotation(self.hour_angle),
+                .rotate(self.hour_angle)
+                .translate((300.0, 300.0)),
         );
         engine.graphics().draw_sprite(
             TextureHolder::None,
@@ -59,8 +59,8 @@ impl Game for App {
                 .origin((10.0, 220.0))
                 .color((0.2, 1.0, 0.2, 1.0)),
             Transform::default()
-                .position((300.0, 300.0))
-                .rotation(self.minute_angle),
+                .rotate(self.minute_angle)
+                .translate((300.0, 300.0)),
         );
         engine.graphics().draw_sprite(
             TextureHolder::None,
@@ -69,8 +69,8 @@ impl Game for App {
                 .origin((5.0, 240.0))
                 .color((1.0, 0.2, 0.2, 1.0)),
             Transform::default()
-                .position((300.0, 300.0))
-                .rotation(self.second_angle),
+                .rotate(self.second_angle)
+                .translate((300.0, 300.0)),
         );
         engine.graphics().draw_sprite(
             TextureHolder::None,
@@ -79,7 +79,7 @@ impl Game for App {
                 .origin((3.0, 3.0))
                 .color(Color::BLACK),
             Transform::default()
-                .position((300.0, 300.0)),
+                .translate((300.0, 300.0)),
         );
 
         Ok(())

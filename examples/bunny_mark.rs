@@ -98,7 +98,7 @@ impl Game for App {
                 &self.wabbit,
                 None,
                 Transform::default()
-                    .position(bunny.position),
+                    .translate(bunny.position),
             );
         }
 
