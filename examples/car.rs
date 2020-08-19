@@ -50,7 +50,7 @@ impl Car {
             }
         }
         if self.speed != 0.0 {
-            let angle_speed = Angle::degrees(self.speed / 2.0);
+            let angle_speed = Angle::degrees(self.speed / 4.0);
             if engine.keyboard().is_key_hold(KeyCode::Left) || engine.keyboard().is_key_hold(KeyCode::A) {
                 self.angle -= angle_speed;
             }
@@ -83,10 +83,20 @@ impl Car {
             self.speed,
             self.angle.degrees_value(),
         );
+        engine.graphics().draw_sprite(
+            TextureHolder::None,
+            SpriteDrawParams::default()
+                .region((0.0, 0.0, 200.0, 100.0))
+                .color(Color::new(0.0, 0.0, 0.0, 0.5)),
+            None,
+        );
         engine.graphics().draw_text(
             font,
             &text,
-            None,
+            TextDrawParams::default()
+                .wrap_width(180.0)
+                .wrap_height(80.0)
+                .vertical_gravity(TextLayoutGravity::Center),
             Transform::default()
                 .translate((10.0, 10.0)),
         );
@@ -97,19 +107,75 @@ struct App {
     font: Font,
     texture_car: Texture,
     car: Car,
+    rotate_camera: bool,
 }
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let font = Font::load(engine, "assets/Roboto/Roboto-Regular.ttf")?;
         let texture_car = Texture::load(engine, "assets/car.png")?;
-        let graphics_size = engine.graphics().size();
-        let car = Car::new(Position::new(graphics_size.width / 2.0, graphics_size.height / 2.0));
+        let car = Car::new(Position::new(5050.0, 5050.0));
         Ok(Self {
             font,
             texture_car,
             car,
+            rotate_camera: false,
         })
+    }
+
+    fn set_camera_look_at_car(&mut self, engine: &mut Engine) {
+        let graphics_size = engine.graphics().size();
+        let camera_transform = if self.rotate_camera {
+            Transform::default()
+                .translate((-self.car.position.x, -self.car.position.y))
+                .rotate(Angle::radians(-self.car.angle.radians_value()))
+                .translate((self.car.position.x, self.car.position.y))
+        } else {
+            Transform::default()
+        }.translate((-self.car.position.x + graphics_size.width / 2.0, -self.car.position.y + graphics_size.height / 2.0));
+        engine.graphics().set_transform(camera_transform);
+    }
+
+    fn draw_coordinate(&mut self, engine: &mut Engine) {
+        let graphics_size = engine.graphics().size();
+        let outer_limit = graphics_size.width.max(graphics_size.height);
+        for x in 0..100 as i32 {
+            for y in 0..100 as i32 {
+                let position = Position::new(x as f32 * 100.0, y as f32 * 100.0);
+                if (position.x + 50.0 - self.car.position.x).abs() <= outer_limit && (position.y + 50.0 - self.car.position.y).abs() <= outer_limit {
+                    engine.graphics().draw_sprite(
+                        TextureHolder::None,
+                        SpriteDrawParams::default()
+                            .region((0.0, 0.0, 100.0, 100.0))
+                            .color(if (x + y) % 2 == 0 {
+                                Color::from_u32(0xffb8b880)
+                            } else {
+                                Color::from_u32(0xa8e6ff80)
+                            }),
+                        Transform::default()
+                            .translate(position),
+                    );
+                }
+            }
+        }
+        for x in 0..100 as i32 {
+            for y in 0..100 as i32 {
+                let position = Position::new(x as f32 * 100.0, y as f32 * 100.0);
+                if (position.x + 50.0 - self.car.position.x).abs() <= outer_limit && (position.y + 50.0 - self.car.position.y).abs() <= outer_limit {
+                    engine.graphics().draw_text(
+                        &self.font,
+                        &format!("{}, {}", x, y),
+                        TextDrawParams::default()
+                            .wrap_width(100.0)
+                            .wrap_height(100.0)
+                            .horizontal_gravity(TextLayoutGravity::Center)
+                            .vertical_gravity(TextLayoutGravity::Center),
+                        Transform::default()
+                            .translate(position),
+                    );
+                }
+            }
+        }
     }
 }
 
@@ -118,6 +184,9 @@ impl Game for App {
         let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
 
+        if engine.keyboard().is_key_down(KeyCode::Space) {
+            self.rotate_camera = !self.rotate_camera;
+        }
         self.car.update(engine);
 
         Ok(())
@@ -126,8 +195,25 @@ impl Game for App {
     fn render(&mut self, engine: &mut Engine) -> GameResult {
         engine.graphics().clear((0.6, 0.6, 0.6, 1.0));
 
+        engine.graphics().push_transform();
+
+        self.set_camera_look_at_car(engine);
+        self.draw_coordinate(engine);
         self.car.draw(&self.texture_car, engine);
+
+        engine.graphics().pop_transform();
+
         self.car.draw_info(&self.font, engine);
+        let graphics_size = engine.graphics().size();
+        engine.graphics().draw_text(
+            &self.font,
+            "Space to switch camera mode",
+            TextDrawParams::default()
+                .horizontal_gravity(TextLayoutGravity::End)
+                .color(Color::BLUE),
+            Transform::default()
+                .translate((graphics_size.width - 10.0, 10.0)),
+        );
 
         Ok(())
     }
