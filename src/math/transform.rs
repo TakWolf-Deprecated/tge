@@ -1,33 +1,41 @@
-use super::{Vector, Position, Angle};
-use glam::{Vec3, Quat, Mat4};
+use super::{Vector, Angle};
+use glam::{Vec3, Mat4};
 
-#[derive(Debug, Default, Clone, PartialEq)]
-pub struct Transform {
-    pub position: Option<Position>,
-    pub rotation: Option<Angle>,
-    pub scale: Option<Vector>,
-}
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub struct Transform(pub(crate) Mat4);
 
 impl Transform {
-    pub fn position(mut self, position: impl Into<Position>) -> Self {
-        self.position = Some(position.into());
-        self
+    pub fn identity() -> Self {
+        Self(Mat4::identity())
     }
 
-    pub fn rotation(mut self, angle: Angle) -> Self {
-        self.rotation = Some(angle);
-        self
+    pub fn zero() -> Self {
+        Self(Mat4::zero())
     }
 
-    pub fn scale(mut self, scale: impl Into<Vector>) -> Self {
-        self.scale = Some(scale.into());
-        self
+    pub fn translate(&self, vector: impl Into<Vector>) -> Self {
+        let vector = vector.into();
+        Self(Mat4::from_translation(Vec3::new(vector.x, vector.y, 0.0)) * self.0)
     }
 
-    pub(crate) fn matrix(&self) -> Mat4 {
-        let position = self.position.map(|position| Vec3::new(position.x, position.y, 0.0)).unwrap_or_else(|| Vec3::zero());
-        let rotation = self.rotation.map(|angle| Quat::from_rotation_z(angle.radians_value())).unwrap_or_else(|| Quat::from_rotation_z(0.0));
-        let scale = self.scale.map(|scale| Vec3::new(scale.x, scale.y, 1.0)).unwrap_or_else(|| Vec3::one());
-        Mat4::from_scale_rotation_translation(scale, rotation, position)
+    pub fn rotate(&self, angle: impl Into<Angle>) -> Self {
+        let angle = angle.into();
+        Self(Mat4::from_rotation_z(angle.radians_value()) * self.0)
+    }
+
+    pub fn scale(&self, vector: impl Into<Vector>) -> Self {
+        let vector = vector.into();
+        Self(Mat4::from_scale(Vec3::new(vector.x, vector.y, 1.0)) * self.0)
+    }
+
+    pub fn apply(&self, transform: impl Into<Transform>) -> Self {
+        let transform = transform.into();
+        Self(transform.0 * self.0)
+    }
+}
+
+impl Default for Transform {
+    fn default() -> Self {
+        Self::identity()
     }
 }
