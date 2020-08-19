@@ -55,6 +55,8 @@ pub struct Graphics {
     size: Size,
     viewport: Viewport,
     projection_matrix: Mat4,
+    transform_matrix: Mat4,
+    transform_stack: Vec<Mat4>,
     default_program: Rc<opengl::Program>,
     program: Rc<opengl::Program>,
     default_filter: Filter,
@@ -82,6 +84,8 @@ impl Graphics {
             gl.viewport(0, 0, physical_size.width as i32, physical_size.height as i32);
         }
         let projection_matrix = Mat4::orthographic_rh_gl(0.0, logical_size.width, logical_size.height, 0.0, -1.0, 1.0);
+        let transform_matrix = Mat4::identity();
+        let transform_stack = Vec::new();
 
         let default_program = Program::default(gl.clone())?;
         let program = default_program.clone();
@@ -117,6 +121,8 @@ impl Graphics {
             size,
             viewport,
             projection_matrix,
+            transform_matrix,
+            transform_stack,
             default_program,
             program,
             default_filter: graphics_config.default_filter,
@@ -228,6 +234,24 @@ impl Graphics {
         }
     }
 
+    pub fn set_transform(&mut self, transform: impl Into<Transform>) {
+        self.transform_matrix = transform.into().0;
+    }
+
+    pub fn apply_transform(&mut self, transform: impl Into<Transform>) {
+        self.transform_matrix = transform.into().0 * self.transform_matrix;
+    }
+
+    pub fn push_transform(&mut self) {
+        self.transform_stack.push(self.transform_matrix);
+    }
+
+    pub fn pop_transform(&mut self) {
+        if let Some(matrix) = self.transform_stack.pop() {
+            self.transform_matrix = matrix;
+        }
+    }
+
     pub fn use_program(&mut self, program: Option<&Program>) {
         let program = program.map(|program| program.program().clone())
             .unwrap_or_else(|| self.default_program.clone());
@@ -335,10 +359,12 @@ impl Graphics {
             primitive: params.primitive.unwrap_or(PrimitiveType::Triangles),
         });
 
+        let matrix = self.transform_matrix * transform.0;
+
         let vertices = params.vertices.map(|mut vertices| {
             for vertex in &mut vertices {
                 vertex.position = {
-                    let position = transform.0 * Vec4::new(vertex.position.x, vertex.position.y, 0.0, 1.0);
+                    let position = matrix * Vec4::new(vertex.position.x, vertex.position.y, 0.0, 1.0);
                     Position::new(position.x(), position.y())
                 };
             }
@@ -364,19 +390,17 @@ impl Graphics {
         };
         let region = params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));
         let origin = params.origin.unwrap_or_else(|| Position::zero());
-
-        let x0y0 = transform.0 * Vec4::new(-origin.x, -origin.y, 0.0, 1.0);
-        let x1y0 = transform.0 * Vec4::new(-origin.x + region.width, -origin.y, 0.0, 1.0);
-        let x0y1 = transform.0 * Vec4::new(-origin.x, -origin.y + region.height, 0.0, 1.0);
-        let x1y1 = transform.0 * Vec4::new(-origin.x + region.width, -origin.y + region.height, 0.0, 1.0);
-
+        let matrix = self.transform_matrix * transform.0;
+        let x0y0 = matrix * Vec4::new(-origin.x, -origin.y, 0.0, 1.0);
+        let x1y0 = matrix * Vec4::new(-origin.x + region.width, -origin.y, 0.0, 1.0);
+        let x0y1 = matrix * Vec4::new(-origin.x, -origin.y + region.height, 0.0, 1.0);
+        let x1y1 = matrix * Vec4::new(-origin.x + region.width, -origin.y + region.height, 0.0, 1.0);
         let uv = Region::new(
             region.x / texture_size.width,
             region.y / texture_size.height,
             region.width / texture_size.width,
             region.height / texture_size.height,
         );
-
         let colors = params.colors.unwrap_or_else(|| [Color::WHITE, Color::WHITE, Color::WHITE, Color::WHITE]);
 
         let vertices = vec![
@@ -424,8 +448,8 @@ impl Graphics {
         let horizontal_gravity = params.horizontal_gravity.unwrap_or(TextLayoutGravity::default());
         let vertical_gravity = params.vertical_gravity.unwrap_or(TextLayoutGravity::default());
         let origin = params.origin.unwrap_or_else(|| Position::zero());
+        let matrix = self.transform_matrix * transform.0;
         let color = params.color.unwrap_or(Color::WHITE);
-
         let graphics_scale_factor = {
             if font.is_fit_hidpi() && self.canvas.is_none() {
                 self.window().scale_factor() as f32
@@ -486,14 +510,12 @@ impl Graphics {
             TextLayoutGravity::Center => (wrap_height - layout_height) / 2.0,
             TextLayoutGravity::End => wrap_height - layout_height,
         } - origin.y;
-
         for (glyph_positions, layout_width) in line_layout_infos {
             let offset_x = match horizontal_gravity {
                 TextLayoutGravity::Start => 0.0,
                 TextLayoutGravity::Center => (wrap_width - layout_width) / 2.0,
                 TextLayoutGravity::End => wrap_width - layout_width,
             } - origin.x;
-
             for (character, glyph_position) in glyph_positions {
                 loop {
                     match font.cache_glyph(character, text_size, graphics_scale_factor) {
@@ -507,11 +529,10 @@ impl Graphics {
                                     glyph_position.x + draw_info.bounds.min_x(),
                                     glyph_position.y + line_metrics.ascent + draw_info.bounds.min_y() + (line_height - line_metrics.height) / 2.0,
                                 );
-
-                                let x0y0 = transform.0 * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y, 0.0, 1.0);
-                                let x1y0 = transform.0 * Vec4::new(offset_x + glyph_position.x + draw_info.bounds.width, offset_y + glyph_position.y, 0.0, 1.0);
-                                let x0y1 = transform.0 * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y + draw_info.bounds.height, 0.0, 1.0);
-                                let x1y1 = transform.0 * Vec4::new(offset_x + glyph_position.x + draw_info.bounds.width, offset_y + glyph_position.y + draw_info.bounds.height, 0.0, 1.0);
+                                let x0y0 = matrix * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y, 0.0, 1.0);
+                                let x1y0 = matrix * Vec4::new(offset_x + glyph_position.x + draw_info.bounds.width, offset_y + glyph_position.y, 0.0, 1.0);
+                                let x0y1 = matrix * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y + draw_info.bounds.height, 0.0, 1.0);
+                                let x1y1 = matrix * Vec4::new(offset_x + glyph_position.x + draw_info.bounds.width, offset_y + glyph_position.y + draw_info.bounds.height, 0.0, 1.0);
 
                                 let vertices = vec![
                                     Vertex {
