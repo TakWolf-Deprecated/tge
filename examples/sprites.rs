@@ -108,7 +108,7 @@ impl Game for App {
             Position::new(size.width as f32 / 2.0, size.height as f32 / 2.0)
         };
 
-        for sprite in self.sprites.iter() {
+        for sprite in &self.sprites {
             engine.graphics().draw_sprite(
                 &self.zazaka,
                 SpriteDrawParams::default()

@@ -75,7 +75,7 @@ impl Game for App {
     fn render(&mut self, engine: &mut Engine) -> GameResult {
         engine.graphics().clear((0.8, 0.8, 0.8, 1.0));
 
-        for cannon in self.cannons.iter() {
+        for cannon in &self.cannons {
             engine.graphics().draw_sprite(
                 &self.battery,
                 SpriteDrawParams::default()
