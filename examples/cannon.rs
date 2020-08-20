@@ -3,7 +3,7 @@ use std::time::Instant;
 
 const TITLE: &str = "Cannon";
 const BULLET_SPEED: f32 = 4.0;
-const BULLET_CD_SECS: f32 = 0.08;
+const BULLET_CD_SECS: f32 = 0.06;
 
 struct Cannon {
     position: Position,
