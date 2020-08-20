@@ -1,6 +1,6 @@
 use tge::prelude::*;
 
-const TITLE: &str = "Car";
+const TITLE: &str = "Camera";
 
 struct Car {
     position: Position,
