@@ -88,7 +88,7 @@ impl Car {
         engine.graphics().draw_sprite(
             TextureHolder::None,
             SpriteDrawParams::default()
-                .region((0.0, 0.0, 200.0, 100.0))
+                .region((0.0, 0.0, 200.0, 62.0))
                 .color(Color::new(0.0, 0.0, 0.0, 0.5)),
             None,
         );
@@ -97,7 +97,7 @@ impl Car {
             &text,
             TextDrawParams::default()
                 .wrap_width(180.0)
-                .wrap_height(80.0)
+                .wrap_height(42.0)
                 .vertical_gravity(TextLayoutGravity::Center),
             Transform::default()
                 .translate((10.0, 10.0)),
@@ -109,7 +109,6 @@ struct App {
     font: Font,
     texture_car: Texture,
     car: Car,
-    rotate_camera: bool,
 }
 
 impl App {
@@ -121,20 +120,19 @@ impl App {
             font,
             texture_car,
             car,
-            rotate_camera: false,
         })
     }
 
-    fn set_camera_look_at_car(&mut self, engine: &mut Engine) {
-        let graphics_size = engine.graphics().size();
-        let camera_transform = if self.rotate_camera {
+    fn set_camera_look_at_car(&mut self, engine: &mut Engine, rotate_camera: bool) {
+        let camera_size = engine.graphics().viewport().size();
+        let camera_transform = if rotate_camera {
             Transform::default()
                 .translate((-self.car.position.x, -self.car.position.y))
                 .rotate(Angle::radians(-self.car.angle.radians_value()))
                 .translate((self.car.position.x, self.car.position.y))
         } else {
             Transform::default()
-        }.translate((-self.car.position.x + graphics_size.width / 2.0, -self.car.position.y + graphics_size.height / 2.0));
+        }.translate((-self.car.position.x + camera_size.width / 2.0, -self.car.position.y + camera_size.height / 2.0));
         engine.graphics().set_transform(camera_transform);
     }
 
@@ -186,9 +184,6 @@ impl Game for App {
         let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
 
-        if engine.keyboard().is_key_down(KeyCode::Space) {
-            self.rotate_camera = !self.rotate_camera;
-        }
         self.car.update(engine);
 
         Ok(())
@@ -197,25 +192,32 @@ impl Game for App {
     fn render(&mut self, engine: &mut Engine) -> GameResult {
         engine.graphics().clear((0.6, 0.6, 0.6, 1.0));
 
+        let graphics_size = engine.graphics().size();
+
         engine.graphics().push_transform();
 
-        self.set_camera_look_at_car(engine);
+        engine.graphics().set_viewport(Some((0.0, 0.0, graphics_size.width / 2.0, graphics_size.height)));
+        self.set_camera_look_at_car(engine, false);
+        self.draw_coordinate(engine);
+        self.car.draw(&self.texture_car, engine);
+
+        engine.graphics().set_viewport(Some((graphics_size.width / 2.0, 0.0, graphics_size.width / 2.0, graphics_size.height)));
+        self.set_camera_look_at_car(engine, true);
         self.draw_coordinate(engine);
         self.car.draw(&self.texture_car, engine);
 
         engine.graphics().pop_transform();
 
-        self.car.draw_info(&self.font, engine);
-        let graphics_size = engine.graphics().size();
-        engine.graphics().draw_text(
-            &self.font,
-            "Space to switch camera mode",
-            TextDrawParams::default()
-                .horizontal_gravity(TextLayoutGravity::End)
+        engine.graphics().set_viewport(Viewport::none());
+        engine.graphics().draw_sprite(
+            TextureHolder::None,
+            SpriteDrawParams::default()
+                .region((0.0, 0.0, 2.0, graphics_size.height))
                 .color(Color::BLUE),
             Transform::default()
-                .translate((graphics_size.width - 10.0, 10.0)),
+                .translate((graphics_size.width / 2.0 - 0.1, 0.0)),
         );
+        self.car.draw_info(&self.font, engine);
 
         Ok(())
     }
@@ -225,7 +227,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((1280.0, 720.0)))
+            .inner_size((1280.0, 640.0)))
         .build()?
         .run_with(App::new)
 }
