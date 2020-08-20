@@ -64,7 +64,7 @@ impl Car {
         self.position.y -= self.speed * self.angle.radians_value().cos();
     }
 
-    fn draw(&self, texture: &Texture, engine: &mut Engine) {
+    fn draw(&self, engine: &mut Engine, texture: &Texture) {
         let size = texture.size();
         engine.graphics().draw_sprite(
             texture,
@@ -77,7 +77,7 @@ impl Car {
         );
     }
 
-    fn draw_info(&self, font: &Font, engine: &mut Engine) {
+    fn draw_info(&self, engine: &mut Engine, font: &Font) {
         let text = format!(
             "position: ({:.1}, {:.1})\nspeed: {:.1}\nangle: degrees({:+.1})",
             self.position.x,
@@ -199,12 +199,12 @@ impl Game for App {
         engine.graphics().set_viewport(Some((0.0, 0.0, graphics_size.width / 2.0, graphics_size.height)));
         self.set_camera_look_at_car(engine, false);
         self.draw_coordinate(engine);
-        self.car.draw(&self.texture_car, engine);
+        self.car.draw(engine, &self.texture_car);
 
         engine.graphics().set_viewport(Some((graphics_size.width / 2.0, 0.0, graphics_size.width / 2.0, graphics_size.height)));
         self.set_camera_look_at_car(engine, true);
         self.draw_coordinate(engine);
-        self.car.draw(&self.texture_car, engine);
+        self.car.draw(engine, &self.texture_car);
 
         engine.graphics().pop_transform();
 
@@ -217,7 +217,7 @@ impl Game for App {
             Transform::default()
                 .translate((graphics_size.width / 2.0 - 0.1, 0.0)),
         );
-        self.car.draw_info(&self.font, engine);
+        self.car.draw_info(engine, &self.font);
 
         Ok(())
     }
