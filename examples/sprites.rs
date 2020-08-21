@@ -69,12 +69,6 @@ impl Game for App {
         let delta_time_f32 = engine.timer().delta_time().as_secs_f32();
         let graphics_size = engine.graphics().size();
 
-        if engine.mouse().is_button_down(MouseButton::Left) {
-            for _ in 0..STEP_COUNT {
-                self.sprites.push(Sprite::new(&mut self.rand, &graphics_size));
-            }
-        }
-
         for sprite in &mut self.sprites {
             sprite.position.x += sprite.speed.x * delta_time_f32;
             sprite.position.y += sprite.speed.y * delta_time_f32;
@@ -95,6 +89,12 @@ impl Game for App {
                 sprite.speed.y *= -1.0;
             }
             sprite.angle += sprite.angle_speed * delta_time_f32;
+        }
+
+        if engine.mouse().is_button_down(MouseButton::Left) {
+            for _ in 0..STEP_COUNT {
+                self.sprites.push(Sprite::new(&mut self.rand, &graphics_size));
+            }
         }
 
         Ok(())

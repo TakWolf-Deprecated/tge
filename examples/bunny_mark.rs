@@ -51,12 +51,6 @@ impl Game for App {
         let title = format!("{}: {} - FPS: {}", TITLE, self.bunnies.len(), engine.timer().real_time_fps().round());
         engine.window().set_title(title);
 
-        if engine.mouse().is_button_down(MouseButton::Left) {
-            for _ in 0..STEP_COUNT {
-                self.bunnies.push(Bunny::new(&mut self.rand));
-            }
-        }
-
         let max_position = {
             let graphics_size = engine.graphics().size();
             let texture_size = self.wabbit.size();
@@ -84,6 +78,12 @@ impl Game for App {
                 if self.rand.gen::<bool>() {
                     bunny.speed.y -= self.rand.gen::<f32>() * 4.0 + 3.0;
                 }
+            }
+        }
+
+        if engine.mouse().is_button_down(MouseButton::Left) {
+            for _ in 0..STEP_COUNT {
+                self.bunnies.push(Bunny::new(&mut self.rand));
             }
         }
 
