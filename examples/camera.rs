@@ -124,7 +124,7 @@ impl App {
     }
 
     fn set_camera_look_at_car(&mut self, engine: &mut Engine, rotate_camera: bool) {
-        let camera_size = engine.graphics().viewport().size();
+        let viewport_size = engine.graphics().viewport().size();
         let camera_transform = if rotate_camera {
             Transform::default()
                 .translate((-self.car.position.x, -self.car.position.y))
@@ -132,17 +132,17 @@ impl App {
                 .translate((self.car.position.x, self.car.position.y))
         } else {
             Transform::default()
-        }.translate((-self.car.position.x + camera_size.width / 2.0, -self.car.position.y + camera_size.height / 2.0));
+        }.translate((-self.car.position.x + viewport_size.width / 2.0, -self.car.position.y + viewport_size.height / 2.0));
         engine.graphics().set_transform(camera_transform);
     }
 
     fn draw_coordinate(&mut self, engine: &mut Engine) {
-        let graphics_size = engine.graphics().size();
-        let outer_limit = graphics_size.width.max(graphics_size.height);
+        let viewport_size = engine.graphics().viewport().size();
+        let max_distance = viewport_size.width.max(viewport_size.height);
         for x in 0..100 as i32 {
             for y in 0..100 as i32 {
                 let position = Position::new(x as f32 * 100.0, y as f32 * 100.0);
-                if (position.x + 50.0 - self.car.position.x).abs() <= outer_limit && (position.y + 50.0 - self.car.position.y).abs() <= outer_limit {
+                if (position.x + 50.0 - self.car.position.x).abs() <= max_distance && (position.y + 50.0 - self.car.position.y).abs() <= max_distance {
                     engine.graphics().draw_sprite(
                         TextureHolder::None,
                         SpriteDrawParams::default()
@@ -161,7 +161,7 @@ impl App {
         for x in 0..100 as i32 {
             for y in 0..100 as i32 {
                 let position = Position::new(x as f32 * 100.0, y as f32 * 100.0);
-                if (position.x + 50.0 - self.car.position.x).abs() <= outer_limit && (position.y + 50.0 - self.car.position.y).abs() <= outer_limit {
+                if (position.x + 50.0 - self.car.position.x).abs() <= max_distance && (position.y + 50.0 - self.car.position.y).abs() <= max_distance {
                     engine.graphics().draw_text(
                         &self.font,
                         &format!("{}, {}", x, y),
