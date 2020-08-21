@@ -89,7 +89,7 @@ impl Car {
             TextureHolder::None,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 200.0, 62.0))
-                .color(Color::new(0.0, 0.0, 0.0, 0.5)),
+                .color(Color::new(0.0, 0.0, 0.0, 0.8)),
             None,
         );
         engine.graphics().draw_text(
@@ -148,9 +148,9 @@ impl App {
                         SpriteDrawParams::default()
                             .region((0.0, 0.0, 100.0, 100.0))
                             .color(if (x + y) % 2 == 0 {
-                                Color::from_u32(0xffb8b880)
+                                Color::new(0.0, 0.0, 0.0, 0.5)
                             } else {
-                                Color::from_u32(0xa8e6ff80)
+                                Color::new(1.0, 1.0, 1.0, 0.5)
                             }),
                         Transform::default()
                             .translate(position),
@@ -169,7 +169,8 @@ impl App {
                             .wrap_width(100.0)
                             .wrap_height(100.0)
                             .horizontal_gravity(TextLayoutGravity::Center)
-                            .vertical_gravity(TextLayoutGravity::Center),
+                            .vertical_gravity(TextLayoutGravity::Center)
+                            .color(Color::YELLOW),
                         Transform::default()
                             .translate(position),
                     );
