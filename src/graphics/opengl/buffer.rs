@@ -150,7 +150,7 @@ impl VertexBuffer {
     }
 }
 
-pub type ElementBuffer = Buffer<u32>;
+pub type ElementBuffer = Buffer<u16>;
 
 impl ElementBuffer {
     pub fn new_element(gl: Rc<Context>) -> Result<Self, String> {

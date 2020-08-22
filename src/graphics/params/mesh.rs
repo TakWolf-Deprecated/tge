@@ -4,7 +4,7 @@ use super::{PrimitiveType, Vertex};
 pub struct MeshDrawParams {
     pub primitive: Option<PrimitiveType>,
     pub vertices: Option<Vec<Vertex>>,
-    pub elements: Option<Vec<u32>>,
+    pub elements: Option<Vec<u16>>,
 }
 
 impl MeshDrawParams {
@@ -18,7 +18,7 @@ impl MeshDrawParams {
         self
     }
 
-    pub fn elements(mut self, elements: impl Into<Option<Vec<u32>>>) -> Self {
+    pub fn elements(mut self, elements: impl Into<Option<Vec<u16>>>) -> Self {
         self.elements = elements.into();
         self
     }

@@ -46,14 +46,14 @@ impl Renderer {
         self.element_size = size;
     }
 
-    pub fn init_with_elements(&mut self, usage: BufferUsage, elements: &[u32]) {
+    pub fn init_with_elements(&mut self, usage: BufferUsage, elements: &[u16]) {
         self.element_buffer.bind();
         self.element_buffer.init_with_data(usage, elements);
         self.element_buffer.unbind();
         self.element_size = elements.len();
     }
 
-    pub fn update_elements(&self, offset: usize, elements: &[u32]) {
+    pub fn update_elements(&self, offset: usize, elements: &[u16]) {
         self.element_buffer.bind();
         self.element_buffer.sub_data(offset, elements);
         self.element_buffer.unbind();
@@ -134,7 +134,7 @@ impl RendererBuilder {
         self
     }
 
-    pub fn init_with_elements(mut self, usage: BufferUsage, elements: &[u32]) -> Self {
+    pub fn init_with_elements(mut self, usage: BufferUsage, elements: &[u16]) -> Self {
         self.assert_element_buffer_not_init();
         let element_buffer = Buffer::new_element(self.gl.clone()).unwrap();
         element_buffer.bind();

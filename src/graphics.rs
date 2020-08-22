@@ -38,7 +38,7 @@ use std::rc::Rc;
 
 const SPRITE_VERTEX_COUNT: usize = 4;
 const SPRITE_ELEMENT_COUNT: usize = 6;
-const SPRITE_ELEMENTS: [u32; SPRITE_ELEMENT_COUNT] = [
+const SPRITE_ELEMENTS: [u16; SPRITE_ELEMENT_COUNT] = [
     0, 2, 1,
     1, 2, 3
 ];
@@ -66,7 +66,7 @@ pub struct Graphics {
     max_texture_size: u32,
     renderer: Renderer,
     vertices: Vec<Vertex>,
-    elements: Vec<u32>,
+    elements: Vec<u16>,
     draw_command: DrawCommand,
 }
 
@@ -332,15 +332,15 @@ impl Graphics {
         }
     }
 
-    fn append_vertices_and_elements(&mut self, vertices: Vec<Vertex>, elements: Option<Vec<u32>>) {
-        let mut elements = elements.unwrap_or_else(|| (0..vertices.len() as u32).collect());
+    fn append_vertices_and_elements(&mut self, vertices: Vec<Vertex>, elements: Option<Vec<u16>>) {
+        let mut elements = elements.unwrap_or_else(|| (0..vertices.len() as u16).collect());
         if self.renderer.vertex_size() < self.vertices.len() + vertices.len() || self.renderer.element_size() < self.elements.len() + elements.len() {
             self.flush();
         }
         assert!(self.renderer.vertex_size() >= self.vertices.len() + vertices.len(), "no enough renderer vertex size");
         assert!(self.renderer.element_size() >= self.elements.len() + elements.len(), "no enough renderer element size");
-        let append_vertex_count = vertices.len() as u32;
-        let element_offset = self.vertices.len() as u32;
+        let append_vertex_count = vertices.len() as u16;
+        let element_offset = self.vertices.len() as u16;
         for element in &mut elements {
             assert!(*element < append_vertex_count, "element must < append vertex count");
             *element += element_offset;

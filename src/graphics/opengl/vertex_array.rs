@@ -41,7 +41,7 @@ impl VertexArray {
 
     pub fn draw_elements(&self, primitive: PrimitiveType, count: usize, offset: usize) {
         unsafe {
-            self.gl.draw_elements(primitive.to_flag(), count as i32, glow::UNSIGNED_INT, offset as i32);
+            self.gl.draw_elements(primitive.to_flag(), count as i32, glow::UNSIGNED_SHORT, offset as i32);
         }
     }
 }
