@@ -11,10 +11,12 @@ use crate::filesystem::Filesystem;
 use winit::event_loop::EventLoop;
 use winit::window::WindowBuilder;
 use glutin::{ContextBuilder, ContextWrapper, PossiblyCurrent};
+use glow::Context;
 use std::rc::Rc;
 
 pub struct Window {
     context_wrapper: Rc<ContextWrapper<PossiblyCurrent, winit::window::Window>>,
+    gl: Rc<Context>,
     title: String,
     resizable: bool,
     maximized: bool,
@@ -68,8 +70,10 @@ impl Window {
             windowed_context.make_current()
                 .map_err(|(_, error)| GameError::InitError(Box::new(error)))?
         };
+        let gl = Context::from_loader_function(|symbol| context_wrapper.get_proc_address(symbol).cast());
         Ok(Self {
             context_wrapper: Rc::new(context_wrapper),
+            gl: Rc::new(gl),
             title: window_config.title,
             resizable: window_config.resizable,
             maximized: window_config.maximized,
@@ -83,6 +87,10 @@ impl Window {
 
     pub(crate) fn context_wrapper(&self) -> &Rc<ContextWrapper<PossiblyCurrent, winit::window::Window>> {
         &self.context_wrapper
+    }
+
+    pub(crate) fn gl(&self) -> &Rc<Context> {
+        &self.gl
     }
 
     pub(crate) fn window(&self) -> &winit::window::Window {

@@ -71,10 +71,7 @@ pub struct Graphics {
 }
 
 impl Graphics {
-    pub(crate) fn new(graphics_config: GraphicsConfig, context_wrapper: Rc<ContextWrapper<PossiblyCurrent, Window>>) -> GameResult<Self> {
-        let gl = Context::from_loader_function(|symbol| context_wrapper.get_proc_address(symbol).cast());
-        let gl = Rc::new(gl);
-
+    pub(crate) fn new(graphics_config: GraphicsConfig, context_wrapper: Rc<ContextWrapper<PossiblyCurrent, Window>>, gl: Rc<Context>) -> GameResult<Self> {
         let physical_size = context_wrapper.window().inner_size();
         let scale_factor = context_wrapper.window().scale_factor();
         let logical_size = physical_size.to_logical(scale_factor);
