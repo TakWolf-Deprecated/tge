@@ -115,7 +115,7 @@ impl Font {
         }
     }
 
-    pub(crate) fn clone_cache_texture(&self) -> Rc<opengl::Texture> {
+    pub(crate) fn cache_texture(&self) -> Rc<opengl::Texture> {
         self.cache.borrow().texture.texture().clone()
     }
 

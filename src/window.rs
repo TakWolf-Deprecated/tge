@@ -85,12 +85,12 @@ impl Window {
         })
     }
 
-    pub(crate) fn context_wrapper(&self) -> &Rc<ContextWrapper<PossiblyCurrent, winit::window::Window>> {
-        &self.context_wrapper
+    pub(crate) fn context_wrapper(&self) -> Rc<ContextWrapper<PossiblyCurrent, winit::window::Window>> {
+        self.context_wrapper.clone()
     }
 
-    pub(crate) fn gl(&self) -> &Rc<Context> {
-        &self.gl
+    pub(crate) fn gl(&self) -> Rc<Context> {
+        self.gl.clone()
     }
 
     pub(crate) fn window(&self) -> &winit::window::Window {

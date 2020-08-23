@@ -178,8 +178,8 @@ impl Graphics {
         self.context_wrapper.window()
     }
 
-    pub(crate) fn gl(&self) -> &Rc<Context> {
-        &self.gl
+    pub(crate) fn gl(&self) -> Rc<Context> {
+        self.gl.clone()
     }
 
     pub fn size(&self) -> Size {
@@ -352,7 +352,7 @@ impl Graphics {
         let transform = transform.into().unwrap_or_default();
 
         self.switch_draw_command(DrawCommand {
-            texture: texture.clone_texture().unwrap_or_else(|| self.default_texture.clone()),
+            texture: texture.texture().unwrap_or_else(|| self.default_texture.clone()),
             primitive: params.primitive.unwrap_or(PrimitiveType::Triangles),
         });
 
@@ -377,7 +377,7 @@ impl Graphics {
         let transform = transform.into().unwrap_or_default();
 
         self.switch_draw_command(DrawCommand {
-            texture: texture.clone_texture().unwrap_or_else(|| self.default_texture.clone()),
+            texture: texture.texture().unwrap_or_else(|| self.default_texture.clone()),
             primitive: PrimitiveType::Triangles,
         });
 
@@ -431,7 +431,7 @@ impl Graphics {
         let transform = transform.into().unwrap_or_default();
 
         self.switch_draw_command(DrawCommand {
-            texture: font.clone_cache_texture(),
+            texture: font.cache_texture(),
             primitive: PrimitiveType::Triangles,
         });
 

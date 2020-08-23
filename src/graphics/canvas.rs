@@ -12,7 +12,7 @@ pub struct Canvas {
 
 impl Canvas {
     pub fn new(engine: &mut Engine, size: impl Into<Size<u32>>) -> GameResult<Self> {
-        let framebuffer = Framebuffer::new(engine.graphics().gl().clone())
+        let framebuffer = Framebuffer::new(engine.graphics().gl())
             .map_err(|error| GameError::InitError(error.into()))?;
         let texture = Texture::new(engine, size, None)?;
         framebuffer.bind();

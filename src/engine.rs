@@ -410,10 +410,10 @@ impl EngineBuilder {
 
         let filesystem = Filesystem::new(filesystem_config)?;
         let window = Window::new(window_config, &event_loop, &filesystem)?;
-        let graphics = Graphics::new(graphics_config, window.context_wrapper().clone(), window.gl().clone())?;
+        let graphics = Graphics::new(graphics_config, window.context_wrapper(), window.gl())?;
         let timer = Timer::new(timer_config)?;
         let keyboard = Keyboard::new(keyboard_config)?;
-        let mouse = Mouse::new(mouse_config, window.context_wrapper().clone())?;
+        let mouse = Mouse::new(mouse_config, window.context_wrapper())?;
         let touch = Touch::new(touch_config)?;
         let touchpad = Touchpad::new(touchpad_config)?;
         let gamepad = Gamepad::new(gamepad_config)?;

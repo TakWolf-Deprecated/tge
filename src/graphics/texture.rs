@@ -23,7 +23,7 @@ impl Texture {
         let filter = engine.graphics().default_filter();
         let generate_mipmap = filter.mipmap.is_some();
         let wrap = engine.graphics().default_wrap();
-        let texture = opengl::Texture::new(engine.graphics().gl().clone())
+        let texture = opengl::Texture::new(engine.graphics().gl())
             .map_err(|error| GameError::InitError(error.into()))?;
         texture.bind();
         texture.init_image(size.width, size.height, pixels);
@@ -74,7 +74,7 @@ impl Texture {
         let filter = engine.graphics().default_filter();
         let generate_mipmap = filter.mipmap.is_some();
         let wrap = Wrap::uv(WrapMode::Repeat, WrapMode::Repeat);
-        let texture = opengl::Texture::new(engine.graphics().gl().clone())
+        let texture = opengl::Texture::new(engine.graphics().gl())
             .map_err(|error| GameError::InitError(error.into()))?;
         texture.bind();
         texture.init_image(size.width, size.height, None);

@@ -11,11 +11,11 @@ pub enum TextureHolder<'a> {
 }
 
 impl TextureHolder<'_> {
-    pub(crate) fn clone_texture(&self) -> Option<Rc<opengl::Texture>> {
+    pub(crate) fn texture(&self) -> Option<Rc<opengl::Texture>> {
         match self {
             Self::Texture(texture) => Some(texture.texture().clone()),
             Self::Canvas(canvas) => Some(canvas.texture().clone()),
-            Self::Font(font) => Some(font.clone_cache_texture()),
+            Self::Font(font) => Some(font.cache_texture()),
             Self::None => None,
         }
     }
