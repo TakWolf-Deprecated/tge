@@ -6,7 +6,7 @@ struct App {
     view_size: Size,
     canvas: Canvas,
     sky: Texture,
-    background_x: f32,
+    target_x: f32,
 }
 
 impl App {
@@ -18,7 +18,7 @@ impl App {
             view_size,
             canvas,
             sky,
-            background_x: 0.0,
+            target_x: 0.0,
         })
     }
 
@@ -27,9 +27,8 @@ impl App {
         engine.graphics().draw_sprite(
             &self.sky,
             SpriteDrawParams::default()
-                .region((0.0, 0.0, sky_size.width as f32 * 2.0, sky_size.height as f32)),
-            Transform::default()
-                .translate((self.background_x, 0.0)),
+                .region((self.target_x, 0.0, sky_size.width as f32, sky_size.height as f32)),
+            None,
         );
     }
 }
@@ -39,9 +38,9 @@ impl Game for App {
         let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
         engine.window().set_title(title);
 
-        self.background_x -= 1.0;
-        if self.background_x <= -(self.sky.size().width as f32) {
-            self.background_x = 0.0;
+        self.target_x += 1.0;
+        if self.target_x >= self.sky.size().width as f32 {
+            self.target_x = 0.0;
         }
 
         Ok(())

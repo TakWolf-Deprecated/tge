@@ -12,9 +12,9 @@ struct Car {
 }
 
 impl Car {
-    fn new(position: Position) -> Self {
+    fn new(position: impl Into<Position>) -> Self {
         Self {
-            position,
+            position: position.into(),
             speed: 0.0,
             max_speed: 6.0,
             speed_acceleration: 0.3,
@@ -115,7 +115,7 @@ impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let font = Font::load(engine, "assets/Roboto/Roboto-Regular.ttf")?;
         let texture_car = Texture::load(engine, "assets/car.png")?;
-        let car = Car::new(Position::new(5050.0, 5050.0));
+        let car = Car::new((5050.0, 5050.0));
         Ok(Self {
             font,
             texture_car,

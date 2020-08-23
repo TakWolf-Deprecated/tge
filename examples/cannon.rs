@@ -11,7 +11,8 @@ struct Cannon {
 }
 
 impl Cannon {
-    fn look_at(&mut self, target: Position) {
+    fn look_at(&mut self, target: impl Into<Position>) {
+        let target = target.into();
         let x = target.x - self.position.x;
         let y = target.y - self.position.y;
         self.angle = Angle::radians(x.atan2(-y));
@@ -192,7 +193,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((32.0 * 20.0, 32.0 * 20.0))
+            .inner_size((640.0, 640.0))
             .resizable(false))
         .build()?
         .run_with(App::new)
