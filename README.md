@@ -91,7 +91,7 @@ You can also see the [`examples/`](examples/) directory to learn other examples.
 
 ## Performance
 
-See the example [`bunny_mark`](examples/bunny_mark.rs) and [`sprites`](examples/sprites.rs).
+See the example [`bunny_mark`](examples/bunny_mark.rs) and [`hare_mark`](examples/hare_mark.rs).
 
 ## TODO
 

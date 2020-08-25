@@ -2,10 +2,10 @@ use tge::prelude::*;
 use rand::Rng;
 use rand::rngs::ThreadRng;
 
-const TITLE: &str = "Sprites";
+const TITLE: &str = "Hare Mark";
 const STEP_COUNT: usize = 100;
 
-struct Sprite {
+struct Hare {
     position: Position,
     speed: Vector,
     angle: Angle,
@@ -14,7 +14,7 @@ struct Sprite {
     color: Color,
 }
 
-impl Sprite {
+impl Hare {
     fn new(rand: &mut ThreadRng, graphics_size: &Size) -> Self {
         let x = rand.gen_range(0.0, graphics_size.width);
         let y = rand.gen_range(0.0, graphics_size.height);
@@ -41,59 +41,59 @@ impl Sprite {
 struct App {
     zazaka: Texture,
     rand: ThreadRng,
-    sprites: Vec<Sprite>,
+    hares: Vec<Hare>,
 }
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let zazaka = Texture::load(engine, "assets/zazaka.png")?;
         let mut rand = rand::thread_rng();
-        let mut sprites = Vec::with_capacity(STEP_COUNT);
+        let mut hares = Vec::with_capacity(STEP_COUNT);
         let graphics_size = engine.graphics().size();
         for _ in 0..STEP_COUNT {
-            sprites.push(Sprite::new(&mut rand, &graphics_size));
+            hares.push(Hare::new(&mut rand, &graphics_size));
         }
         Ok(Self {
             zazaka,
             rand,
-            sprites,
+            hares,
         })
     }
 }
 
 impl Game for App {
     fn update(&mut self, engine: &mut Engine) -> GameResult {
-        let title = format!("{}: {} - FPS: {}", TITLE, self.sprites.len(), engine.timer().real_time_fps().round());
+        let title = format!("{}: {} - FPS: {}", TITLE, self.hares.len(), engine.timer().real_time_fps().round());
         engine.window().set_title(title);
 
         let delta_time_f32 = engine.timer().delta_time().as_secs_f32();
         let graphics_size = engine.graphics().size();
 
-        for sprite in &mut self.sprites {
-            sprite.position.x += sprite.speed.x * delta_time_f32;
-            sprite.position.y += sprite.speed.y * delta_time_f32;
-            if sprite.position.x < 0.0 {
-                sprite.position.x = 0.0;
-                sprite.speed.x *= -1.0;
+        for hare in &mut self.hares {
+            hare.position.x += hare.speed.x * delta_time_f32;
+            hare.position.y += hare.speed.y * delta_time_f32;
+            if hare.position.x < 0.0 {
+                hare.position.x = 0.0;
+                hare.speed.x *= -1.0;
             }
-            if sprite.position.x > graphics_size.width {
-                sprite.position.x = graphics_size.width;
-                sprite.speed.x *= -1.0;
+            if hare.position.x > graphics_size.width {
+                hare.position.x = graphics_size.width;
+                hare.speed.x *= -1.0;
             }
-            if sprite.position.y < 0.0 {
-                sprite.position.y = 0.0;
-                sprite.speed.y *= -1.0;
+            if hare.position.y < 0.0 {
+                hare.position.y = 0.0;
+                hare.speed.y *= -1.0;
             }
-            if sprite.position.y > graphics_size.height {
-                sprite.position.y = graphics_size.height;
-                sprite.speed.y *= -1.0;
+            if hare.position.y > graphics_size.height {
+                hare.position.y = graphics_size.height;
+                hare.speed.y *= -1.0;
             }
-            sprite.angle += sprite.angle_speed * delta_time_f32;
+            hare.angle += hare.angle_speed * delta_time_f32;
         }
 
         if engine.mouse().is_button_down(MouseButton::Left) {
             for _ in 0..STEP_COUNT {
-                self.sprites.push(Sprite::new(&mut self.rand, &graphics_size));
+                self.hares.push(Hare::new(&mut self.rand, &graphics_size));
             }
         }
 
@@ -108,16 +108,16 @@ impl Game for App {
             Position::new(size.width as f32 / 2.0, size.height as f32 / 2.0)
         };
 
-        for sprite in &self.sprites {
+        for hare in &self.hares {
             engine.graphics().draw_sprite(
                 &self.zazaka,
                 SpriteDrawParams::default()
                     .origin(origin)
-                    .color(sprite.color),
+                    .color(hare.color),
                 Transform::default()
-                    .scale(sprite.scale)
-                    .rotate(sprite.angle)
-                    .translate(sprite.position),
+                    .scale(hare.scale)
+                    .rotate(hare.angle)
+                    .translate(hare.position),
             );
         }
 
