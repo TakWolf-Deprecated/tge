@@ -8,7 +8,6 @@ struct App {
     text_size: f32,
     horizontal_gravity: TextLayoutGravity,
     vertical_gravity: TextLayoutGravity,
-    show_background: bool,
 }
 
 impl App {
@@ -16,18 +15,17 @@ impl App {
         let font = Font::load(engine, "assets/SourceHanSansSC/SourceHanSansSC-Regular.otf")?;
         Ok(Self {
             font,
-            text: "⇦, ⇨, ⇧ and ⇩ to change layout gravity\n'+' and '-' to change text size\n'Num0' to change background visibility\nInput something here...".to_owned(),
+            text: "⇦, ⇨, ⇧ and ⇩ to change layout gravity\n'+' and '-' to change text size\nInput something here...".to_owned(),
             text_size: 24.0,
             horizontal_gravity: TextLayoutGravity::default(),
             vertical_gravity: TextLayoutGravity::default(),
-            show_background: false,
         })
     }
 }
 
 impl Game for App {
     fn update(&mut self, engine: &mut Engine) -> GameResult {
-        let title = format!("{} - FPS: {}", TITLE, engine.timer().real_time_fps().round());
+        let title = format!("{} - FPS: {} - text size: {}", TITLE, engine.timer().real_time_fps().round(), self.text_size);
         engine.window().set_title(title);
 
         if engine.keyboard().is_key_down(KeyCode::Left) {
@@ -64,9 +62,6 @@ impl Game for App {
         if engine.keyboard().is_key_down(KeyCode::Minus) {
             self.text_size -= 1.0;
         }
-        if engine.keyboard().is_key_down(KeyCode::Num0) {
-            self.show_background = !self.show_background;
-        }
 
         Ok(())
     }
@@ -75,26 +70,6 @@ impl Game for App {
         engine.graphics().clear(Color::WHITE);
 
         let graphics_size = engine.graphics().size();
-
-        if self.show_background {
-            for x in 0..(graphics_size.width / self.text_size).ceil() as i32 {
-                for y in 0..(graphics_size.height / self.text_size).ceil() as i32 {
-                    engine.graphics().draw_sprite(
-                        TextureRef::None,
-                        SpriteDrawParams::default()
-                            .region((0.0, 0.0, self.text_size, self.text_size))
-                            .color(if (x + y) % 2 == 0 {
-                                Color::from_u32(0xffb8b8ff)
-                            } else {
-                                Color::from_u32(0xa8e6ffff)
-                            }),
-                        Transform::default()
-                            .translate((x as f32 * self.text_size, y as f32 * self.text_size)),
-                    );
-                }
-            }
-        }
-
         engine.graphics().draw_text(
             &self.font,
             &self.text,
