@@ -86,7 +86,7 @@ impl Car {
             self.angle.degrees_value(),
         );
         engine.graphics().draw_sprite(
-            TextureHolder::None,
+            TextureRef::None,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 200.0, 62.0))
                 .color(Color::new(0.0, 0.0, 0.0, 0.8)),
@@ -144,7 +144,7 @@ impl App {
                 let position = Position::new(x as f32 * 100.0, y as f32 * 100.0);
                 if (position.x + 50.0 - self.car.position.x).abs() <= max_distance && (position.y + 50.0 - self.car.position.y).abs() <= max_distance {
                     engine.graphics().draw_sprite(
-                        TextureHolder::None,
+                        TextureRef::None,
                         SpriteDrawParams::default()
                             .region((0.0, 0.0, 100.0, 100.0))
                             .color(if (x + y) % 2 == 0 {
@@ -211,7 +211,7 @@ impl Game for App {
 
         engine.graphics().set_viewport(Viewport::none());
         engine.graphics().draw_sprite(
-            TextureHolder::None,
+            TextureRef::None,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 2.0, graphics_size.height))
                 .color(Color::BLUE),

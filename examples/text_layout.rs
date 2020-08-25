@@ -80,7 +80,7 @@ impl Game for App {
             for x in 0..(graphics_size.width / self.text_size).ceil() as i32 {
                 for y in 0..(graphics_size.height / self.text_size).ceil() as i32 {
                     engine.graphics().draw_sprite(
-                        TextureHolder::None,
+                        TextureRef::None,
                         SpriteDrawParams::default()
                             .region((0.0, 0.0, self.text_size, self.text_size))
                             .color(if (x + y) % 2 == 0 {

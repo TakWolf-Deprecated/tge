@@ -3,14 +3,14 @@ use crate::math::Size;
 use std::rc::Rc;
 
 #[derive(Copy, Clone)]
-pub enum TextureHolder<'a> {
+pub enum TextureRef<'a> {
     Texture(&'a Texture),
     Canvas(&'a Canvas),
     Font(&'a Font),
     None,
 }
 
-impl TextureHolder<'_> {
+impl TextureRef<'_> {
     pub(crate) fn texture(&self) -> Option<Rc<opengl::Texture>> {
         match self {
             Self::Texture(texture) => Some(texture.texture().clone()),
@@ -33,19 +33,19 @@ impl TextureHolder<'_> {
     }
 }
 
-impl<'a> From<&'a Texture> for TextureHolder<'a> {
+impl<'a> From<&'a Texture> for TextureRef<'a> {
     fn from(texture: &'a Texture) -> Self {
         Self::Texture(texture)
     }
 }
 
-impl<'a> From<&'a Canvas> for TextureHolder<'a> {
+impl<'a> From<&'a Canvas> for TextureRef<'a> {
     fn from(canvas: &'a Canvas) -> Self {
         Self::Canvas(canvas)
     }
 }
 
-impl<'a> From<&'a Font> for TextureHolder<'a> {
+impl<'a> From<&'a Font> for TextureRef<'a> {
     fn from(font: &'a Font) -> Self {
         Self::Font(font)
     }

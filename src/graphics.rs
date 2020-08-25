@@ -9,7 +9,7 @@ mod image;
 mod texture;
 mod canvas;
 mod font;
-mod texture_holder;
+mod texture_ref;
 mod params;
 
 use opengl::BufferUsage;
@@ -24,7 +24,7 @@ pub(crate) use self::image::validate_pixels;
 pub use texture::Texture;
 pub use canvas::Canvas;
 pub use font::Font;
-pub use texture_holder::TextureHolder;
+pub use texture_ref::TextureRef;
 pub use params::{MeshDrawParams, SpriteDrawParams, TextLayoutGravity, TextDrawParams};
 
 use crate::error::{GameError, GameResult};
@@ -346,7 +346,7 @@ impl Graphics {
         self.elements.extend(elements);
     }
 
-    pub fn draw_mesh<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, params: impl Into<Option<MeshDrawParams>>, transform: impl Into<Option<Transform>>) {
+    pub fn draw_mesh<'a>(&mut self, texture: impl Into<TextureRef<'a>>, params: impl Into<Option<MeshDrawParams>>, transform: impl Into<Option<Transform>>) {
         let texture = texture.into();
         let params = params.into().unwrap_or_default();
         let transform = transform.into().unwrap_or_default();
@@ -371,7 +371,7 @@ impl Graphics {
         self.append_vertices_and_elements(vertices, elements);
     }
 
-    pub fn draw_sprite<'a>(&mut self, texture: impl Into<TextureHolder<'a>>, params: impl Into<Option<SpriteDrawParams>>, transform: impl Into<Option<Transform>>) {
+    pub fn draw_sprite<'a>(&mut self, texture: impl Into<TextureRef<'a>>, params: impl Into<Option<SpriteDrawParams>>, transform: impl Into<Option<Transform>>) {
         let texture = texture.into();
         let params = params.into().unwrap_or_default();
         let transform = transform.into().unwrap_or_default();
