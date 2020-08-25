@@ -459,9 +459,9 @@ impl Graphics {
             let mut line_layout_infos = Vec::new();
             let mut glyph_positions = Vec::new();
             let mut caret = Position::zero();
-            for character in text.chars() {
-                if character.is_control() {
-                    match character {
+            for c in text.chars() {
+                if c.is_control() {
+                    match c {
                         '\n' => {
                             line_layout_infos.push((glyph_positions, caret.x));
                             glyph_positions = Vec::new();
@@ -474,7 +474,7 @@ impl Graphics {
                         _ => (),
                     }
                 } else {
-                    let glyph_id = font.glyph_id(character);
+                    let glyph_id = font.glyph_id(c);
                     let glyph_metrics = font.glyph_metrics(glyph_id, text_size);
                     if wrap_width > 0.0 && caret.x > 0.0 && caret.x + glyph_metrics.advance_width > wrap_width {
                         line_layout_infos.push((glyph_positions, caret.x));
@@ -485,7 +485,7 @@ impl Graphics {
                         }
                         caret.y += line_height;
                     }
-                    glyph_positions.push((character, caret));
+                    glyph_positions.push((c, caret));
                     if caret.x > 0.0 {
                         caret.x += char_spacing;
                     }
@@ -513,9 +513,9 @@ impl Graphics {
                 TextLayoutGravity::Center => (wrap_width - layout_width) / 2.0,
                 TextLayoutGravity::End => wrap_width - layout_width,
             } - origin.x;
-            for (character, glyph_position) in glyph_positions {
+            for (c, glyph_position) in glyph_positions {
                 loop {
-                    match font.cache_glyph(character, text_size, graphics_scale_factor) {
+                    match font.cache_glyph(c, text_size, graphics_scale_factor) {
                         Ok(cached_by) => {
                             let draw_info = match cached_by {
                                 font::CachedBy::Added(draw_info) => draw_info,
@@ -561,7 +561,7 @@ impl Graphics {
                         Err(cache_error) => {
                             let cache_size_maximized = font.cache_texture_size() >= self.max_texture_size;
                             match (cache_error, cache_size_maximized) {
-                                (font::CacheError::TooLarge, true) => panic!("character is too large"),
+                                (font::CacheError::TooLarge, true) => panic!("char is too large"),
                                 (font::CacheError::NoRoom, true) => {
                                     self.flush();
                                     font.clear_cache();

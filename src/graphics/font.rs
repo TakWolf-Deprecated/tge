@@ -42,7 +42,7 @@ pub enum CacheError {
 
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
 struct CacheKey {
-    character: char,
+    c: char,
     px: u32,
 }
 
@@ -88,9 +88,9 @@ impl Font {
         Self::from_bytes(engine, bytes)
     }
 
-    pub(crate) fn glyph_id(&self, character: char) -> GlyphId {
+    pub(crate) fn glyph_id(&self, c: char) -> GlyphId {
         let mut glyph_ids = self.glyph_ids.borrow_mut();
-        let glyph_id = glyph_ids.entry(character).or_insert_with(|| GlyphId(self.font.glyph_id(character)));
+        let glyph_id = glyph_ids.entry(c).or_insert_with(|| GlyphId(self.font.glyph_id(c)));
         *glyph_id
     }
 
@@ -123,9 +123,9 @@ impl Font {
         self.cache.borrow().texture_size
     }
 
-    pub(crate) fn cache_glyph(&self, character: char, px: f32, graphics_scale_factor: f32) -> Result<CachedBy, CacheError> {
+    pub(crate) fn cache_glyph(&self, c: char, px: f32, graphics_scale_factor: f32) -> Result<CachedBy, CacheError> {
         let px = (px * graphics_scale_factor).round();
-        let cache_key = CacheKey { character, px: px as u32 };
+        let cache_key = CacheKey { c, px: px as u32 };
         let mut cache = self.cache.borrow_mut();
         if let Some(draw_info) = cache.draw_infos.get(&cache_key) {
             let draw_info = draw_info.map(|(px_bounds, uv)| {
@@ -138,7 +138,7 @@ impl Font {
             return Ok(CachedBy::Existed(draw_info));
         }
         let outline_glyph = {
-            let glyph = self.glyph_id(character);
+            let glyph = self.glyph_id(c);
             self.font.outline(glyph.0).map(|outline| {
                 let scale_factor = self.scale_factor(px);
                 OutlinedGlyph::new(glyph.0.with_scale(0.0), outline, PxScaleFactor {

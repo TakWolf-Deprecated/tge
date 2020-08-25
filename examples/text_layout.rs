@@ -113,9 +113,9 @@ impl Game for App {
 
     fn event(&mut self, _: &mut Engine, event: Event) -> GameResult<bool> {
         match event {
-            Event::ReceiveChar(character) => {
-                if !character.is_control() {
-                    self.text.push(character);
+            Event::ReceiveChar(c) => {
+                if !c.is_control() {
+                    self.text.push(c);
                 }
             }
             Event::KeyboardInput { key, action, .. } => {
