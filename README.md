@@ -17,7 +17,7 @@ __Tge is currently in a very early stage of development. The API may be changed.
 * Automatically process rendering batch.
 * Dynamic font rendering with text layout.
 * Support high-DPI.
-* Interface for handling keyboard, mouse, touch, touchpad and gamepad.
+* Keyboard, mouse, touch, touchpad and gamepad input handling.
 * Audio play. (TODO)
 
 ## Non goals

@@ -27,7 +27,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 Initial release!
 
 The basic framework include:
-* Window
-* Event loop and timer
-* Vertex and sprite rendering
-* Keyboard, mouse, touch, touchpad and gamepad
+* Window.
+* Event loop and timer.
+* Vertex and sprite rendering.
+* Keyboard, mouse, touch, touchpad and gamepad input handling.
