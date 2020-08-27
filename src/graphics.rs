@@ -89,7 +89,7 @@ impl Graphics {
         program.bind();
         program.set_uniform_matrix_4("u_projection", &projection_matrix.to_cols_array());
 
-        let default_texture = Texture::default(gl.clone())?;
+        let default_texture = Texture::white_1_1(gl.clone())?;
 
         let max_texture_size = unsafe {
             gl.get_parameter_i32(glow::MAX_TEXTURE_SIZE) as u32

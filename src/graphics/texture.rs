@@ -58,7 +58,7 @@ impl Texture {
         Self::from_image(engine, &image)
     }
 
-    pub(crate) fn default(gl: Rc<Context>) -> GameResult<Rc<opengl::Texture>> {
+    pub(crate) fn white_1_1(gl: Rc<Context>) -> GameResult<Rc<opengl::Texture>> {
         let texture = opengl::Texture::new(gl)
             .map_err(|error| GameError::InitError(error.into()))?;
         texture.bind();
