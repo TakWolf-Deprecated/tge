@@ -13,11 +13,11 @@ pub struct Program {
 }
 
 impl Program {
-    pub fn new(graphics: &mut Graphics, vertex_shader_source: &str, fragment_shader_source: &str) -> GameResult<Self> {
+    pub fn new(graphics: &mut Graphics, vertex_shader_source: impl AsRef<str>, fragment_shader_source: impl AsRef<str>) -> GameResult<Self> {
         let program = opengl::Program::new(
             graphics.gl(),
-            vertex_shader_source,
-            fragment_shader_source,
+            vertex_shader_source.as_ref(),
+            fragment_shader_source.as_ref(),
         ).map_err(|error| GameError::InitError(error.into()))?;
         Ok(Self { program: Rc::new(program) })
     }
