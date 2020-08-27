@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## Unreleased
 
+* Rename `TextureHolder` to `TextureRef`.
+* Modify `ElementBuffer` type to `u16` to improve performance.
+
 ## 0.0.3 (2020-08-21)
 
 * Add graphics transform.
