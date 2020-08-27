@@ -18,7 +18,7 @@ impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let view_size = Size::<f32>::new(272.0, 160.0);
         let scene_size = Size::new(1000.0, 160.0);
-        let canvas = Canvas::new(engine, Size::new(view_size.width.round() as u32, view_size.height.round() as u32))?;
+        let canvas = Canvas::new(engine.graphics(), Size::new(view_size.width.round() as u32, view_size.height.round() as u32))?;
         let background = Texture::load(engine, "assets/parallax-mountain/background.png")?;
         let mountain_far = Texture::load(engine, "assets/parallax-mountain/mountain-far.png")?;
         let mountains = Texture::load(engine, "assets/parallax-mountain/mountains.png")?;

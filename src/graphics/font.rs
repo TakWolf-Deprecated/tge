@@ -1,4 +1,4 @@
-use super::{opengl, Filter, Texture};
+use super::{Graphics, opengl, Filter, Texture};
 use crate::error::{GameError, GameResult};
 use crate::math::{Position, Size, Region};
 use crate::engine::Engine;
@@ -61,10 +61,10 @@ pub struct Font {
 }
 
 impl Font {
-    pub(crate) fn new(engine: &mut Engine, bytes: Vec<u8>, cache_texture_size: u32) -> GameResult<Self> {
+    pub(crate) fn new(graphics: &mut Graphics, bytes: Vec<u8>, cache_texture_size: u32) -> GameResult<Self> {
         let font = FontVec::try_from_vec(bytes)
             .map_err(|error| GameError::InitError(error.into()))?;
-        let cache_texture = Texture::for_font_cache(engine, cache_texture_size)?;
+        let cache_texture = Texture::for_font_cache(graphics, cache_texture_size)?;
         let cache = Cache {
             texture: cache_texture,
             texture_size: cache_texture_size,
@@ -79,13 +79,13 @@ impl Font {
         })
     }
 
-    pub fn from_bytes(engine: &mut Engine, bytes: Vec<u8>) -> GameResult<Self> {
-        Self::new(engine, bytes, 1024)
+    pub fn from_bytes(graphics: &mut Graphics, bytes: Vec<u8>) -> GameResult<Self> {
+        Self::new(graphics, bytes, 1024)
     }
 
     pub fn load(engine: &mut Engine, path: impl AsRef<Path>) -> GameResult<Self> {
         let bytes = engine.filesystem().read(path)?;
-        Self::from_bytes(engine, bytes)
+        Self::from_bytes(engine.graphics(), bytes)
     }
 
     pub(crate) fn glyph_id(&self, c: char) -> GlyphId {

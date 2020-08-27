@@ -1,8 +1,7 @@
-use super::{opengl, Filter, Wrap, Texture};
+use super::{Graphics, opengl, Filter, Wrap, Texture};
 use super::opengl::{Attachment, Framebuffer};
 use crate::error::{GameError, GameResult};
 use crate::math::Size;
-use crate::engine::Engine;
 use std::rc::Rc;
 
 pub struct Canvas {
@@ -11,10 +10,10 @@ pub struct Canvas {
 }
 
 impl Canvas {
-    pub fn new(engine: &mut Engine, size: impl Into<Size<u32>>) -> GameResult<Self> {
-        let framebuffer = Framebuffer::new(engine.graphics().gl())
+    pub fn new(graphics: &mut Graphics, size: impl Into<Size<u32>>) -> GameResult<Self> {
+        let framebuffer = Framebuffer::new(graphics.gl())
             .map_err(|error| GameError::InitError(error.into()))?;
-        let texture = Texture::new(engine, size, None)?;
+        let texture = Texture::new(graphics, size, None)?;
         framebuffer.bind();
         framebuffer.attach_texture(Attachment::Color(0), Some(texture.texture().id()));
         framebuffer.check_status().map_err(|error| GameError::InitError(error.into()))?;

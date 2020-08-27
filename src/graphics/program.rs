@@ -1,4 +1,4 @@
-use super::opengl;
+use super::{Graphics, opengl};
 use crate::error::{GameError, GameResult};
 use crate::engine::Engine;
 use glow::Context;
@@ -13,9 +13,9 @@ pub struct Program {
 }
 
 impl Program {
-    pub fn new(engine: &mut Engine, vertex_shader_source: &str, fragment_shader_source: &str) -> GameResult<Self> {
+    pub fn new(graphics: &mut Graphics, vertex_shader_source: &str, fragment_shader_source: &str) -> GameResult<Self> {
         let program = opengl::Program::new(
-            engine.graphics().gl(),
+            graphics.gl(),
             vertex_shader_source,
             fragment_shader_source,
         ).map_err(|error| GameError::InitError(error.into()))?;
@@ -25,7 +25,7 @@ impl Program {
     pub fn load(engine: &mut Engine, vertex_shader_path: impl AsRef<Path>, fragment_shader_path: impl AsRef<Path>) -> GameResult<Self> {
         let vertex_shader_source = engine.filesystem().read_to_string(vertex_shader_path)?;
         let fragment_shader_source = engine.filesystem().read_to_string(fragment_shader_path)?;
-        Self::new(engine, &vertex_shader_source, &fragment_shader_source)
+        Self::new(engine.graphics(), &vertex_shader_source, &fragment_shader_source)
     }
 
     pub(crate) fn default(gl: Rc<Context>) -> GameResult<Rc<opengl::Program>> {

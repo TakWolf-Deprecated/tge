@@ -17,7 +17,7 @@ impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let view_size = Size::<f32>::new(272.0, 160.0);
         let scene_size = Size::new(1000.0, 160.0);
-        let canvas = Canvas::new(engine, Size::new(view_size.width.round() as u32, view_size.height.round() as u32))?;
+        let canvas = Canvas::new(engine.graphics(), Size::new(view_size.width.round() as u32, view_size.height.round() as u32))?;
         let back_trees = Texture::load(engine, "assets/parallax-forest/back-trees.png")?;
         let lights = Texture::load(engine, "assets/parallax-forest/lights.png")?;
         let middle_trees = Texture::load(engine, "assets/parallax-forest/middle-trees.png")?;

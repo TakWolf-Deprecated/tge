@@ -12,7 +12,7 @@ struct App {
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let view_size = Size::<f32>::new(320.0, 256.0);
-        let canvas = Canvas::new(engine, Size::new(view_size.width.round() as u32, view_size.height.round() as u32))?;
+        let canvas = Canvas::new(engine.graphics(), Size::new(view_size.width.round() as u32, view_size.height.round() as u32))?;
         let sky = Texture::load(engine, "assets/sky.png")?;
         Ok(Self {
             view_size,

@@ -1,4 +1,4 @@
-use super::{opengl, FilterMode, Filter, WrapMode, Wrap, Image, validate_pixels};
+use super::{Graphics, opengl, FilterMode, Filter, WrapMode, Wrap, Image, validate_pixels};
 use crate::error::{GameError, GameResult};
 use crate::math::{Size, Region};
 use crate::engine::Engine;
@@ -15,15 +15,15 @@ pub struct Texture {
 }
 
 impl Texture {
-    pub fn new(engine: &mut Engine, size: impl Into<Size<u32>>, pixels: Option<&[u8]>) -> GameResult<Self> {
+    pub fn new(graphics: &mut Graphics, size: impl Into<Size<u32>>, pixels: Option<&[u8]>) -> GameResult<Self> {
         let size = size.into();
         if let Some(pixels) = pixels {
             validate_pixels(size, pixels)?;
         }
-        let filter = engine.graphics().default_filter();
+        let filter = graphics.default_filter();
         let generate_mipmap = filter.mipmap.is_some();
-        let wrap = engine.graphics().default_wrap();
-        let texture = opengl::Texture::new(engine.graphics().gl())
+        let wrap = graphics.default_wrap();
+        let texture = opengl::Texture::new(graphics.gl())
             .map_err(|error| GameError::InitError(error.into()))?;
         texture.bind();
         texture.init_image(size.width, size.height, pixels);
@@ -42,20 +42,20 @@ impl Texture {
         })
     }
 
-    pub fn from_image(engine: &mut Engine, image: &Image) -> GameResult<Self> {
+    pub fn from_image(graphics: &mut Graphics, image: &Image) -> GameResult<Self> {
         let size = image.size();
         let pixels = image.pixels();
-        Self::new(engine, size, Some(pixels))
+        Self::new(graphics, size, Some(pixels))
     }
 
-    pub fn from_bytes(engine: &mut Engine, bytes: &[u8]) -> GameResult<Self> {
+    pub fn from_bytes(graphics: &mut Graphics, bytes: &[u8]) -> GameResult<Self> {
         let image = Image::from_bytes(bytes)?;
-        Self::from_image(engine, &image)
+        Self::from_image(graphics, &image)
     }
 
     pub fn load(engine: &mut Engine, path: impl AsRef<Path>) -> GameResult<Self> {
         let image = Image::load(engine, path)?;
-        Self::from_image(engine, &image)
+        Self::from_image(engine.graphics(), &image)
     }
 
     pub(crate) fn white_1_1(gl: Rc<Context>) -> GameResult<Rc<opengl::Texture>> {
@@ -69,12 +69,12 @@ impl Texture {
         Ok(Rc::new(texture))
     }
 
-    pub(crate) fn for_font_cache(engine: &mut Engine, size: u32) -> GameResult<Self> {
+    pub(crate) fn for_font_cache(graphics: &mut Graphics, size: u32) -> GameResult<Self> {
         let size = Size::new(size, size);
-        let filter = engine.graphics().default_filter();
+        let filter = graphics.default_filter();
         let generate_mipmap = filter.mipmap.is_some();
         let wrap = Wrap::uv(WrapMode::Repeat, WrapMode::Repeat);
-        let texture = opengl::Texture::new(engine.graphics().gl())
+        let texture = opengl::Texture::new(graphics.gl())
             .map_err(|error| GameError::InitError(error.into()))?;
         texture.bind();
         texture.init_image(size.width, size.height, None);
