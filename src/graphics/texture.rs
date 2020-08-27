@@ -177,4 +177,18 @@ impl Texture {
         self.texture.unbind();
         Ok(())
     }
+
+    pub fn resize(&mut self, size: impl Into<Size<u32>>) {
+        let size = size.into();
+        self.texture.bind();
+        self.texture.init_image(size.width, size.height, None);
+        self.size = size;
+        if self.filter.mipmap.is_some() {
+            self.texture.generate_mipmap();
+            self.mipmap_generated = true;
+        } else {
+            self.mipmap_generated = false;
+        }
+        self.texture.unbind();
+    }
 }

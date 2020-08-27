@@ -220,8 +220,7 @@ impl Font {
         let mut cache = self.cache.borrow_mut();
         cache.draw_infos.clear();
         cache.rows.clear();
-        cache.texture.init_pixels((cache_texture_size, cache_texture_size), None)
-            .expect("resize font cache texture error");
+        cache.texture.resize((cache_texture_size, cache_texture_size));
         cache.texture_size = cache_texture_size;
     }
 

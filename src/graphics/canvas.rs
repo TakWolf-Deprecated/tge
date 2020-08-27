@@ -52,4 +52,8 @@ impl Canvas {
     pub fn set_wrap(&mut self, wrap: Wrap) {
         self.texture.set_wrap(wrap)
     }
+
+    pub fn resize(&mut self, size: impl Into<Size<u32>>) {
+        self.texture.resize(size);
+    }
 }
