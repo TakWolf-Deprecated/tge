@@ -89,7 +89,7 @@ impl Car {
             TextureRef::None,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 200.0, 62.0))
-                .color(Color::new(0.0, 0.0, 0.0, 0.8)),
+                .color((0.0, 0.0, 0.0, 0.8)),
             None,
         );
         engine.graphics().draw_text(
@@ -147,11 +147,7 @@ impl App {
                         TextureRef::None,
                         SpriteDrawParams::default()
                             .region((0.0, 0.0, 100.0, 100.0))
-                            .color(if (x + y) % 2 == 0 {
-                                Color::new(0.0, 0.0, 0.0, 0.5)
-                            } else {
-                                Color::new(1.0, 1.0, 1.0, 0.5)
-                            }),
+                            .color(if (x + y) % 2 == 0 { (0.0, 0.0, 0.0, 0.5) } else { (1.0, 1.0, 1.0, 0.5) }),
                         Transform::default()
                             .translate(position),
                     );
