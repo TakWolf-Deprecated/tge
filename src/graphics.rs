@@ -442,8 +442,8 @@ impl Graphics {
         let line_spacing = params.line_spacing.unwrap_or(line_metrics.line_gap);
         let wrap_width = params.wrap_width.unwrap_or(0.0).max(0.0);
         let wrap_height = params.wrap_height.unwrap_or(0.0).max(0.0);
-        let horizontal_gravity = params.horizontal_gravity.unwrap_or(TextLayoutGravity::default());
-        let vertical_gravity = params.vertical_gravity.unwrap_or(TextLayoutGravity::default());
+        let horizontal_gravity = params.horizontal_gravity.unwrap_or_default();
+        let vertical_gravity = params.vertical_gravity.unwrap_or_default();
         let origin = params.origin.unwrap_or_else(|| Position::zero());
         let matrix = self.transform_matrix * transform.0;
         let color = params.color.unwrap_or(Color::WHITE);
