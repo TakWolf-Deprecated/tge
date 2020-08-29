@@ -382,7 +382,7 @@ impl Graphics {
         });
 
         let texture_size = {
-            let texture_size = texture.texture_size();
+            let texture_size = texture.texture_size().unwrap_or_else(|| Size::zero());
             Size::new(texture_size.width as f32, texture_size.height as f32)
         };
         let region = params.region.unwrap_or_else(|| Region::new(0.0, 0.0, texture_size.width, texture_size.height));

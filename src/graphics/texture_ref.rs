@@ -20,15 +20,15 @@ impl TextureRef<'_> {
         }
     }
 
-    pub(crate) fn texture_size(&self) -> Size<u32> {
+    pub fn texture_size(&self) -> Option<Size<u32>> {
         match self {
-            Self::Texture(texture) => texture.size(),
-            Self::Canvas(canvas) => canvas.size(),
+            Self::Texture(texture) => Some(texture.size()),
+            Self::Canvas(canvas) => Some(canvas.size()),
             Self::Font(font) => {
                 let cache_texture_size = font.cache_texture_size();
-                Size::new(cache_texture_size, cache_texture_size)
+                Some(Size::new(cache_texture_size, cache_texture_size))
             }
-            Self::None => Size::zero(),
+            Self::None => None,
         }
     }
 }
