@@ -2,7 +2,6 @@ use crate::math::Vector;
 use crate::window::{LogicalPosition, LogicalSize};
 use crate::keyboard::{KeyCode, ModifiersState};
 use crate::mouse::MouseButton;
-use crate::touch::TouchPhase;
 use crate::gamepad::{GamepadButton, GamepadAxis, GamepadId};
 use winit::event::ElementState;
 
@@ -34,6 +33,25 @@ impl Into<KeyState> for KeyAction {
         match self {
             Self::Down => KeyState::Down,
             Self::Up => KeyState::Up,
+        }
+    }
+}
+
+#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
+pub enum TouchPhase {
+    Start,
+    Move,
+    End,
+    Cancel,
+}
+
+impl From<winit::event::TouchPhase> for TouchPhase {
+    fn from(phase: winit::event::TouchPhase) -> Self {
+        match phase {
+            winit::event::TouchPhase::Started => Self::Start,
+            winit::event::TouchPhase::Moved => Self::Move,
+            winit::event::TouchPhase::Ended => Self::End,
+            winit::event::TouchPhase::Cancelled => Self::Cancel,
         }
     }
 }

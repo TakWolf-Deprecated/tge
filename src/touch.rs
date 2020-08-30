@@ -1,8 +1,5 @@
-mod phase;
-
-pub use phase::TouchPhase;
-
 use crate::error::GameResult;
+use crate::event::TouchPhase;
 use crate::window::LogicalPosition;
 use std::collections::HashMap;
 
