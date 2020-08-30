@@ -6,10 +6,10 @@ struct App {
     view_size: Size,
     scene_size: Size,
     canvas: Canvas,
-    back_trees: Texture,
-    lights: Texture,
-    middle_trees: Texture,
-    front_trees: Texture,
+    texture_back_trees: Texture,
+    texture_lights: Texture,
+    texture_middle_trees: Texture,
+    texture_front_trees: Texture,
     camera: Position,
 }
 
@@ -18,19 +18,19 @@ impl App {
         let view_size = Size::<f32>::new(272.0, 160.0);
         let scene_size = Size::new(1000.0, 160.0);
         let canvas = Canvas::new(engine.graphics(), Size::new(view_size.width.round() as u32, view_size.height.round() as u32))?;
-        let back_trees = Texture::load(engine, "assets/parallax-forest/back-trees.png")?;
-        let lights = Texture::load(engine, "assets/parallax-forest/lights.png")?;
-        let middle_trees = Texture::load(engine, "assets/parallax-forest/middle-trees.png")?;
-        let front_trees = Texture::load(engine, "assets/parallax-forest/front-trees.png")?;
+        let texture_back_trees = Texture::load(engine, "assets/parallax-forest/back-trees.png")?;
+        let texture_lights = Texture::load(engine, "assets/parallax-forest/lights.png")?;
+        let texture_middle_trees = Texture::load(engine, "assets/parallax-forest/middle-trees.png")?;
+        let texture_front_trees = Texture::load(engine, "assets/parallax-forest/front-trees.png")?;
         let camera = Position::new(scene_size.width / 2.0, scene_size.height / 2.0);
         Ok(Self {
             view_size,
             scene_size,
             canvas,
-            back_trees,
-            lights,
-            middle_trees,
-            front_trees,
+            texture_back_trees,
+            texture_lights,
+            texture_middle_trees,
+            texture_front_trees,
             camera,
         })
     }
@@ -42,28 +42,28 @@ impl App {
         );
 
         engine.graphics().draw_sprite(
-            &self.back_trees,
+            &self.texture_back_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
                 .translate((offset.x / 8.0, 0.0)),
         );
         engine.graphics().draw_sprite(
-            &self.lights,
+            &self.texture_lights,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
                 .translate((offset.x / 4.0, 0.0)),
         );
         engine.graphics().draw_sprite(
-            &self.middle_trees,
+            &self.texture_middle_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
                 .translate((offset.x / 2.0, 0.0)),
         );
         engine.graphics().draw_sprite(
-            &self.front_trees,
+            &self.texture_front_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
@@ -94,13 +94,12 @@ impl Game for App {
     }
 
     fn render(&mut self, engine: &mut Engine) -> GameResult {
+        engine.graphics().clear(Color::BLACK);
+
         engine.graphics().set_canvas(Some(&self.canvas));
         engine.graphics().clear(Color::BLACK);
-
         self.draw_scene(engine);
-
         engine.graphics().set_canvas(None);
-        engine.graphics().clear(Color::BLACK);
 
         let graphics_size = engine.graphics().size();
         let position;

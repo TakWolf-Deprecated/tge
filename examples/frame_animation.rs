@@ -5,17 +5,17 @@ const TITLE: &str = "Frame Animation";
 
 struct FrameAnimation {
     fps: f32,
-    texture_region: Region,
+    region: Region,
     split_size: Size<usize>,
     current: usize,
     since_last_frame: Duration,
 }
 
 impl FrameAnimation {
-    fn new(fps: f32, texture_region: impl Into<Region>, split_size: impl Into<Size<usize>>) -> Self {
+    fn new(fps: f32, region: impl Into<Region>, split_size: impl Into<Size<usize>>) -> Self {
         Self {
             fps,
-            texture_region: texture_region.into(),
+            region: region.into(),
             split_size: split_size.into(),
             current: 0,
             since_last_frame: Duration::new(0, 0),
@@ -35,12 +35,12 @@ impl FrameAnimation {
 
     fn draw(&self, engine: &mut Engine, texture: &Texture, transform: impl Into<Option<Transform>>) {
         let size = Size::new(
-            self.texture_region.width / self.split_size.width as f32,
-            self.texture_region.height / self.split_size.height as f32,
+            self.region.width / self.split_size.width as f32,
+            self.region.height / self.split_size.height as f32,
         );
         let position = Position::new(
-            (self.current % self.split_size.width) as f32 * size.width + self.texture_region.x,
-            (self.current / self.split_size.width) as f32 * size.height + self.texture_region.y,
+            (self.current % self.split_size.width) as f32 * size.width + self.region.x,
+            (self.current / self.split_size.width) as f32 * size.height + self.region.y,
         );
         engine.graphics().draw_sprite(
             texture,
@@ -132,7 +132,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((800.0, 600.0)))
+            .inner_size((1024.0, 600.0)))
         .build()?
         .run_with(App::new)
 }

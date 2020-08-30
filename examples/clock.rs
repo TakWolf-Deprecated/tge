@@ -2,7 +2,7 @@ use tge::prelude::*;
 use chrono::{Local, Timelike};
 
 struct App {
-    clock_disk: Texture,
+    texture_clock_disk: Texture,
     hour_angle: Angle,
     minute_angle: Angle,
     second_angle: Angle,
@@ -10,9 +10,9 @@ struct App {
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
-        let clock_disk = Texture::load(engine, "assets/clock-disk.png")?;
+        let texture_clock_disk = Texture::load(engine, "assets/clock-disk.png")?;
         Ok(Self {
-            clock_disk,
+            texture_clock_disk,
             hour_angle: Angle::zero(),
             minute_angle: Angle::zero(),
             second_angle: Angle::zero(),
@@ -38,7 +38,7 @@ impl Game for App {
         engine.graphics().clear((0.9, 0.9, 0.9, 1.0));
 
         engine.graphics().draw_sprite(
-            &self.clock_disk,
+            &self.texture_clock_disk,
             None,
             None,
         );

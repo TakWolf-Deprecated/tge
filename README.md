@@ -78,7 +78,7 @@ fn main() -> GameResult {
     let mut engine = EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title("My Game")
-            .inner_size((800.0, 600.0)))
+            .inner_size((1024.0, 600.0)))
         .build()?;
     let mut app = App::new(&mut engine)?;
     engine.run(&mut app)

@@ -25,21 +25,21 @@ impl Bunny {
 }
 
 struct App {
-    wabbit: Texture,
+    texture_wabbit: Texture,
     rand: ThreadRng,
     bunnies: Vec<Bunny>,
 }
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
-        let wabbit = Texture::load(engine, "assets/wabbit_alpha.png")?;
+        let texture_wabbit = Texture::load(engine, "assets/wabbit_alpha.png")?;
         let mut rand = rand::thread_rng();
         let mut bunnies = Vec::with_capacity(STEP_COUNT);
         for _ in 0..STEP_COUNT {
             bunnies.push(Bunny::new(&mut rand));
         }
         Ok(Self {
-            wabbit,
+            texture_wabbit,
             rand,
             bunnies,
         })
@@ -53,7 +53,7 @@ impl Game for App {
 
         let max_position = {
             let graphics_size = engine.graphics().size();
-            let texture_size = self.wabbit.size();
+            let texture_size = self.texture_wabbit.size();
             Position::new(graphics_size.width - texture_size.width as f32, graphics_size.height - texture_size.height as f32)
         };
 
@@ -95,7 +95,7 @@ impl Game for App {
 
         for bunny in &self.bunnies {
             engine.graphics().draw_sprite(
-                &self.wabbit,
+                &self.texture_wabbit,
                 None,
                 Transform::default()
                     .translate(bunny.position),
@@ -110,7 +110,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((1280.0, 720.0)))
+            .inner_size((1024.0, 600.0)))
         .build()?
         .run_with(App::new)
 }

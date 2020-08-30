@@ -17,7 +17,7 @@ impl App {
         let font = Font::load(engine, "assets/Roboto/Roboto-Regular.ttf")?;
         let text = "Hello, world!".to_owned();
         let text_size = 60.0;
-        let position = Position::new(400.0, 300.0);
+        let position = Position::new(512.0, 300.0);
         let angle = Angle::zero();
         let color = Color::RED;
         let stroke_color = Color::WHITE;
@@ -163,7 +163,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((800.0, 600.0)))
+            .inner_size((1024.0, 600.0)))
         .build()?
         .run_with(App::new)
 }

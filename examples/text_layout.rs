@@ -116,7 +116,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((800.0, 600.0)))
+            .inner_size((1024.0, 600.0)))
         .build()?
         .run_with(App::new)
 }

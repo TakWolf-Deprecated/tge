@@ -5,7 +5,7 @@ const TITLE: &str = "Responsive";
 struct App {
     view_size: Size,
     canvas: Canvas,
-    sky: Texture,
+    texture_sky: Texture,
     target_x: f32,
 }
 
@@ -13,21 +13,20 @@ impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let view_size = Size::<f32>::new(320.0, 256.0);
         let canvas = Canvas::new(engine.graphics(), Size::new(view_size.width.round() as u32, view_size.height.round() as u32))?;
-        let sky = Texture::load(engine, "assets/sky.png")?;
+        let texture_sky = Texture::load(engine, "assets/sky.png")?;
         Ok(Self {
             view_size,
             canvas,
-            sky,
+            texture_sky,
             target_x: 0.0,
         })
     }
 
     fn draw_scene(&mut self, engine: &mut Engine) {
-        let sky_size = self.sky.size();
         engine.graphics().draw_sprite(
-            &self.sky,
+            &self.texture_sky,
             SpriteDrawParams::default()
-                .region((self.target_x, 0.0, sky_size.width as f32, sky_size.height as f32)),
+                .region((self.target_x, 0.0, self.view_size.width, self.view_size.height)),
             None,
         );
     }
@@ -39,7 +38,7 @@ impl Game for App {
         engine.window().set_title(title);
 
         self.target_x += 1.0;
-        if self.target_x >= self.sky.size().width as f32 {
+        if self.target_x >= self.texture_sky.size().width as f32 {
             self.target_x = 0.0;
         }
 
@@ -47,13 +46,12 @@ impl Game for App {
     }
 
     fn render(&mut self, engine: &mut Engine) -> GameResult {
+        engine.graphics().clear(Color::BLACK);
+
         engine.graphics().set_canvas(Some(&self.canvas));
         engine.graphics().clear(Color::BLACK);
-
         self.draw_scene(engine);
-
         engine.graphics().set_canvas(None);
-        engine.graphics().clear(Color::BLACK);
 
         let graphics_size = engine.graphics().size();
         let position;

@@ -6,11 +6,11 @@ struct App {
     view_size: Size,
     scene_size: Size,
     canvas: Canvas,
-    background: Texture,
-    mountain_far: Texture,
-    mountains: Texture,
-    trees: Texture,
-    foreground_trees: Texture,
+    texture_background: Texture,
+    texture_mountain_far: Texture,
+    texture_mountains: Texture,
+    texture_trees: Texture,
+    texture_foreground_trees: Texture,
     camera: Position,
 }
 
@@ -19,21 +19,21 @@ impl App {
         let view_size = Size::<f32>::new(272.0, 160.0);
         let scene_size = Size::new(1000.0, 160.0);
         let canvas = Canvas::new(engine.graphics(), Size::new(view_size.width.round() as u32, view_size.height.round() as u32))?;
-        let background = Texture::load(engine, "assets/parallax-mountain/background.png")?;
-        let mountain_far = Texture::load(engine, "assets/parallax-mountain/mountain-far.png")?;
-        let mountains = Texture::load(engine, "assets/parallax-mountain/mountains.png")?;
-        let trees = Texture::load(engine, "assets/parallax-mountain/trees.png")?;
-        let foreground_trees = Texture::load(engine, "assets/parallax-mountain/foreground-trees.png")?;
+        let texture_background = Texture::load(engine, "assets/parallax-mountain/background.png")?;
+        let texture_mountain_far = Texture::load(engine, "assets/parallax-mountain/mountain-far.png")?;
+        let texture_mountains = Texture::load(engine, "assets/parallax-mountain/mountains.png")?;
+        let texture_trees = Texture::load(engine, "assets/parallax-mountain/trees.png")?;
+        let texture_foreground_trees = Texture::load(engine, "assets/parallax-mountain/foreground-trees.png")?;
         let camera = Position::new(scene_size.width / 2.0, scene_size.height / 2.0);
         Ok(Self {
             view_size,
             scene_size,
             canvas,
-            background,
-            mountain_far,
-            mountains,
-            trees,
-            foreground_trees,
+            texture_background,
+            texture_mountain_far,
+            texture_mountains,
+            texture_trees,
+            texture_foreground_trees,
             camera,
         })
     }
@@ -45,33 +45,33 @@ impl App {
         );
 
         engine.graphics().draw_sprite(
-            &self.background,
+            &self.texture_background,
             None,
             None,
         );
         engine.graphics().draw_sprite(
-            &self.mountain_far,
+            &self.texture_mountain_far,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
                 .translate((offset.x / 64.0, 0.0)),
         );
         engine.graphics().draw_sprite(
-            &self.mountains,
+            &self.texture_mountains,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
                 .translate((offset.x / 32.0, 0.0)),
         );
         engine.graphics().draw_sprite(
-            &self.trees,
+            &self.texture_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
                 .translate((offset.x / 2.0, 0.0)),
         );
         engine.graphics().draw_sprite(
-            &self.foreground_trees,
+            &self.texture_foreground_trees,
             SpriteDrawParams::default()
                 .region((0.0, 0.0, 1000.0, 160.0)),
             Transform::default()
@@ -102,13 +102,12 @@ impl Game for App {
     }
 
     fn render(&mut self, engine: &mut Engine) -> GameResult {
+        engine.graphics().clear(Color::BLACK);
+
         engine.graphics().set_canvas(Some(&self.canvas));
         engine.graphics().clear(Color::BLACK);
-
         self.draw_scene(engine);
-
         engine.graphics().set_canvas(None);
-        engine.graphics().clear(Color::BLACK);
 
         let graphics_size = engine.graphics().size();
         let position;

@@ -5,7 +5,7 @@ use rand::rngs::ThreadRng;
 const TITLE: &str = "DVD";
 
 struct App {
-    dvd_logo: Texture,
+    texture_dvd_logo: Texture,
     size: Size,
     position: Position,
     speed: Vector,
@@ -15,9 +15,9 @@ struct App {
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
-        let dvd_logo = Texture::load(engine, "assets/dvd-logo.png")?;
+        let texture_dvd_logo = Texture::load(engine, "assets/dvd-logo.png")?;
         let size = {
-            let size = dvd_logo.size();
+            let size = texture_dvd_logo.size();
             Size::new(size.width as f32, size.height as f32)
         };
         let graphics_size = engine.graphics().size();
@@ -26,7 +26,7 @@ impl App {
         let color = Color::new(0.5, 0.5, 1.0, 1.0);
         let rand = rand::thread_rng();
         Ok(Self {
-            dvd_logo,
+            texture_dvd_logo,
             size,
             position,
             speed,
@@ -76,7 +76,7 @@ impl Game for App {
         engine.graphics().clear(Color::BLACK);
 
         engine.graphics().draw_sprite(
-            &self.dvd_logo,
+            &self.texture_dvd_logo,
             SpriteDrawParams::default()
                 .origin((self.size.width / 2.0, self.size.height / 2.0))
                 .color(self.color),
@@ -92,7 +92,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((800.0, 600.0))
+            .inner_size((1024.0, 600.0))
             .resizable(false))
         .build()?
         .run_with(App::new)

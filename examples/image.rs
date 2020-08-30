@@ -3,14 +3,14 @@ use tge::prelude::*;
 const TITLE: &str = "Image";
 
 struct App {
-    ferris: Texture,
+    texture_ferris: Texture,
 }
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
-        let ferris = Texture::load(engine, "assets/ferris.png")?;
+        let texture_ferris = Texture::load(engine, "assets/ferris.png")?;
         Ok(Self {
-            ferris,
+            texture_ferris,
         })
     }
 }
@@ -26,13 +26,13 @@ impl Game for App {
         engine.graphics().clear(Color::WHITE);
 
         engine.graphics().draw_sprite(
-            &self.ferris,
+            &self.texture_ferris,
             None,
             Transform::default()
                 .scale((0.5, 0.5)),
         );
         engine.graphics().draw_sprite(
-            &self.ferris,
+            &self.texture_ferris,
             SpriteDrawParams::default()
                 .colors([
                     Color::TRANSPARENT_WHITE,

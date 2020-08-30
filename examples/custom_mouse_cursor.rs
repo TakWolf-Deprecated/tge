@@ -3,14 +3,14 @@ use tge::prelude::*;
 const TITLE: &str = "Custom Mouse Cursor";
 
 struct App {
-    cursor: Texture,
+    texture_cursor: Texture,
 }
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
-        let cursor = Texture::load(engine, "assets/cursor.png")?;
+        let texture_cursor = Texture::load(engine, "assets/cursor.png")?;
         Ok(Self {
-            cursor,
+            texture_cursor,
         })
     }
 }
@@ -27,7 +27,7 @@ impl Game for App {
 
         if let Some(position) = engine.mouse().position() {
             engine.graphics().draw_sprite(
-                &self.cursor,
+                &self.texture_cursor,
                 None,
                 Transform::default()
                     .translate(position),
@@ -42,7 +42,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((800.0, 600.0)))
+            .inner_size((1024.0, 600.0)))
         .mouse_config(MouseConfig::new()
             .cursor_visible(false))
         .build()?

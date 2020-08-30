@@ -39,14 +39,14 @@ impl Hare {
 }
 
 struct App {
-    zazaka: Texture,
+    texture_zazaka: Texture,
     rand: ThreadRng,
     hares: Vec<Hare>,
 }
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
-        let zazaka = Texture::load(engine, "assets/zazaka.png")?;
+        let texture_zazaka = Texture::load(engine, "assets/zazaka.png")?;
         let mut rand = rand::thread_rng();
         let mut hares = Vec::with_capacity(STEP_COUNT);
         let graphics_size = engine.graphics().size();
@@ -54,7 +54,7 @@ impl App {
             hares.push(Hare::new(&mut rand, &graphics_size));
         }
         Ok(Self {
-            zazaka,
+            texture_zazaka,
             rand,
             hares,
         })
@@ -104,13 +104,13 @@ impl Game for App {
         engine.graphics().clear(Color::BLACK);
 
         let origin = {
-            let size = self.zazaka.size();
+            let size = self.texture_zazaka.size();
             Position::new(size.width as f32 / 2.0, size.height as f32 / 2.0)
         };
 
         for hare in &self.hares {
             engine.graphics().draw_sprite(
-                &self.zazaka,
+                &self.texture_zazaka,
                 SpriteDrawParams::default()
                     .origin(origin)
                     .color(hare.color),
@@ -129,7 +129,7 @@ fn main() -> GameResult {
     EngineBuilder::new()
         .window_config(WindowConfig::new()
             .title(TITLE)
-            .inner_size((1280.0, 720.0)))
+            .inner_size((1024.0, 600.0)))
         .build()?
         .run_with(App::new)
 }
