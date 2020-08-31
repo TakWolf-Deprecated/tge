@@ -57,7 +57,7 @@ pub struct Font {
     font: FontVec,
     glyph_ids: RefCell<HashMap<char, GlyphId>>,
     cache: RefCell<Cache>,
-    fit_hidpi: bool,
+    hidpi_scale_factor: Option<f32>,
 }
 
 impl Font {
@@ -75,7 +75,7 @@ impl Font {
             font,
             glyph_ids: RefCell::new(HashMap::new()),
             cache: RefCell::new(cache),
-            fit_hidpi: true,
+            hidpi_scale_factor: None,
         })
     }
 
@@ -123,15 +123,15 @@ impl Font {
         self.cache.borrow().texture_size
     }
 
-    pub(crate) fn cache_glyph(&self, c: char, px: f32, graphics_scale_factor: f32) -> Result<CachedBy, CacheError> {
-        let px = (px * graphics_scale_factor).round();
+    pub(crate) fn cache_glyph(&self, c: char, px: f32, hidpi_scale_factor: f32) -> Result<CachedBy, CacheError> {
+        let px = (px * hidpi_scale_factor).round();
         let cache_key = CacheKey { c, px: px as u32 };
         let mut cache = self.cache.borrow_mut();
         if let Some(draw_info) = cache.draw_infos.get(&cache_key) {
             let draw_info = draw_info.map(|(px_bounds, uv)| {
                 let bounds = Region::min_max(
-                    Position::new(px_bounds.min.x / graphics_scale_factor, px_bounds.min.y / graphics_scale_factor),
-                    Position::new(px_bounds.max.x / graphics_scale_factor, px_bounds.max.y / graphics_scale_factor),
+                    Position::new(px_bounds.min.x / hidpi_scale_factor, px_bounds.min.y / hidpi_scale_factor),
+                    Position::new(px_bounds.max.x / hidpi_scale_factor, px_bounds.max.y / hidpi_scale_factor),
                 );
                 GlyphDrawInfo { bounds, uv }
             });
@@ -195,8 +195,8 @@ impl Font {
                 cache.draw_infos.insert(cache_key, Some((px_bounds, uv)));
                 let draw_info = {
                     let bounds = Region::min_max(
-                        Position::new(px_bounds.min.x / graphics_scale_factor, px_bounds.min.y / graphics_scale_factor),
-                        Position::new(px_bounds.max.x / graphics_scale_factor, px_bounds.max.y / graphics_scale_factor),
+                        Position::new(px_bounds.min.x / hidpi_scale_factor, px_bounds.min.y / hidpi_scale_factor),
+                        Position::new(px_bounds.max.x / hidpi_scale_factor, px_bounds.max.y / hidpi_scale_factor),
                     );
                     GlyphDrawInfo { bounds, uv }
                 };
@@ -232,11 +232,11 @@ impl Font {
         self.cache.borrow_mut().texture.set_filter(filter)
     }
 
-    pub fn is_fit_hidpi(&self) -> bool {
-        self.fit_hidpi
+    pub fn hidpi_scale_factor(&self) -> Option<f32> {
+        self.hidpi_scale_factor
     }
 
-    pub fn set_fit_hidpi(&mut self, fit_hidpi: bool) {
-        self.fit_hidpi = fit_hidpi;
+    pub fn set_hidpi_scale_factor(&mut self, hidpi_scale_factor: Option<f32>) {
+        self.hidpi_scale_factor = hidpi_scale_factor;
     }
 }

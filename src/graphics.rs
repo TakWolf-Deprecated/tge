@@ -447,13 +447,13 @@ impl Graphics {
         let origin = params.origin.unwrap_or_else(|| Position::zero());
         let matrix = self.transform_matrix * transform.0;
         let color = params.color.unwrap_or(Color::WHITE);
-        let graphics_scale_factor = {
-            if font.is_fit_hidpi() && self.canvas.is_none() {
-                self.window().scale_factor() as f32
-            } else {
+        let hidpi_scale_factor = font.hidpi_scale_factor().unwrap_or_else(|| {
+            if self.canvas.is_some() {
                 1.0
+            } else {
+                self.window().scale_factor() as f32
             }
-        };
+        });
 
         let (line_layout_infos, layout_height) = {
             let mut line_layout_infos = Vec::new();
@@ -515,7 +515,7 @@ impl Graphics {
             } - origin.x;
             for (c, glyph_position) in glyph_positions {
                 loop {
-                    match font.cache_glyph(c, text_size, graphics_scale_factor) {
+                    match font.cache_glyph(c, text_size, hidpi_scale_factor) {
                         Ok(cached_by) => {
                             let draw_info = match cached_by {
                                 font::CachedBy::Added(draw_info) => draw_info,
