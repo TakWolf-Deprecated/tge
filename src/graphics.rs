@@ -435,7 +435,7 @@ impl Graphics {
             primitive: PrimitiveType::Triangles,
         });
 
-        let text_size = params.text_size.unwrap_or(14.0);
+        let text_size = params.text_size.unwrap_or(16.0);
         let line_metrics = font.line_metrics(text_size);
         let char_spacing = params.char_spacing.unwrap_or(0.0);
         let line_height = params.line_height.unwrap_or(line_metrics.height);

@@ -88,7 +88,7 @@ impl Car {
         engine.graphics().draw_sprite(
             TextureRef::None,
             SpriteDrawParams::default()
-                .region((0.0, 0.0, 200.0, 62.0))
+                .region((0.0, 0.0, 220.0, 68.0))
                 .color((0.0, 0.0, 0.0, 0.8)),
             None,
         );
@@ -96,8 +96,8 @@ impl Car {
             font,
             &text,
             TextDrawParams::default()
-                .wrap_width(180.0)
-                .wrap_height(42.0)
+                .wrap_width(200.0)
+                .wrap_height(48.0)
                 .vertical_gravity(TextLayoutGravity::Center),
             Transform::default()
                 .translate((10.0, 10.0)),
