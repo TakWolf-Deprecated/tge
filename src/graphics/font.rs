@@ -137,7 +137,7 @@ impl Font {
             });
             return Ok(CachedBy::Existed(draw_info));
         }
-        let outline_glyph = {
+        let outlined_glyph = {
             let glyph = self.glyph_id(c);
             self.font.outline(glyph.0).map(|outline| {
                 let scale_factor = self.scale_factor(px);
@@ -147,7 +147,7 @@ impl Font {
                 })
             })
         };
-        if let Some(outlined_glyph) = outline_glyph {
+        if let Some(outlined_glyph) = outlined_glyph {
             let px_bounds = outlined_glyph.px_bounds();
             let glyph_size = Size::new(px_bounds.width().ceil() as u32, px_bounds.height().ceil() as u32);
             let glyph_cache_size = Size::new(glyph_size.width + 1, glyph_size.height + 1);
