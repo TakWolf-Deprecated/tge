@@ -13,9 +13,9 @@ struct Cannon {
 impl Cannon {
     fn look_at(&mut self, target: impl Into<Position>) {
         let target = target.into();
-        let x = target.x - self.position.x;
-        let y = target.y - self.position.y;
-        self.angle = Angle::radians(x.atan2(-y));
+        let dx = target.x - self.position.x;
+        let dy = target.y - self.position.y;
+        self.angle = Angle::radians(dx.atan2(-dy));
     }
 
     fn gun_position_1(&self) -> Position {
