@@ -115,7 +115,7 @@ impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
         let font = Font::load(engine, "assets/Roboto/Roboto-Regular.ttf")?;
         let texture_car = Texture::load(engine, "assets/car.png")?;
-        let car = Car::new((5050.0, 5050.0));
+        let car = Car::new(Position::zero());
         Ok(Self {
             font,
             texture_car,
@@ -136,17 +136,18 @@ impl App {
         engine.graphics().set_transform(camera_transform);
     }
 
-    fn draw_coordinate(&mut self, engine: &mut Engine) {
+    fn draw_coordinates(&mut self, engine: &mut Engine) {
         let viewport_size = engine.graphics().viewport().size();
         let max_distance = viewport_size.width.max(viewport_size.height);
-        for x in 0..100 as i32 {
-            for y in 0..100 as i32 {
-                let position = Position::new(x as f32 * 100.0, y as f32 * 100.0);
-                if (position.x + 50.0 - self.car.position.x).abs() <= max_distance && (position.y + 50.0 - self.car.position.y).abs() <= max_distance {
+        for x in -10..10 as isize {
+            for y in -10..10 as isize {
+                let position = Position::new(x as f32 * 100.0 + 50.0, y as f32 * 100.0 + 50.0);
+                if (position.x - self.car.position.x).abs() <= max_distance && (position.y - self.car.position.y).abs() <= max_distance {
                     engine.graphics().draw_sprite(
                         TextureRef::None,
                         SpriteDrawParams::default()
                             .region((0.0, 0.0, 100.0, 100.0))
+                            .origin((50.0, 50.0))
                             .color(if (x + y) % 2 == 0 { (0.0, 0.0, 0.0, 0.5) } else { (1.0, 1.0, 1.0, 0.5) }),
                         Transform::default()
                             .translate(position),
@@ -154,18 +155,34 @@ impl App {
                 }
             }
         }
-        for x in 0..100 as i32 {
-            for y in 0..100 as i32 {
-                let position = Position::new(x as f32 * 100.0, y as f32 * 100.0);
-                if (position.x + 50.0 - self.car.position.x).abs() <= max_distance && (position.y + 50.0 - self.car.position.y).abs() <= max_distance {
+        for x in -10..10 as isize {
+            for y in -10..10 as isize {
+                let position = Position::new(x as f32 * 100.0 + 50.0, y as f32 * 100.0 + 50.0);
+                if (position.x - self.car.position.x).abs() <= max_distance && (position.y - self.car.position.y).abs() <= max_distance {
+                    let coordinates = {
+                        let mut x = position.x / 100.0;
+                        if x > 0.0 {
+                            x = x.ceil();
+                        } else if x < 0.0 {
+                            x = x.floor();
+                        }
+                        let mut y = position.y / 100.0;
+                        if y > 0.0 {
+                            y = y.ceil();
+                        } else if y < 0.0 {
+                            y = y.floor();
+                        }
+                        Position::new(x as isize, y as isize)
+                    };
                     engine.graphics().draw_text(
                         &self.font,
-                        &format!("{}, {}", x, y),
+                        &format!("({}, {})", coordinates.x, coordinates.y),
                         TextDrawParams::default()
                             .wrap_width(100.0)
                             .wrap_height(100.0)
                             .horizontal_gravity(TextLayoutGravity::Center)
                             .vertical_gravity(TextLayoutGravity::Center)
+                            .origin((50.0, 50.0))
                             .color(Color::YELLOW),
                         Transform::default()
                             .translate(position),
@@ -195,12 +212,12 @@ impl Game for App {
 
         engine.graphics().set_viewport(Some((0.0, 0.0, graphics_size.width / 2.0, graphics_size.height)));
         self.set_camera_look_at_car(engine, false);
-        self.draw_coordinate(engine);
+        self.draw_coordinates(engine);
         self.car.draw(engine, &self.texture_car);
 
         engine.graphics().set_viewport(Some((graphics_size.width / 2.0, 0.0, graphics_size.width / 2.0, graphics_size.height)));
         self.set_camera_look_at_car(engine, true);
-        self.draw_coordinate(engine);
+        self.draw_coordinates(engine);
         self.car.draw(engine, &self.texture_car);
 
         engine.graphics().pop_transform();
