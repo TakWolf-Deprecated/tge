@@ -212,7 +212,7 @@ impl Game for App {
                 .region((0.0, 0.0, 2.0, graphics_size.height))
                 .color(Color::BLUE),
             Transform::default()
-                .translate((graphics_size.width / 2.0 - 0.1, 0.0)),
+                .translate((graphics_size.width / 2.0 - 1.0, 0.0)),
         );
         self.car.draw_info(engine, &self.font);
 
