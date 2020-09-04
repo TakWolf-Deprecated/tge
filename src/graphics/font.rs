@@ -17,6 +17,19 @@ pub struct GlyphDrawInfo {
     pub uv: Region,
 }
 
+impl GlyphDrawInfo {
+    fn new(px_bounds: Rect, hidpi_scale_factor: f32, uv: Region) -> Self {
+        let bounds = Region::min_max(
+            Position::new(px_bounds.min.x / hidpi_scale_factor, px_bounds.min.y / hidpi_scale_factor),
+            Position::new(px_bounds.max.x / hidpi_scale_factor, px_bounds.max.y / hidpi_scale_factor),
+        );
+        Self {
+            bounds,
+            uv,
+        }
+    }
+}
+
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct LineMetrics {
     pub ascent: f32,
@@ -128,13 +141,7 @@ impl Font {
         let cache_key = CacheKey { c, px: px as u32 };
         let mut cache = self.cache.borrow_mut();
         if let Some(draw_info) = cache.draw_infos.get(&cache_key) {
-            let draw_info = draw_info.map(|(px_bounds, uv)| {
-                let bounds = Region::min_max(
-                    Position::new(px_bounds.min.x / hidpi_scale_factor, px_bounds.min.y / hidpi_scale_factor),
-                    Position::new(px_bounds.max.x / hidpi_scale_factor, px_bounds.max.y / hidpi_scale_factor),
-                );
-                GlyphDrawInfo { bounds, uv }
-            });
+            let draw_info = draw_info.map(|(px_bounds, uv)| GlyphDrawInfo::new(px_bounds, hidpi_scale_factor, uv));
             return Ok(CachedBy::Existed(draw_info));
         }
         let outlined_glyph = {
@@ -193,13 +200,7 @@ impl Font {
                     )
                 };
                 cache.draw_infos.insert(cache_key, Some((px_bounds, uv)));
-                let draw_info = {
-                    let bounds = Region::min_max(
-                        Position::new(px_bounds.min.x / hidpi_scale_factor, px_bounds.min.y / hidpi_scale_factor),
-                        Position::new(px_bounds.max.x / hidpi_scale_factor, px_bounds.max.y / hidpi_scale_factor),
-                    );
-                    GlyphDrawInfo { bounds, uv }
-                };
+                let draw_info = GlyphDrawInfo::new(px_bounds, hidpi_scale_factor, uv);
                 Ok(CachedBy::Added(Some(draw_info)))
             } else {
                 Err(CacheError::NoRoom)
