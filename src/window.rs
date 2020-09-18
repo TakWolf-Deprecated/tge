@@ -70,7 +70,9 @@ impl Window {
             windowed_context.make_current()
                 .map_err(|(_, error)| GameError::InitError(Box::new(error)))?
         };
-        let gl = Context::from_loader_function(|symbol| context_wrapper.get_proc_address(symbol).cast());
+        let gl = unsafe {
+            Context::from_loader_function(|symbol| context_wrapper.get_proc_address(symbol).cast())
+        };
         Ok(Self {
             context_wrapper: Rc::new(context_wrapper),
             gl: Rc::new(gl),
