@@ -1,15 +1,12 @@
 use super::{Graphics, opengl, Filter, Texture};
 use crate::error::{GameError, GameResult};
-use crate::math::{Position, Size, Region};
+use crate::math::{Size, Region};
 use crate::engine::Engine;
-use ab_glyph::{Font as AbGlyphFont, FontVec, Rect, PxScaleFactor, OutlinedGlyph};
+use fontdue::{FontSettings, Metrics};
 use std::path::Path;
 use std::collections::HashMap;
 use std::rc::Rc;
 use std::cell::RefCell;
-
-#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
-pub struct GlyphId(ab_glyph::GlyphId);
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct GlyphDrawInfo {
@@ -18,10 +15,12 @@ pub struct GlyphDrawInfo {
 }
 
 impl GlyphDrawInfo {
-    fn new(px_bounds: Rect, hidpi_scale_factor: f32, uv: Region) -> Self {
-        let uv_bounds = Region::min_max(
-            Position::new(px_bounds.min.x / hidpi_scale_factor, px_bounds.min.y / hidpi_scale_factor),
-            Position::new(px_bounds.max.x / hidpi_scale_factor, px_bounds.max.y / hidpi_scale_factor),
+    fn new(metrics: Metrics, hidpi_scale_factor: f32, uv: Region) -> Self {
+        let uv_bounds = Region::new(
+            metrics.xmin as f32 / hidpi_scale_factor,
+            -(metrics.height as f32 + metrics.ymin as f32) / hidpi_scale_factor,
+            metrics.width as f32 / hidpi_scale_factor,
+            metrics.height as f32 / hidpi_scale_factor,
         );
         Self {
             uv_bounds,
@@ -44,8 +43,8 @@ pub struct GlyphMetrics {
 }
 
 pub enum CachedBy {
-    Added(Option<GlyphDrawInfo>),
-    Existed(Option<GlyphDrawInfo>),
+    Added(GlyphDrawInfo),
+    Existed(GlyphDrawInfo),
 }
 
 pub enum CacheError {
@@ -62,20 +61,19 @@ struct CacheKey {
 struct Cache {
     texture: Texture,
     texture_size: u32,
-    draw_infos: HashMap<CacheKey, Option<(Rect, Region)>>,
+    draw_infos: HashMap<CacheKey, (Metrics, Region)>,
     rows: Vec<Size<u32>>,
 }
 
 pub struct Font {
-    font: FontVec,
-    glyph_ids: RefCell<HashMap<char, GlyphId>>,
+    font: fontdue::Font,
     cache: RefCell<Cache>,
     hidpi_scale_factor: Option<f32>,
 }
 
 impl Font {
-    pub(crate) fn new(graphics: &mut Graphics, bytes: Vec<u8>, cache_texture_size: u32) -> GameResult<Self> {
-        let font = FontVec::try_from_vec(bytes)
+    pub(crate) fn new(graphics: &mut Graphics, bytes: &[u8], cache_texture_size: u32) -> GameResult<Self> {
+        let font = fontdue::Font::from_bytes(bytes, FontSettings::default())
             .map_err(|error| GameError::InitError(error.into()))?;
         let cache_texture = Texture::for_font_cache(graphics, cache_texture_size)?;
         let cache = Cache {
@@ -86,45 +84,35 @@ impl Font {
         };
         Ok(Self {
             font,
-            glyph_ids: RefCell::new(HashMap::new()),
             cache: RefCell::new(cache),
             hidpi_scale_factor: None,
         })
     }
 
-    pub fn from_bytes(graphics: &mut Graphics, bytes: Vec<u8>) -> GameResult<Self> {
+    pub fn from_bytes(graphics: &mut Graphics, bytes: &[u8]) -> GameResult<Self> {
         Self::new(graphics, bytes, 1024)
     }
 
     pub fn load(engine: &mut Engine, path: impl AsRef<Path>) -> GameResult<Self> {
         let bytes = engine.filesystem().read(path)?;
-        Self::from_bytes(engine.graphics(), bytes)
-    }
-
-    pub(crate) fn glyph_id(&self, c: char) -> GlyphId {
-        let mut glyph_ids = self.glyph_ids.borrow_mut();
-        let glyph_id = glyph_ids.entry(c).or_insert_with(|| GlyphId(self.font.glyph_id(c)));
-        *glyph_id
-    }
-
-    fn scale_factor(&self, px: f32) -> f32 {
-        px / self.font.units_per_em().expect("no units per em")
+        Self::from_bytes(engine.graphics(), &bytes)
     }
 
     pub(crate) fn line_metrics(&self, px: f32) -> LineMetrics {
-        let scale_factor = self.scale_factor(px);
+        let horizontal_line_metrics = self.font.horizontal_line_metrics(px)
+            .expect("no horizontal line metrics");
         LineMetrics {
-            ascent: self.font.ascent_unscaled() * scale_factor,
-            descent: self.font.descent_unscaled() * scale_factor,
-            height: self.font.height_unscaled() * scale_factor,
-            line_gap: self.font.line_gap_unscaled() * scale_factor,
+            ascent: horizontal_line_metrics.ascent,
+            descent: horizontal_line_metrics.descent,
+            height: horizontal_line_metrics.ascent - horizontal_line_metrics.descent,
+            line_gap: horizontal_line_metrics.line_gap,
         }
     }
 
-    pub(crate) fn glyph_metrics(&self, glyph_id: GlyphId, px: f32) -> GlyphMetrics {
-        let scale_factor = self.scale_factor(px);
+    pub(crate) fn glyph_metrics(&self, c: char, px: f32) -> GlyphMetrics {
+        let metrics = self.font.metrics(c, px);
         GlyphMetrics {
-            advance_width: self.font.h_advance_unscaled(glyph_id.0) * scale_factor,
+            advance_width: metrics.advance_width,
         }
     }
 
@@ -140,74 +128,61 @@ impl Font {
         let px = (px * hidpi_scale_factor).round();
         let cache_key = CacheKey { c, px: px as u32 };
         let mut cache = self.cache.borrow_mut();
-        if let Some(draw_info) = cache.draw_infos.get(&cache_key) {
-            let draw_info = draw_info.map(|(px_bounds, uv)| GlyphDrawInfo::new(px_bounds, hidpi_scale_factor, uv));
+        if let Some((metrics, uv)) = cache.draw_infos.get(&cache_key) {
+            let draw_info = GlyphDrawInfo::new(*metrics, hidpi_scale_factor, *uv);
             return Ok(CachedBy::Existed(draw_info));
         }
-        let outlined_glyph = {
-            let glyph = self.glyph_id(c);
-            self.font.outline(glyph.0).map(|outline| {
-                let scale_factor = self.scale_factor(px);
-                OutlinedGlyph::new(glyph.0.with_scale(0.0), outline, PxScaleFactor {
-                    horizontal: scale_factor,
-                    vertical: scale_factor,
-                })
-            })
-        };
-        if let Some(outlined_glyph) = outlined_glyph {
-            let px_bounds = outlined_glyph.px_bounds();
-            let glyph_size = Size::new(px_bounds.width().ceil() as u32, px_bounds.height().ceil() as u32);
-            let glyph_cache_size = Size::new(glyph_size.width + 1, glyph_size.height + 1);
-            let cache_texture_size = cache.texture_size;
-            if glyph_cache_size.width > cache_texture_size || glyph_cache_size.height > cache_texture_size {
-                return Err(CacheError::TooLarge);
+        let metrics = self.font.metrics(c, px);
+        let glyph_size = Size::new(metrics.width as u32, metrics.height as u32);
+        let glyph_cache_size = Size::new(glyph_size.width + 1, glyph_size.height + 1);
+        let cache_texture_size = cache.texture_size;
+        if glyph_cache_size.width > cache_texture_size || glyph_cache_size.height > cache_texture_size {
+            return Err(CacheError::TooLarge);
+        }
+        let mut region = None;
+        let mut row_bottom = 0;
+        for row in cache.rows.iter_mut() {
+            if glyph_cache_size.height <= row.height && glyph_cache_size.width <= cache_texture_size - row.width {
+                region = Some(Region::new(row.width, row_bottom, glyph_size.width, glyph_size.height));
+                row.width += glyph_cache_size.width;
+                break;
             }
-            let mut region = None;
-            let mut row_bottom = 0;
-            for row in cache.rows.iter_mut() {
-                if glyph_cache_size.height <= row.height && glyph_cache_size.width <= cache_texture_size - row.width {
-                    region = Some(Region::new(row.width, row_bottom, glyph_size.width, glyph_size.height));
-                    row.width += glyph_cache_size.width;
-                    break;
-                }
-                row_bottom += row.height;
+            row_bottom += row.height;
+        }
+        if region.is_none() {
+            if glyph_cache_size.height <= cache_texture_size - row_bottom {
+                region = Some(Region::new(0, row_bottom, glyph_size.width, glyph_size.height));
+                cache.rows.push(glyph_cache_size);
             }
-            if region.is_none() {
-                if glyph_cache_size.height <= cache_texture_size - row_bottom {
-                    region = Some(Region::new(0, row_bottom, glyph_size.width, glyph_size.height));
-                    cache.rows.push(glyph_cache_size);
-                }
+        }
+        if let Some(region) = region {
+            let (_, bitmap) = self.font.rasterize(c, px);
+            let mut pixels = Vec::with_capacity(bitmap.len() * 4);
+            for alpha in bitmap {
+                pixels.push(255);
+                pixels.push(255);
+                pixels.push(255);
+                pixels.push(alpha);
             }
-            if let Some(region) = region {
-                let mut pixels = vec![255; (glyph_size.width * glyph_size.height * 4) as usize];
-                outlined_glyph.draw(|x, y, c| {
-                    let color = (c * 255.0) as u8;
-                    let index = ((x + y * glyph_size.width) * 4) as usize;
-                    pixels[index + 3] = color;
-                });
-                cache.texture.update_pixels(region, Some(&pixels))
-                    .expect("update font cache texture error");
-                let uv = {
-                    let texture_size = {
-                        let texture_size = cache.texture.size();
-                        Size::new(texture_size.width as f32, texture_size.height as f32)
-                    };
-                    Region::new(
-                        region.x as f32 / texture_size.width,
-                        region.y as f32 / texture_size.height,
-                        region.width as f32 / texture_size.width,
-                        region.height as f32 / texture_size.height,
-                    )
+            cache.texture.update_pixels(region, Some(&pixels))
+                .expect("update font cache texture error");
+            let uv = {
+                let texture_size = {
+                    let texture_size = cache.texture.size();
+                    Size::new(texture_size.width as f32, texture_size.height as f32)
                 };
-                cache.draw_infos.insert(cache_key, Some((px_bounds, uv)));
-                let draw_info = GlyphDrawInfo::new(px_bounds, hidpi_scale_factor, uv);
-                Ok(CachedBy::Added(Some(draw_info)))
-            } else {
-                Err(CacheError::NoRoom)
-            }
+                Region::new(
+                    region.x as f32 / texture_size.width,
+                    region.y as f32 / texture_size.height,
+                    region.width as f32 / texture_size.width,
+                    region.height as f32 / texture_size.height,
+                )
+            };
+            cache.draw_infos.insert(cache_key, (metrics, uv));
+            let draw_info = GlyphDrawInfo::new(metrics, hidpi_scale_factor, uv);
+            Ok(CachedBy::Added(draw_info))
         } else {
-            cache.draw_infos.insert(cache_key, None);
-            Ok(CachedBy::Added(None))
+            Err(CacheError::NoRoom)
         }
     }
 

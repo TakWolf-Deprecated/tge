@@ -474,8 +474,7 @@ impl Graphics {
                         _ => (),
                     }
                 } else {
-                    let glyph_id = font.glyph_id(c);
-                    let glyph_metrics = font.glyph_metrics(glyph_id, text_size);
+                    let glyph_metrics = font.glyph_metrics(c, text_size);
                     if wrap_width > 0.0 && caret.x > 0.0 && caret.x + glyph_metrics.advance_width > wrap_width {
                         line_layout_infos.push((glyph_positions, caret.x));
                         glyph_positions = Vec::new();
@@ -521,41 +520,39 @@ impl Graphics {
                                 font::CachedBy::Added(draw_info) => draw_info,
                                 font::CachedBy::Existed(draw_info) => draw_info,
                             };
-                            if let Some(draw_info) = draw_info {
-                                let glyph_position = Position::new(
-                                    glyph_position.x + draw_info.uv_bounds.min_x(),
-                                    glyph_position.y + line_metrics.ascent + draw_info.uv_bounds.min_y() + (line_height - line_metrics.height) / 2.0,
-                                );
-                                let x0y0 = matrix * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y, 0.0, 1.0);
-                                let x1y0 = matrix * Vec4::new(offset_x + glyph_position.x + draw_info.uv_bounds.width, offset_y + glyph_position.y, 0.0, 1.0);
-                                let x0y1 = matrix * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y + draw_info.uv_bounds.height, 0.0, 1.0);
-                                let x1y1 = matrix * Vec4::new(offset_x + glyph_position.x + draw_info.uv_bounds.width, offset_y + glyph_position.y + draw_info.uv_bounds.height, 0.0, 1.0);
+                            let glyph_position = Position::new(
+                                glyph_position.x + draw_info.uv_bounds.min_x(),
+                                glyph_position.y + line_metrics.ascent + draw_info.uv_bounds.min_y() + (line_height - line_metrics.height) / 2.0,
+                            );
+                            let x0y0 = matrix * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y, 0.0, 1.0);
+                            let x1y0 = matrix * Vec4::new(offset_x + glyph_position.x + draw_info.uv_bounds.width, offset_y + glyph_position.y, 0.0, 1.0);
+                            let x0y1 = matrix * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y + draw_info.uv_bounds.height, 0.0, 1.0);
+                            let x1y1 = matrix * Vec4::new(offset_x + glyph_position.x + draw_info.uv_bounds.width, offset_y + glyph_position.y + draw_info.uv_bounds.height, 0.0, 1.0);
 
-                                let vertices = vec![
-                                    Vertex {
-                                        position: Position::new(x0y0.x(), x0y0.y()),
-                                        uv: draw_info.uv.top_left(),
-                                        color,
-                                    },
-                                    Vertex {
-                                        position: Position::new(x1y0.x(), x1y0.y()),
-                                        uv: draw_info.uv.top_right(),
-                                        color,
-                                    },
-                                    Vertex {
-                                        position: Position::new(x0y1.x(), x0y1.y()),
-                                        uv: draw_info.uv.bottom_left(),
-                                        color,
-                                    },
-                                    Vertex {
-                                        position: Position::new(x1y1.x(), x1y1.y()),
-                                        uv: draw_info.uv.bottom_right(),
-                                        color,
-                                    },
-                                ];
-                                let elements = SPRITE_ELEMENTS.to_vec();
-                                self.append_vertices_and_elements(vertices, Some(elements));
-                            }
+                            let vertices = vec![
+                                Vertex {
+                                    position: Position::new(x0y0.x(), x0y0.y()),
+                                    uv: draw_info.uv.top_left(),
+                                    color,
+                                },
+                                Vertex {
+                                    position: Position::new(x1y0.x(), x1y0.y()),
+                                    uv: draw_info.uv.top_right(),
+                                    color,
+                                },
+                                Vertex {
+                                    position: Position::new(x0y1.x(), x0y1.y()),
+                                    uv: draw_info.uv.bottom_left(),
+                                    color,
+                                },
+                                Vertex {
+                                    position: Position::new(x1y1.x(), x1y1.y()),
+                                    uv: draw_info.uv.bottom_right(),
+                                    color,
+                                },
+                            ];
+                            let elements = SPRITE_ELEMENTS.to_vec();
+                            self.append_vertices_and_elements(vertices, Some(elements));
                             break;
                         }
                         Err(cache_error) => {
