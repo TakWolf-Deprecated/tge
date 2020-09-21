@@ -523,13 +523,13 @@ impl Graphics {
                             };
                             if let Some(draw_info) = draw_info {
                                 let glyph_position = Position::new(
-                                    glyph_position.x + draw_info.bounds.min_x(),
-                                    glyph_position.y + line_metrics.ascent + draw_info.bounds.min_y() + (line_height - line_metrics.height) / 2.0,
+                                    glyph_position.x + draw_info.uv_bounds.min_x(),
+                                    glyph_position.y + line_metrics.ascent + draw_info.uv_bounds.min_y() + (line_height - line_metrics.height) / 2.0,
                                 );
                                 let x0y0 = matrix * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y, 0.0, 1.0);
-                                let x1y0 = matrix * Vec4::new(offset_x + glyph_position.x + draw_info.bounds.width, offset_y + glyph_position.y, 0.0, 1.0);
-                                let x0y1 = matrix * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y + draw_info.bounds.height, 0.0, 1.0);
-                                let x1y1 = matrix * Vec4::new(offset_x + glyph_position.x + draw_info.bounds.width, offset_y + glyph_position.y + draw_info.bounds.height, 0.0, 1.0);
+                                let x1y0 = matrix * Vec4::new(offset_x + glyph_position.x + draw_info.uv_bounds.width, offset_y + glyph_position.y, 0.0, 1.0);
+                                let x0y1 = matrix * Vec4::new(offset_x + glyph_position.x, offset_y + glyph_position.y + draw_info.uv_bounds.height, 0.0, 1.0);
+                                let x1y1 = matrix * Vec4::new(offset_x + glyph_position.x + draw_info.uv_bounds.width, offset_y + glyph_position.y + draw_info.uv_bounds.height, 0.0, 1.0);
 
                                 let vertices = vec![
                                     Vertex {

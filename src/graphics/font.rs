@@ -13,18 +13,18 @@ pub struct GlyphId(ab_glyph::GlyphId);
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct GlyphDrawInfo {
-    pub bounds: Region,
+    pub uv_bounds: Region,
     pub uv: Region,
 }
 
 impl GlyphDrawInfo {
     fn new(px_bounds: Rect, hidpi_scale_factor: f32, uv: Region) -> Self {
-        let bounds = Region::min_max(
+        let uv_bounds = Region::min_max(
             Position::new(px_bounds.min.x / hidpi_scale_factor, px_bounds.min.y / hidpi_scale_factor),
             Position::new(px_bounds.max.x / hidpi_scale_factor, px_bounds.max.y / hidpi_scale_factor),
         );
         Self {
-            bounds,
+            uv_bounds,
             uv,
         }
     }
