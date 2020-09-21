@@ -11,7 +11,7 @@ impl Icon {
         let size = size.into();
         validate_pixels(size, &pixels)?;
         let icon = winit::window::Icon::from_rgba(pixels, size.width, size.height)
-            .map_err(|error| GameError::InitError(Box::new(error)))?;
+            .map_err(|error| GameError::InitError(error.into()))?;
         Ok(Self(icon))
     }
 

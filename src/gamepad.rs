@@ -29,7 +29,7 @@ impl Gamepad {
         let gilrs = GilrsBuilder::new()
             .set_axis_to_btn(gamepad_config.axis_to_button_down_value, gamepad_config.axis_to_button_up_value)
             .build()
-            .map_err(|error| GameError::InitError(Box::new(error)))?;
+            .map_err(|error| GameError::InitError(error.into()))?;
         Ok(Self {
             gilrs: Rc::new(RefCell::new(gilrs)),
             connected_states: HashMap::new(),

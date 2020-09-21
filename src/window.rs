@@ -65,10 +65,10 @@ impl Window {
         let context_builder = ContextBuilder::new()
             .with_vsync(window_config.vsync);
         let windowed_context = context_builder.build_windowed(window_builder, event_loop)
-            .map_err(|error| GameError::InitError(Box::new(error)))?;
+            .map_err(|error| GameError::InitError(error.into()))?;
         let context_wrapper = unsafe {
             windowed_context.make_current()
-                .map_err(|(_, error)| GameError::InitError(Box::new(error)))?
+                .map_err(|(_, error)| GameError::InitError(error.into()))?
         };
         let gl = unsafe {
             Context::from_loader_function(|symbol| context_wrapper.get_proc_address(symbol).cast())
@@ -151,7 +151,7 @@ impl Window {
 
     pub fn inner_position(&self) -> GameResult<LogicalPosition> {
         let physical_position = self.window().inner_position()
-            .map_err(|error| GameError::NotSupportedError(Box::new(error)))?;
+            .map_err(|error| GameError::NotSupportedError(error.into()))?;
         let scale_factor = self.window().scale_factor();
         let logical_position = physical_position.to_logical(scale_factor);
         Ok(LogicalPosition::new(logical_position.x, logical_position.y))
@@ -159,7 +159,7 @@ impl Window {
 
     pub fn outer_position(&self) -> GameResult<LogicalPosition> {
         let physical_position = self.window().outer_position()
-            .map_err(|error| GameError::NotSupportedError(Box::new(error)))?;
+            .map_err(|error| GameError::NotSupportedError(error.into()))?;
         let scale_factor = self.window().scale_factor();
         let logical_position = physical_position.to_logical(scale_factor);
         Ok(LogicalPosition::new(logical_position.x, logical_position.y))
