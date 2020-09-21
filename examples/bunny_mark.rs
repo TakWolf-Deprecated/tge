@@ -1,5 +1,3 @@
-/// Based on https://github.com/openfl/openfl-samples/tree/master/demos/BunnyMark
-/// and https://github.com/17cupsofcoffee/tetra/blob/master/examples/bunnymark.rs
 use tge::prelude::*;
 use rand::Rng;
 use rand::rngs::ThreadRng;
