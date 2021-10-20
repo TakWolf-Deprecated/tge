@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## Unreleased
 
+## 0.0.4 (2021-10-20)
+
 * Replace `Font.fit_hidpi` to `Font.hidpi_scale_factor`.
 * Rename `TextureHolder` to `TextureRef`.
 * Modify `ElementBuffer` type to `u16` to improve performance.
