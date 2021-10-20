@@ -88,7 +88,7 @@ impl Car {
         engine.graphics().draw_sprite(
             TextureRef::None,
             SpriteDrawParams::default()
-                .region((0.0, 0.0, 220.0, 68.0))
+                .region((0.0, 0.0, 12.0 * 16.0, 12.0 * 4.0))
                 .color((0.0, 0.0, 0.0, 0.8)),
             None,
         );
@@ -96,11 +96,12 @@ impl Car {
             font,
             &text,
             TextDrawParams::default()
-                .wrap_width(200.0)
-                .wrap_height(48.0)
+                .text_size(12.0)
+                .wrap_width(12.0 * 16.0)
+                .wrap_height(12.0 * 4.0)
                 .vertical_gravity(TextLayoutGravity::Center),
             Transform::default()
-                .translate((10.0, 10.0)),
+                .translate((12.0, 0.0)),
         );
     }
 }
@@ -113,7 +114,7 @@ struct App {
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
-        let font = Font::load(engine, "assets/Roboto/Roboto-Regular.ttf")?;
+        let font = Font::load(engine, "assets/ark-pixel-font/ark-pixel-12px-zh_cn.otf")?;
         let texture_car = Texture::load(engine, "assets/car.png")?;
         let car = Car::new(Position::zero());
         Ok(Self {
@@ -178,6 +179,7 @@ impl App {
                         &self.font,
                         &format!("({}, {})", coordinates.x, coordinates.y),
                         TextDrawParams::default()
+                            .text_size(12.0)
                             .wrap_width(100.0)
                             .wrap_height(100.0)
                             .horizontal_gravity(TextLayoutGravity::Center)

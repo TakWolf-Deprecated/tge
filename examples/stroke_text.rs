@@ -14,7 +14,7 @@ struct App {
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
-        let font = Font::load(engine, "assets/Roboto/Roboto-Regular.ttf")?;
+        let font = Font::load(engine, "assets/ark-pixel-font/ark-pixel-12px-zh_cn.otf")?;
         let text = "Hello, world!".to_owned();
         let text_size = 60.0;
         let position = Position::new(512.0, 300.0);
@@ -56,7 +56,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .rotate(self.angle)
-                .translate((self.position.x - 1.0, self.position.y)),
+                .translate((self.position.x - 2.0, self.position.y)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -68,7 +68,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .rotate(self.angle)
-                .translate((self.position.x - 1.0, self.position.y - 1.0)),
+                .translate((self.position.x - 2.0, self.position.y - 2.0)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -80,7 +80,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .rotate(self.angle)
-                .translate((self.position.x, self.position.y - 1.0)),
+                .translate((self.position.x, self.position.y - 2.0)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -92,7 +92,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .rotate(self.angle)
-                .translate((self.position.x + 1.0, self.position.y - 1.0)),
+                .translate((self.position.x + 2.0, self.position.y - 2.0)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -104,7 +104,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .rotate(self.angle)
-                .translate((self.position.x + 1.0, self.position.y)),
+                .translate((self.position.x + 2.0, self.position.y)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -116,7 +116,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .rotate(self.angle)
-                .translate((self.position.x + 1.0, self.position.y + 1.0)),
+                .translate((self.position.x + 2.0, self.position.y + 2.0)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -128,7 +128,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .rotate(self.angle)
-                .translate((self.position.x, self.position.y + 1.0)),
+                .translate((self.position.x, self.position.y + 2.0)),
         );
         engine.graphics().draw_text(
             &self.font,
@@ -140,7 +140,7 @@ impl Game for App {
                 .color(self.stroke_color),
             Transform::default()
                 .rotate(self.angle)
-                .translate((self.position.x - 1.0, self.position.y + 1.0)),
+                .translate((self.position.x - 2.0, self.position.y + 2.0)),
         );
         engine.graphics().draw_text(
             &self.font,

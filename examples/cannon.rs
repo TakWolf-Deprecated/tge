@@ -85,7 +85,7 @@ struct App {
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
-        let font = Font::load(engine, "assets/Roboto/Roboto-Regular.ttf")?;
+        let font = Font::load(engine, "assets/ark-pixel-font/ark-pixel-12px-zh_cn.otf")?;
         let texture_cannon = Texture::load(engine, "assets/battery.png")?;
         let texture_bullet = Texture::load(engine, "assets/bullet.png")?;
         let cannons = vec![
@@ -180,9 +180,10 @@ impl Game for App {
             &self.font,
             &format!("bullets: {}", self.bullets.len()),
             TextDrawParams::default()
+                .text_size(24.0)
                 .color(Color::BLUE),
             Transform::default()
-                .translate((10.0, 10.0)),
+                .translate((12.0, 12.0)),
         );
 
         Ok(())

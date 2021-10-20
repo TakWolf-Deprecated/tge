@@ -12,7 +12,7 @@ struct App {
 
 impl App {
     fn new(engine: &mut Engine) -> GameResult<Self> {
-        let font = Font::load(engine, "assets/SourceHanSansSC/SourceHanSansSC-Regular.otf")?;
+        let font = Font::load(engine, "assets/ark-pixel-font/ark-pixel-12px-zh_cn.otf")?;
         Ok(Self {
             font,
             text: "⇦, ⇨, ⇧ and ⇩ to change layout gravity\n'+' and '-' to change text size\nInput something here...".to_owned(),
