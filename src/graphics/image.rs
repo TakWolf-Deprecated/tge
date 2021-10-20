@@ -19,7 +19,7 @@ impl Image {
     pub fn from_bytes(bytes: &[u8]) -> GameResult<Self> {
         let image = image::load_from_memory(bytes)
             .map_err(|error| GameError::InitError(error.into()))?
-            .into_rgba();
+            .into_rgba8();
         let size = Size::new(image.width(), image.height());
         let pixels = image.into_raw();
         Self::new(size, pixels)

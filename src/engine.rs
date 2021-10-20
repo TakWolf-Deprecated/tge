@@ -14,7 +14,7 @@ use crate::audio::{Audio, AudioConfig};
 use crate::game::Game;
 use winit::event_loop::{EventLoop, ControlFlow};
 use winit::event::{StartCause, WindowEvent, MouseScrollDelta};
-use winit::platform::desktop::EventLoopExtDesktop;
+use winit::platform::run_return::EventLoopExtRunReturn;
 
 #[derive(Debug)]
 enum State {

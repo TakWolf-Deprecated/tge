@@ -3,7 +3,7 @@ use rand::Rng;
 use rand::rngs::ThreadRng;
 
 const TITLE: &str = "Bunny Mark";
-const STEP_COUNT: usize = 100;
+const STEP_COUNT: usize = 1000;
 const GRAVITY: f32 = 0.5;
 
 struct Bunny {

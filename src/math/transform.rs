@@ -6,11 +6,11 @@ pub struct Transform(pub(crate) Mat4);
 
 impl Transform {
     pub fn identity() -> Self {
-        Self(Mat4::identity())
+        Self(Mat4::IDENTITY)
     }
 
     pub fn zero() -> Self {
-        Self(Mat4::zero())
+        Self(Mat4::ZERO)
     }
 
     pub fn translate(&self, vector: impl Into<Vector>) -> Self {

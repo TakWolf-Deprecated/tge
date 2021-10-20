@@ -81,7 +81,7 @@ impl Graphics {
             gl.viewport(0, 0, physical_size.width as i32, physical_size.height as i32);
         }
         let projection_matrix = Mat4::orthographic_rh_gl(0.0, logical_size.width, logical_size.height, 0.0, -1.0, 1.0);
-        let transform_matrix = Mat4::identity();
+        let transform_matrix = Mat4::IDENTITY;
         let transform_stack = Vec::new();
 
         let default_program = Program::default(gl.clone())?;
@@ -362,7 +362,7 @@ impl Graphics {
             for vertex in &mut vertices {
                 vertex.position = {
                     let position = matrix * Vec4::new(vertex.position.x, vertex.position.y, 0.0, 1.0);
-                    Position::new(position.x(), position.y())
+                    Position::new(position.x, position.y)
                 };
             }
             vertices
@@ -402,22 +402,22 @@ impl Graphics {
 
         let vertices = vec![
             Vertex {
-                position: Position::new(x0y0.x(), x0y0.y()),
+                position: Position::new(x0y0.x, x0y0.y),
                 uv: uv.top_left(),
                 color: colors[0],
             },
             Vertex {
-                position: Position::new(x1y0.x(), x1y0.y()),
+                position: Position::new(x1y0.x, x1y0.y),
                 uv: uv.top_right(),
                 color: colors[1],
             },
             Vertex {
-                position: Position::new(x0y1.x(), x0y1.y()),
+                position: Position::new(x0y1.x, x0y1.y),
                 uv: uv.bottom_left(),
                 color: colors[2],
             },
             Vertex {
-                position: Position::new(x1y1.x(), x1y1.y()),
+                position: Position::new(x1y1.x, x1y1.y),
                 uv: uv.bottom_right(),
                 color: colors[3],
             },
@@ -531,22 +531,22 @@ impl Graphics {
 
                             let vertices = vec![
                                 Vertex {
-                                    position: Position::new(x0y0.x(), x0y0.y()),
+                                    position: Position::new(x0y0.x, x0y0.y),
                                     uv: draw_info.uv.top_left(),
                                     color,
                                 },
                                 Vertex {
-                                    position: Position::new(x1y0.x(), x1y0.y()),
+                                    position: Position::new(x1y0.x, x1y0.y),
                                     uv: draw_info.uv.top_right(),
                                     color,
                                 },
                                 Vertex {
-                                    position: Position::new(x0y1.x(), x0y1.y()),
+                                    position: Position::new(x0y1.x, x0y1.y),
                                     uv: draw_info.uv.bottom_left(),
                                     color,
                                 },
                                 Vertex {
-                                    position: Position::new(x1y1.x(), x1y1.y()),
+                                    position: Position::new(x1y1.x, x1y1.y),
                                     uv: draw_info.uv.bottom_right(),
                                     color,
                                 },
