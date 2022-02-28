@@ -8,6 +8,8 @@ A lightweight cross-platform 2D game framework written in pure Rust and based on
 
 Inspired by [LÖVE](https://love2d.org).
 
+This is an attempt of Rust in game development.
+
 __Tge is currently in a very early stage of development. The API may be changed. Until the version to `0.1.0`.__
 
 ## Features
@@ -89,9 +91,51 @@ That is!
 
 You can also see the [`examples/`](examples/) directory to learn other examples.
 
-## Performance
+## Examples
 
-See the example [`bunny_mark`](examples/bunny_mark.rs) and [`hare_mark`](examples/hare_mark.rs).
+### [camera](examples/camera.rs)
+
+![camera](art/camera.png)
+
+### [cannon](examples/cannon.rs)
+
+![cannon](art/cannon.png)
+
+### [clock](examples/clock.rs)
+
+![clock](art/clock.png)
+
+### [bunny_mark](examples/bunny_mark.rs)
+
+![bunny_mark](art/bunny_mark.png)
+
+### [hare_mark](examples/hare_mark.rs)
+
+![hare_mark](art/hare_mark.png)
+
+### [frame_animation](examples/frame_animation.rs)
+
+![frame_animation](art/frame_animation.png)
+
+### [parallax_forest](examples/parallax_forest.rs)
+
+![parallax_forest](art/parallax_forest.png)
+
+### [parallax_mountain](examples/parallax_mountain.rs)
+
+![parallax_mountain](art/parallax_mountain.png)
+
+### [dvd](examples/dvd.rs)
+
+![dvd](art/dvd.png)
+
+### [text_layout](examples/text_layout.rs)
+
+![text_layout](art/text_layout.png)
+
+### [stroke_text](examples/stroke_text.rs)
+
+![stroke_text](art/stroke_text.png)
 
 ## TODO
 
