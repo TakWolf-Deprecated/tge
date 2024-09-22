@@ -15,15 +15,15 @@ publish = false
 [dependencies]
 winit = "0.27.5"
 glutin = "0.29.1"
-glow = "0.12.3"
-glam = "0.24.2"
-image = "0.24.7"
-fontdue = "0.7.3"
-gilrs = "0.10.2"
+glow = "0.14.1"
+glam = "0.29.0"
+image = "0.25.2"
+fontdue = "0.9.2"
+gilrs = "0.11.0"
 
 [dev-dependencies]
 rand = "0.8.5"
-chrono = "0.4.31"
+chrono = "0.4.38"
 
 [profile.dev]
 opt-level = 3
